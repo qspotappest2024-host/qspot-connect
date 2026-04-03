@@ -1,0 +1,97 @@
+# QSpot Website — GitHub Pages Deployment
+#
+# This workflow:
+#   1. Injects the MapTiler API key from GitHub Secrets (never committed to source)
+#   2. Merges website/ files with existing Stripe + .well-known paths
+#   3. Deploys to GitHub Pages
+#
+# SETUP REQUIRED (one-time):
+#   1. In MapTiler dashboard: restrict key to your domain (see SETUP_GUIDE.md)
+#   2. In GitHub repo: Settings → Secrets and variables → Actions → New secret
+#      Name: MAPTILER_API_KEY   Value: <your key>
+#   3. In GitHub repo: Settings → Pages → Source → GitHub Actions
+
+name: Deploy QSpot Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # Allow manual trigger from GitHub Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false   # Don't cancel in-flight deploys
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # Inject the MapTiler API key from GitHub Secrets into config.js
+      # The source file always contains the placeholder — the real key NEVER
+      # touches the repository. It only exists in the built artifact.
+      # -----------------------------------------------------------------------
+      - name: Inject MapTiler API key
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILERWEB_API_KEY }}
+        run: |
+          if [ -z "$MAPTILER_KEY" ]; then
+            echo "::warning::MAPTILERWEB_API_KEY secret is not set. Map will not load."
+          fi
+          sed -i "s/YOUR_MAPTILER_API_KEY_HERE/${MAPTILER_KEY}/g" website/js/config.js
+
+      # -----------------------------------------------------------------------
+      # Build the _site directory:
+      #   - Website files at root (index.html, map.html, about.html, css/, js/)
+      #   - .well-known/ preserved at root (Android App Links / assetlinks.json)
+      #   - stripe/ preserved at root (Stripe payment redirect pages)
+      #   - .nojekyll tells GitHub Pages not to process with Jekyll
+      # -----------------------------------------------------------------------
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+
+          # Copy website pages and assets to site root
+          cp -r website/. _site/
+
+          # Preserve .well-known (Android App Links — must be at root)
+          if [ -d ".well-known" ]; then
+            cp -r .well-known _site/
+            echo "✓ Copied .well-known/"
+          fi
+
+          # Preserve Stripe redirect pages (must stay at /stripe/)
+          if [ -d "stripe" ]; then
+            cp -r stripe _site/
+            echo "✓ Copied stripe/"
+          fi
+
+          # Ensure Jekyll is disabled (important for files starting with _)
+          touch _site/.nojekyll
+
+          echo "--- Site contents ---"
+          ls -la _site/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
