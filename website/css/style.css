@@ -35,6 +35,7 @@
 
 html {
     scroll-behavior: smooth;
+    color-scheme: light dark;
 }
 
 body {
@@ -891,3 +892,189 @@ body.page-map {
         align-items: center;
     }
 }
+
+/* ============================================================
+   Dark Mode
+   Google recognizes dark mode support via:
+   1. <meta name="color-scheme" content="light dark"> in HTML
+   2. css color-scheme: light dark on :root/html
+   3. @media (prefers-color-scheme: dark) rules below
+   Manual toggle via html[data-theme="dark"|"light"]
+   ============================================================ */
+
+/* --- Shared dark theme variable set --- */
+.dark-theme-vars,
+html[data-theme="dark"] {
+    --text-primary: #e1e1f0;
+    --text-secondary: #a8a8bc;
+    --text-light: #6a6a82;
+    --bg-white: #121218;
+    --bg-light: #1c1c2a;
+    --bg-dark: #09090f;
+    --border: #2a2a3e;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.65);
+}
+
+/* --- Auto dark mode (OS preference) --- */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        --text-primary: #e1e1f0;
+        --text-secondary: #a8a8bc;
+        --text-light: #6a6a82;
+        --bg-white: #121218;
+        --bg-light: #1c1c2a;
+        --bg-dark: #09090f;
+        --border: #2a2a3e;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.55);
+        --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.65);
+        color-scheme: dark;
+    }
+
+    /* Element-specific dark overrides (OS preference) */
+    html:not([data-theme="light"]) .navbar {
+        background: rgba(18, 18, 24, 0.96);
+        border-bottom-color: #2a2a3e;
+    }
+
+    html:not([data-theme="light"]) .nav-links {
+        background: #1c1c2a;
+        border-bottom: 1px solid #2a2a3e;
+    }
+
+    html:not([data-theme="light"]) .hero {
+        background: linear-gradient(135deg, #1c1c2a 0%, #1e1530 50%, #0c1f20 100%);
+    }
+
+    html:not([data-theme="light"]) .placeholder-map {
+        background: linear-gradient(135deg, #1e1e30, #0d2020);
+        color: #6a6a82;
+    }
+
+    html:not([data-theme="light"]) .nav-toggle span {
+        background: #e1e1f0;
+    }
+
+    html:not([data-theme="light"]) .form-group input,
+    html:not([data-theme="light"]) .form-group textarea {
+        color: var(--text-primary);
+    }
+
+    html:not([data-theme="light"]) .map-toolbar {
+        background: var(--bg-light);
+        border-bottom-color: var(--border);
+    }
+
+    html:not([data-theme="light"]) .map-loading {
+        background: var(--bg-light);
+    }
+
+    html:not([data-theme="light"]) .contact-form {
+        background: var(--bg-light);
+    }
+
+    html:not([data-theme="light"]) .hero-map-preview {
+        background: var(--bg-light);
+        border-color: rgba(187, 134, 252, 0.15);
+    }
+}
+
+/* --- Manual dark mode element overrides --- */
+html[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+html[data-theme="dark"] .navbar {
+    background: rgba(18, 18, 24, 0.96);
+    border-bottom-color: #2a2a3e;
+}
+
+html[data-theme="dark"] .nav-links {
+    background: #1c1c2a;
+    border-bottom: 1px solid #2a2a3e;
+}
+
+html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #1c1c2a 0%, #1e1530 50%, #0c1f20 100%);
+}
+
+html[data-theme="dark"] .placeholder-map {
+    background: linear-gradient(135deg, #1e1e30, #0d2020);
+    color: #6a6a82;
+}
+
+html[data-theme="dark"] .nav-toggle span {
+    background: #e1e1f0;
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group textarea {
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .map-toolbar {
+    background: var(--bg-light);
+    border-bottom-color: var(--border);
+}
+
+html[data-theme="dark"] .map-loading {
+    background: var(--bg-light);
+}
+
+html[data-theme="dark"] .contact-form {
+    background: var(--bg-light);
+}
+
+html[data-theme="dark"] .hero-map-preview {
+    background: var(--bg-light);
+    border-color: rgba(187, 134, 252, 0.15);
+}
+
+/* --- Manual light mode (overrides OS dark preference) --- */
+html[data-theme="light"] {
+    color-scheme: light;
+}
+
+/* --- Dark mode toggle button --- */
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.dark-mode-toggle:hover {
+    color: var(--primary);
+    background: var(--bg-light);
+}
+
+.dark-mode-toggle:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Default: show moon (light mode → click to go dark) */
+.dark-mode-toggle .icon-sun { display: none; }
+.dark-mode-toggle .icon-moon { display: block; }
+
+/* Dark mode active: show sun (dark mode → click to go light) */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .dark-mode-toggle .icon-sun { display: block; }
+    html:not([data-theme="light"]) .dark-mode-toggle .icon-moon { display: none; }
+}
+
+html[data-theme="dark"] .dark-mode-toggle .icon-sun { display: block; }
+html[data-theme="dark"] .dark-mode-toggle .icon-moon { display: none; }
+
+html[data-theme="light"] .dark-mode-toggle .icon-sun { display: none; }
+html[data-theme="light"] .dark-mode-toggle .icon-moon { display: block; }
