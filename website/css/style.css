@@ -475,23 +475,21 @@ body.page-map {
     transition: none !important;
 }
 
-/* Spot marker — styles here instead of inline JS so hover works cleanly.
-   Only box-shadow and background-color transition; never transform. */
+/* Spot marker base styles.
+   NO CSS transitions or :hover rules here — any CSS transition on a child
+   element inside a will-change:transform compositor layer (which MapLibre
+   applies to .maplibregl-marker) forces a re-rasterization of that layer.
+   During re-rasterization the browser momentarily reverts to the CSS default
+   transform:translate(0,0), making the marker flash to the top-left corner.
+   Hover effects are handled in JS via mouseenter/mouseleave instead. */
 .spot-marker {
     width: 32px;
     height: 32px;
-    background: var(--primary);
+    background: #6200EE;
     border: 3px solid white;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.2s ease, background-color 0.2s ease;
-    will-change: auto;
-}
-
-.spot-marker:hover {
-    background: var(--primary-dark);
-    box-shadow: 0 4px 16px rgba(98, 0, 238, 0.45);
 }
 
 .map-page {
