@@ -123,11 +123,19 @@ async function fetchSpots() {
     }
 }
 
+/* --- Shared popup instance reused across all markers --- */
+// Using a single shared popup (rather than setPopup() per marker) avoids a
+// MapLibre GL JS v4 bug where setPopup() triggers marker._update() during the
+// popup's DOM insertion, reads offsetWidth/offsetHeight as 0 mid-reflow, and
+// snaps the marker to the top-left corner of the map container.
+let activePopup = null;
+
 /* --- Render markers on the map --- */
 function renderSpotMarkers(spots) {
     // Clear existing markers
     markers.forEach(m => m.remove());
     markers = [];
+    if (activePopup) { activePopup.remove(); activePopup = null; }
 
     spots.forEach(spot => {
         if (!spot.latitude || !spot.longitude) return;
@@ -138,22 +146,44 @@ function renderSpotMarkers(spots) {
         // Create custom marker element — styles are in .spot-marker CSS class
         const el = document.createElement('div');
         el.className = 'spot-marker';
+        // Inline dimensions ensure MapLibre can read offsetWidth/offsetHeight
+        // immediately, before CSS class styles are computed after first paint.
+        el.style.width = '32px';
+        el.style.height = '32px';
         el.setAttribute('role', 'button');
         el.setAttribute('aria-label', `Spot: ${spot.name || 'Unnamed'}`);
         el.setAttribute('tabindex', '0');
 
-        // Create popup content
-        const popupHTML = buildPopupHTML(spot);
-        const popup = new maplibregl.Popup({
-            offset: 20,
-            maxWidth: '300px',
-            closeButton: true,
-        }).setHTML(popupHTML);
-
         const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
             .setLngLat([spot.longitude, spot.latitude])
-            .setPopup(popup)
             .addTo(map);
+
+        // Open popup manually on click — do NOT use .setPopup() which internally
+        // calls marker._update() and causes the marker to jump to (0,0).
+        const openPopup = () => {
+            if (activePopup) activePopup.remove();
+            activePopup = new maplibregl.Popup({
+                offset: [0, -20],
+                maxWidth: '300px',
+                closeButton: true,
+                anchor: 'bottom',
+            })
+                .setLngLat([spot.longitude, spot.latitude])
+                .setHTML(buildPopupHTML(spot))
+                .addTo(map);
+        };
+
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openPopup();
+        });
+
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openPopup();
+            }
+        });
 
         markers.push(marker);
     });
