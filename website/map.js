@@ -49,12 +49,33 @@ function initMap() {
     );
 
     map.on('load', () => {
+        clearTimeout(loadTimeout);
         fetchSpots();
     });
 
     map.on('error', (e) => {
         console.error('Map error:', e);
+        // If the style fails to load (e.g. invalid/domain-restricted MapTiler key),
+        // MapLibre fires 'error' but NOT 'load', so fetchSpots() is never called
+        // and the loading overlay stays stuck forever. Handle it explicitly here.
+        if (e.error && (e.error.status === 401 || e.error.status === 403)) {
+            showMapError(
+                'Map tiles unavailable',
+                'The map API key is not authorized for this domain. Please check the MapTiler key allowed origins in your dashboard.'
+            );
+        }
     });
+
+    // Safety net: if the map style never loads within 10 seconds, show an error
+    // instead of leaving the user staring at a blank screen with a spinner.
+    const loadTimeout = setTimeout(() => {
+        if (!map.isStyleLoaded()) {
+            showMapError(
+                'Map failed to load',
+                'The map timed out loading. Please check your MapTiler API key configuration and try refreshing.'
+            );
+        }
+    }, 10000);
 }
 
 /* --- Fetch spots from Supabase --- */
