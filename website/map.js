@@ -135,18 +135,9 @@ function renderSpotMarkers(spots) {
         // Validate coordinates are in valid range
         if (Math.abs(spot.latitude) > 90 || Math.abs(spot.longitude) > 180) return;
 
-        // Create custom marker element
+        // Create custom marker element — styles are in .spot-marker CSS class
         const el = document.createElement('div');
         el.className = 'spot-marker';
-        el.style.cssText = `
-            width: 32px;
-            height: 32px;
-            background: #6200EE;
-            border: 3px solid white;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        `;
         el.setAttribute('role', 'button');
         el.setAttribute('aria-label', `Spot: ${spot.name || 'Unnamed'}`);
         el.setAttribute('tabindex', '0');
@@ -159,7 +150,7 @@ function renderSpotMarkers(spots) {
             closeButton: true,
         }).setHTML(popupHTML);
 
-        const marker = new maplibregl.Marker({ element: el })
+        const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
             .setLngLat([spot.longitude, spot.latitude])
             .setPopup(popup)
             .addTo(map);
