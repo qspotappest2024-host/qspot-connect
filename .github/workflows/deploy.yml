@@ -27,6 +27,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false   # Don't cancel in-flight deploys
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     environment:
@@ -45,7 +48,7 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Inject MapTiler API key
         env:
-          MAPTILER_KEY: ${{ secrets.MAPTILERWEB_API_KEY }}
+          MAPTILER_KEY: ${{ secrets.MAPTILER_API_KEY }}
         run: |
           if [ -z "$MAPTILER_KEY" ]; then
             echo "::warning::MAPTILERWEB_API_KEY secret is not set. Map will not load."
