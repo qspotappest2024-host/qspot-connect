@@ -47,14 +47,15 @@ jobs:
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_API_KEY }}
         run: |
-          if [ -z "$MAPTILER_KEY" ]; then
+          # Strip any accidental whitespace/newlines from the secret value
+          CLEAN_KEY=$(printf '%s' "$MAPTILER_KEY" | tr -d '[:space:]')
+          if [ -z "$CLEAN_KEY" ]; then
             echo "::warning::MAPTILER_API_KEY secret is not set. Map tiles will not load."
           else
             echo "::notice::MAPTILER_API_KEY found, injecting into config.js"
           fi
-          sed -i "s/YOUR_MAPTILER_API_KEY_HERE/${MAPTILER_KEY}/g" website/js/config.js
-          echo "--- Verifying injection (key masked) ---"
-          grep "MAPTILER_API_KEY" website/js/config.js | sed "s/\(.\{8\}\).*/\1.../" || true
+          # Use | as delimiter to avoid conflicts if key ever contains /
+          sed -i "s|YOUR_MAPTILER_API_KEY_HERE|${CLEAN_KEY}|g" website/js/config.js
 
       # -----------------------------------------------------------------------
       # Build the _site directory:
