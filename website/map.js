@@ -185,6 +185,21 @@ function renderSpotMarkers(spots) {
             }
         });
 
+        // Hover effect via JS instead of CSS :hover transition.
+        // CSS transitions on a child element inside MapLibre's
+        // will-change:transform compositor layer force a re-rasterization
+        // that briefly reverts the wrapper's transform to translate(0,0),
+        // making the marker flash to the top-left corner of the map.
+        // Synchronous style changes in mouseenter/mouseleave avoid this.
+        el.addEventListener('mouseenter', () => {
+            el.style.background = '#3700B3';
+            el.style.boxShadow = '0 4px 16px rgba(98, 0, 238, 0.45)';
+        });
+        el.addEventListener('mouseleave', () => {
+            el.style.background = '#6200EE';
+            el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+        });
+
         markers.push(marker);
     });
 }
