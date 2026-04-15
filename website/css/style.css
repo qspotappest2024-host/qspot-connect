@@ -467,6 +467,33 @@ body.page-map {
     overflow: hidden;
 }
 
+/* Prevent any page CSS from interfering with MapLibre's transform-based
+   marker positioning. MapLibre sets transform via JS on every render frame;
+   any CSS transition on that property causes the marker to animate away
+   from its coordinate to position (0,0) — the "jumps to corner" bug. */
+.maplibregl-marker {
+    transition: none !important;
+}
+
+/* Spot marker — styles here instead of inline JS so hover works cleanly.
+   Only box-shadow and background-color transition; never transform. */
+.spot-marker {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    border: 3px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+    will-change: auto;
+}
+
+.spot-marker:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 16px rgba(98, 0, 238, 0.45);
+}
+
 .map-page {
     padding-top: 64px;
     height: 100vh;
