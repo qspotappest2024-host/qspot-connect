@@ -27,9 +27,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false   # Don't cancel in-flight deploys
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   deploy:
     environment:
@@ -51,9 +48,13 @@ jobs:
           MAPTILER_KEY: ${{ secrets.MAPTILER_API_KEY }}
         run: |
           if [ -z "$MAPTILER_KEY" ]; then
-            echo "::warning::MAPTILERWEB_API_KEY secret is not set. Map will not load."
+            echo "::warning::MAPTILER_API_KEY secret is not set. Map tiles will not load."
+          else
+            echo "::notice::MAPTILER_API_KEY found, injecting into config.js"
           fi
           sed -i "s/YOUR_MAPTILER_API_KEY_HERE/${MAPTILER_KEY}/g" website/js/config.js
+          echo "--- Verifying injection (key masked) ---"
+          grep "MAPTILER_API_KEY" website/js/config.js | sed "s/\(.\{8\}\).*/\1.../" || true
 
       # -----------------------------------------------------------------------
       # Build the _site directory:
