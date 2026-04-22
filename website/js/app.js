@@ -3,11 +3,23 @@
  * Navigation, mobile menu, scroll effects, utilities
  */
 
+// Apply stored/OS dark mode preference ASAP (before DOMContentLoaded) to avoid flash
+(function () {
+    const stored = localStorage.getItem('qspot-theme');
+    if (stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else if (stored === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+    // If nothing stored, CSS @media prefers-color-scheme handles it automatically
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initMobileMenu();
     setActiveNavLink();
     wireAppStoreLinks();
+    initDarkModeToggle();
 });
 
 /* --- Navbar scroll effect --- */
@@ -94,6 +106,36 @@ function wireAppStoreLinks() {
     if (playStoreLink && QSPOT_CONFIG.PLAY_STORE_URL) {
         playStoreLink.href = QSPOT_CONFIG.PLAY_STORE_URL;
     }
+}
+
+/* --- Dark mode toggle --- */
+function initDarkModeToggle() {
+    const btn = document.getElementById('dark-mode-toggle');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        // Determine effective current theme (manual override or OS preference)
+        const osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = current === 'dark' || (current !== 'light' && osDark);
+
+        if (isDark) {
+            html.setAttribute('data-theme', 'light');
+            localStorage.setItem('qspot-theme', 'light');
+            btn.setAttribute('aria-label', 'Switch to dark mode');
+        } else {
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('qspot-theme', 'dark');
+            btn.setAttribute('aria-label', 'Switch to light mode');
+        }
+    });
+
+    // Update aria-label on load based on current state
+    const osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const stored = localStorage.getItem('qspot-theme');
+    const isDark = stored === 'dark' || (stored !== 'light' && osDark);
+    btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
 }
 
 /* --- Utility: Format currency --- */
