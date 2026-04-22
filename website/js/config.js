@@ -16,6 +16,14 @@ const QSPOT_CONFIG = {
     // TODO: Replace with your MapTiler API key
     MAPTILER_API_KEY: 'YOUR_MAPTILER_API_KEY_HERE',
 
+    // ── LOCAL TESTING WITHOUT A MAPTILER KEY ──────────────────────────────
+    // Set USE_FREE_TILES to true to use OpenFreeMap vector tiles instead.
+    // OpenFreeMap is free with no API key required and uses the same
+    // MapLibre GL JS engine, so your markers/popups work identically.
+    // Switch back to false (and add your real MapTiler key above) for
+    // production — OpenFreeMap has no SLA and shouldn't be used for live traffic.
+    USE_FREE_TILES: true,   // ← set false once you have a MapTiler key
+
     // Map defaults
     MAP_DEFAULT_CENTER: [-98.5795, 39.8283], // Center of US
     MAP_DEFAULT_ZOOM: 4,
