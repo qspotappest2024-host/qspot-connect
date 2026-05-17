@@ -26,8 +26,9 @@
     <meta name="twitter:description" content="A peer-to-peer marketplace to discover, list, and book local spots and services.">
     <meta name="twitter:site" content="@qspotapp">
 
-    <!-- Favicon (inline SVG data URI — replace with real favicon later) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236200EE'/><text x='50' y='68' font-size='55' font-weight='bold' text-anchor='middle' fill='white'>Q</text></svg>">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="1024x1024" href="assets/images/app-icon-1024.png">
+    <link rel="apple-touch-icon" href="assets/images/app-icon-1024.png">
 
     <!-- Structured Data: SoftwareApplication + Organization -->
     <script type="application/ld+json">
@@ -77,7 +78,7 @@
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
-                <div class="logo-icon" aria-hidden="true">Q</div>
+                <img src="assets/images/qspot_logo.png" alt="QSpot" class="logo-img" width="36" height="36">
                 QSpot
             </a>
             <ul class="nav-links">
@@ -203,14 +204,20 @@
             <div class="container">
                 <h2>Ready to Discover What's Around You?</h2>
                 <p>Join the QSpot community and start exploring local spots today.</p>
-                <div class="hero-buttons" style="justify-content:center;">
-                    <a href="#" class="btn btn-teal" id="app-store-link">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                        App Store
+                <div class="hero-buttons" style="justify-content:center;flex-wrap:wrap;">
+                    <a href="#" class="btn-appbadge" id="app-store-link">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                        <span class="badge-text">
+                            <span class="badge-label">Download on the</span>
+                            <span class="badge-store">App Store</span>
+                        </span>
                     </a>
-                    <a href="#" class="btn btn-teal" id="play-store-link">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm.91-.91L19.59 12 17.72 10.79l-2.14 2.14 2.14 2.28zM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
-                        Google Play
+                    <a href="#" class="btn-appbadge" id="play-store-link">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm.91-.91L19.59 12 17.72 10.79l-2.14 2.14 2.14 2.28zM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+                        <span class="badge-text">
+                            <span class="badge-label">Get it on</span>
+                            <span class="badge-store">Google Play</span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -223,7 +230,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="nav-logo">
-                        <div class="logo-icon" aria-hidden="true">Q</div>
+                        <img src="assets/images/qspot_logo.png" alt="QSpot" class="logo-img" width="40" height="40">
                         QSpot
                     </div>
                     <p>Discover and share local spots and services in your community.</p>
@@ -257,7 +264,49 @@
         </div>
     </footer>
 
+    <!-- Mobile sticky download bar (shown only on small screens via CSS) -->
+    <div class="mobile-download-bar" id="mobile-download-bar" role="complementary" aria-label="Download QSpot">
+        <div class="mobile-download-bar-text">
+            QSpot
+            <span>Free on iOS &amp; Android</span>
+        </div>
+        <div class="mobile-download-bar-btns">
+            <a href="#" id="mobile-app-store-link">App Store</a>
+            <a href="#" id="mobile-play-store-link">Google Play</a>
+        </div>
+        <button class="mobile-download-bar-close" id="mobile-bar-close" aria-label="Dismiss download banner">&times;</button>
+    </div>
+
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        // Mobile download bar: dismiss + re-show on scroll, persist dismiss in sessionStorage
+        (function () {
+            var bar = document.getElementById('mobile-download-bar');
+            var closeBtn = document.getElementById('mobile-bar-close');
+            if (!bar || !closeBtn) return;
+
+            var dismissed = sessionStorage.getItem('qspot-bar-dismissed');
+            if (dismissed) {
+                bar.classList.add('hidden');
+            } else {
+                document.body.classList.add('has-download-bar');
+            }
+
+            closeBtn.addEventListener('click', function () {
+                bar.classList.add('hidden');
+                document.body.classList.remove('has-download-bar');
+                sessionStorage.setItem('qspot-bar-dismissed', '1');
+            });
+
+            // Wire up store links from config
+            if (typeof QSPOT_CONFIG !== 'undefined') {
+                var mobileAppStore = document.getElementById('mobile-app-store-link');
+                var mobilePlayStore = document.getElementById('mobile-play-store-link');
+                if (mobileAppStore && QSPOT_CONFIG.APP_STORE_URL) mobileAppStore.href = QSPOT_CONFIG.APP_STORE_URL;
+                if (mobilePlayStore && QSPOT_CONFIG.PLAY_STORE_URL) mobilePlayStore.href = QSPOT_CONFIG.PLAY_STORE_URL;
+            }
+        })();
+    </script>
 </body>
 </html>
