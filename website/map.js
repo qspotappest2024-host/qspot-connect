@@ -595,7 +595,11 @@ async function fetchSpots() {
     if (activePopup) { activePopup.remove(); activePopup = null; }
 
     try {
-        const url = `${QSPOT_CONFIG.SUPABASE_URL}/rest/v1/spots?status=eq.ACTIVE&available_spots=gt.0&select=id,name,description,category,price,currency,latitude,longitude,image_url,images,rating,review_count`;
+        // Query the public_live_spots view — not the spots table directly.
+        // Pentest fix H-17 revoked anon access to spots; the view is the safe
+        // anon-readable endpoint (runs as postgres superuser, bypasses RLS,
+        // returns only ACTIVE rows with available_spots > 0 per its WHERE clause).
+        const url = `${QSPOT_CONFIG.SUPABASE_URL}/rest/v1/public_live_spots?select=id,name,description,category,price,currency,latitude,longitude,image_url,images,rating,review_count`;
 
         const response = await fetch(url, {
             headers: {
