@@ -25,7 +25,7 @@ const QSPOT_CONFIG = {
     USE_FREE_TILES: true,   // ← set false once you have a MapTiler key
 
     // Map defaults
-    MAP_DEFAULT_CENTER: [-98.5795, 39.8283], // Center of US
+    MAP_DEFAULT_CENTER: [-96.34, 56.13], // Centre of Canada
     MAP_DEFAULT_ZOOM: 4,
     MAP_STYLE: 'streets-v2', // MapTiler style name
 
