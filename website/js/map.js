@@ -106,8 +106,14 @@ function initMap() {
 
     map.on('load', () => {
         clearTimeout(loadTimeout);
-        // Register all marker and cluster icon bitmaps before adding any layers
-        addIconImages();
+        // Register all marker and cluster icon bitmaps before adding any layers.
+        // Wrapped in try/catch — Safari can swallow errors thrown in MapLibre event
+        // callbacks, which would silently prevent fetchSpots() from running.
+        try {
+            addIconImages();
+        } catch (e) {
+            console.warn('addIconImages failed (non-fatal, continuing):', e);
+        }
         fetchSpots();
     });
 
