@@ -652,6 +652,15 @@ function parseImages(images) {
     return [];
 }
 
+/* --- Format a snake_case category key into Title Case ("ski_resort" → "Ski Resort") --- */
+function formatCategory(category) {
+    if (!category) return 'Spot';
+    return category
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 /* --- Build popup HTML for a spot --- */
 function buildPopupHTML(spot) {
     const parsedImages = parseImages(spot.images);
@@ -668,7 +677,7 @@ function buildPopupHTML(spot) {
 
     html += `
         <h3>${escapeHTML(spot.name)}</h3>
-        <span class="spot-popup-category">${escapeHTML(spot.category || 'Spot')}</span>
+        <span class="spot-popup-category">${escapeHTML(formatCategory(spot.category))}</span>
         <div class="spot-popup-price">${escapeHTML(price)}</div>
         <div class="spot-popup-rating">${renderStars(spot.rating || 0)} ${escapeHTML(rating)} (${reviews} review${reviews !== 1 ? 's' : ''})</div>
         <span class="spot-popup-cta">View in App</span>
