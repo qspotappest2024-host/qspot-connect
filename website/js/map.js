@@ -459,12 +459,12 @@ function renderSpotsOnMap(spots) {
         source: MARKERS_SOURCE_ID,
         filter: ['has', 'point_count'],
         layout: {
-            'text-field':              '{point_count_abbreviated}',
-            'text-font':               ['Open Sans Bold', 'Arial Unicode MS Bold'],
-            'text-size':               15,
-            'text-offset':             [0, -0.6],   // shift upward (matches Kotlin textOffset Y = -0.6f)
-            'text-allow-overlap':      true,
-            'text-ignore-placement':   true,
+            'text-field':            '{point_count_abbreviated}',
+            // No text-font — use the map style's default (avoids OpenFreeMap font 404s)
+            'text-size':             15,
+            'text-offset':           [0, 0],
+            'text-allow-overlap':    true,
+            'text-ignore-placement': true,
         },
         paint: {
             'text-color': '#FFFFFF',
@@ -545,7 +545,7 @@ function renderSpotsOnMap(spots) {
 
         if (activePopup) { activePopup.remove(); activePopup = null; }
         activePopup = new maplibregl.Popup({
-            offset:      [0, -10],
+            offset:      [0, -14],  // sit just above the 12px-radius circle marker
             maxWidth:    '300px',
             closeButton: true,
             anchor:      'bottom',
