@@ -202,7 +202,9 @@
             return;
         }
 
-        const url = `${QSPOT_CONFIG.SUPABASE_URL}/rest/v1/spots?status=eq.ACTIVE&available_spots=gt.0&select=id,name,latitude,longitude,category&limit=5`;
+        // Use the public_live_spots view — anon access to spots was revoked by
+        // pentest fix H-17.  The view is the correct anon-readable endpoint.
+        const url = `${QSPOT_CONFIG.SUPABASE_URL}/rest/v1/public_live_spots?select=id,name,latitude,longitude,category&limit=5`;
         sections.supabase.html = dim(`Fetching ${ts()}…`);
         renderAll();
 
