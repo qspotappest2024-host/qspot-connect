@@ -34,5 +34,5 @@ const QSPOT_CONFIG = {
     PLAY_STORE_URL: '#',
 
     // Contact
-    CONTACT_EMAIL: 'support@qspot.app',
+    CONTACT_EMAIL: 'admin@qspotmarketplace.com',
 };
