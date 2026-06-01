@@ -519,6 +519,9 @@ function renderSpotsOnMap(spots) {
             'text-size':             11,
             'text-allow-overlap':    true,
             'text-ignore-placement': true,
+            // Allow icon to render even if text font fails to load (e.g. OpenFreeMap 404s)
+            'text-optional':         true,
+            'icon-optional':         false,
         },
         paint: {
             'text-color':       '#FFFFFF',
