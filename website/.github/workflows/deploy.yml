@@ -45,12 +45,17 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Inject MapTiler API key
         env:
-          MAPTILER_KEY: ${{ secrets.MAPTILERWEB_API_KEY }}
+          MAPTILER_KEY: ${{ secrets.MAPTILER_API_KEY }}
         run: |
-          if [ -z "$MAPTILER_KEY" ]; then
-            echo "::warning::MAPTILERWEB_API_KEY secret is not set. Map will not load."
+          # Strip any accidental whitespace/newlines from the secret value
+          CLEAN_KEY=$(printf '%s' "$MAPTILER_KEY" | tr -d '[:space:]')
+          if [ -z "$CLEAN_KEY" ]; then
+            echo "::warning::MAPTILER_API_KEY secret is not set. Map tiles will not load."
+          else
+            echo "::notice::MAPTILER_API_KEY found, injecting into config.js"
           fi
-          sed -i "s/YOUR_MAPTILER_API_KEY_HERE/${MAPTILER_KEY}/g" website/js/config.js
+          # Use | as delimiter to avoid conflicts if key ever contains /
+          sed -i "s|YOUR_MAPTILER_API_KEY_HERE|${CLEAN_KEY}|g" website/js/config.js
 
       # -----------------------------------------------------------------------
       # Build the _site directory:
@@ -88,10 +93,10 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
