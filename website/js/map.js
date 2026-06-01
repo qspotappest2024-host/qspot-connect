@@ -293,6 +293,17 @@ function createMiniIconCanvas(fillColor) {
  * All addImage() calls are synchronous — images are available immediately for layers
  * added in the same event-loop turn (fetchSpots / renderSpotsOnMap).
  */
+/**
+ * Extract pixel data from a canvas as the {width, height, data} object format
+ * that MapLibre GL 4.x requires. Passing a raw HTMLCanvasElement no longer works
+ * in 4.x because detached canvases report clientWidth/clientHeight = 0.
+ */
+function canvasToImageObject(canvas) {
+    const ctx = canvas.getContext('2d');
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    return { width: canvas.width, height: canvas.height, data: imageData.data };
+}
+
 function addIconImages() {
     // ── Teardrop pins — one per category + a default ─────────────────────────
     const markerEntries = [
@@ -300,12 +311,12 @@ function addIconImages() {
         ['marker-default', DEFAULT_MARKER_COLOR],
     ];
     markerEntries.forEach(([imageId, color]) => {
-        map.addImage(imageId, createTeardropCanvas(color), { pixelRatio: 2 });
+        map.addImage(imageId, canvasToImageObject(createTeardropCanvas(color)), { pixelRatio: 2 });
     });
 
     // ── Cluster category mini-icons — one per cluster category slot ───────────
     CLUSTER_CAT_CONFIGS.forEach(({ imageId, color }) => {
-        map.addImage(imageId, createMiniIconCanvas(color), { pixelRatio: 2 });
+        map.addImage(imageId, canvasToImageObject(createMiniIconCanvas(color)), { pixelRatio: 2 });
     });
 }
 
