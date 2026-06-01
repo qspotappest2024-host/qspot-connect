@@ -106,14 +106,6 @@ function initMap() {
 
     map.on('load', () => {
         clearTimeout(loadTimeout);
-        // Register all marker and cluster icon bitmaps before adding any layers.
-        // Wrapped in try/catch — Safari can swallow errors thrown in MapLibre event
-        // callbacks, which would silently prevent fetchSpots() from running.
-        try {
-            addIconImages();
-        } catch (e) {
-            console.warn('addIconImages failed (non-fatal, continuing):', e);
-        }
         fetchSpots();
     });
 
@@ -485,59 +477,33 @@ function renderSpotsOnMap(spots) {
     // accumulator property (n_ski / n_shopping / …) is > 0. Fixed horizontal
     // slot positions (−18 … +18 px) keep each category in the same position
     // regardless of which others are present — identical to Kotlin's layout.
-    // ══════════════════════════════════════════════════════════════════════════
-    CLUSTER_CAT_CONFIGS.forEach(({ layerId, imageId, nProp, xOffset }) => {
-        map.addLayer({
-            id:     layerId,
-            type:   'symbol',
-            source: MARKERS_SOURCE_ID,
-            filter: ['all',
-                ['has', 'point_count'],
-                ['>', ['get', nProp], 0],
-            ],
-            layout: {
-                'icon-image':            imageId,
-                'icon-size':             1.0,
-                'icon-offset':           [xOffset, 10],  // fixed slot; y=+10 → lower half
-                'icon-allow-overlap':    true,
-                'icon-ignore-placement': true,
-            },
-        });
-    });
+    // Cluster category mini-icon layers skipped — they require canvas-drawn images
+    // which fail in Safari with MapLibre GL 4.x (canvas width reads as 0 when
+    // the element is detached from the DOM). Cluster bubbles already show the count.
 
     // ══════════════════════════════════════════════════════════════════════════
-    // Layer 8 — Individual (unclustered) spot teardrop pins + name labels
-    // Filtered to features WITHOUT "point_count" (non-cluster points only).
-    // Only visible at zoom > clusterMaxZoom (14+), at which point every spot
-    // renders as a coloured teardrop pin with its name label beneath the tip.
-    // Matches Kotlin's individualMarkerLayer configuration.
+    // Layer — Individual (unclustered) spot markers
+    // Circle layer: no image registration required, works in all browsers.
+    // Category colour is applied via a match expression on the 'category' property.
     // ══════════════════════════════════════════════════════════════════════════
     map.addLayer({
         id:     MARKERS_LAYER_ID,
-        type:   'symbol',
+        type:   'circle',
         source: MARKERS_SOURCE_ID,
         filter: ['!', ['has', 'point_count']],
-        layout: {
-            'icon-image':            ['get', 'iconImage'],
-            'icon-size':             1.0,
-            'icon-anchor':           'bottom',  // pin tip at the geographic coordinate
-            'icon-allow-overlap':    true,
-            'icon-ignore-placement': true,
-            // Spot name label beneath the pin (matches Kotlin textAnchor=TOP / textOffset=[0, 0.3])
-            'text-field':            ['get', 'label'],
-            'text-anchor':           'top',
-            'text-offset':           [0, 0.3],
-            'text-size':             11,
-            'text-allow-overlap':    true,
-            'text-ignore-placement': true,
-            // Allow icon to render even if text font fails to load (e.g. OpenFreeMap 404s)
-            'text-optional':         true,
-            'icon-optional':         false,
-        },
         paint: {
-            'text-color':       '#FFFFFF',
-            'text-halo-color':  'rgba(0,0,0,0.65)',
-            'text-halo-width':  1.5,
+            'circle-color': ['match', ['get', 'category'],
+                'ski_resort',     '#1976D2',
+                'shopping',       '#E65100',
+                'concert',        '#6A1B9A',
+                'museum_gallery', '#00695C',
+                'amusement_park', '#AD1457',
+                '#9C27B0',  // default brand purple
+            ],
+            'circle-radius':       12,
+            'circle-stroke-width': 2.5,
+            'circle-stroke-color': '#FFFFFF',
+            'circle-opacity':      0.92,
         },
     });
 
