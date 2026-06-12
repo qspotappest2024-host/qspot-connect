@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QSpot — Manage Membership</title>
+  <link rel="stylesheet" href="qspot.css">
+</head>
+<body>
+  <header>
+    <h1>Manage <span class="gold">Membership</span></h1>
+  </header>
+
+  <div id="notice" class="notice hidden"></div>
+  <div id="loading" class="spinner">Loading…</div>
+
+  <div id="login-container" class="hidden" style="width:100%;max-width:420px;"></div>
+
+  <!-- No subscription -->
+  <div id="no-sub" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>No active membership</h2>
+      <p>You don't have a QSpot Premium membership yet.</p>
+    </div>
+    <a class="primary" href="premium.html">See plans</a>
+    <button class="signout" onclick="signOut()">Sign out</button>
+  </div>
+
+  <!-- Active subscription management -->
+  <div id="manage" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>Your membership</h2>
+      <div class="row"><span class="label">Status</span><span id="m-status"></span></div>
+      <div class="row"><span class="label">Plan</span><span id="m-plan"></span></div>
+      <div class="row"><span class="label">Renews</span><span id="m-renews"></span></div>
+      <div id="m-downgrade-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:var(--gold-bright);"></div>
+    </div>
+
+    <div class="card">
+      <h2>Change plan</h2>
+      <p id="switch-desc"></p>
+      <button class="secondary" id="switch-btn"></button>
+      <button class="secondary hidden" id="keep-yearly-btn">Keep Yearly Plan</button>
+    </div>
+
+    <div class="card">
+      <h2>Payment method</h2>
+      <p>Update the card used for your membership.</p>
+      <div id="card-form" class="hidden">
+        <div id="card-element"></div>
+        <button class="secondary" id="save-card-btn">Save card</button>
+      </div>
+      <button class="secondary" id="update-card-btn">Update payment method</button>
+    </div>
+
+    <div class="card">
+      <h2>Cancel</h2>
+      <p>Your membership will not renew. Benefits remain active until the end of the paid period.</p>
+      <button class="secondary danger" id="cancel-btn">Cancel membership</button>
+    </div>
+
+    <button class="signout" onclick="signOut()">Sign out</button>
+  </div>
+
+  <footer>QSpot Marketplace · <a href="premium.html">Plans</a></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="config.js"></script>
+  <script src="qspot.js"></script>
+  <script>
+    const noticeEl  = document.getElementById("notice");
+    const loadingEl = document.getElementById("loading");
+    let row = null;
+    let stripeJs = null;
+    let cardElement = null;
+
+    function renderManage() {
+      const statusEl = document.getElementById("m-status");
+      if (row.subscription_status === "trialing") {
+        statusEl.textContent = "Free trial";
+        statusEl.className = "status-trialing";
+      } else if (row.subscription_status === "past_due") {
+        statusEl.textContent = "Payment issue";
+        statusEl.className = "status-other";
+        setNotice(noticeEl, "error",
+          "Your last payment failed. Please update your payment method below to keep your membership.");
+      } else {
+        statusEl.textContent = "Active";
+        statusEl.className = "status-active";
+      }
+
+      const yearly = row.subscription_interval === "year";
+      document.getElementById("m-plan").textContent   = yearly ? "Yearly Plan ($90 CAD/yr)" : "Monthly Plan ($10 CAD/mo)";
+      document.getElementById("m-renews").textContent = formatDate(row.premium_until);
+
+      const downgradeNote = document.getElementById("m-downgrade-note");
+      const keepYearlyBtn = document.getElementById("keep-yearly-btn");
+      const switchBtn     = document.getElementById("switch-btn");
+      const switchDesc    = document.getElementById("switch-desc");
+
+      if (yearly && row.scheduled_subscription_interval === "month") {
+        downgradeNote.textContent = `Switches to Monthly on ${formatDate(row.premium_until)}.`;
+        show(downgradeNote);
+        show(keepYearlyBtn);
+        hide(switchBtn);
+        switchDesc.textContent = "A switch to the Monthly plan is already scheduled.";
+      } else if (yearly) {
+        switchDesc.textContent = "Switch to Monthly at the end of your current year — no mid-period charge or refund.";
+        switchBtn.textContent = "Switch to Monthly (at period end)";
+        switchBtn.dataset.plan = "monthly";
+      } else {
+        switchDesc.textContent = "Upgrade to Yearly and save 25%. The difference is prorated immediately.";
+        switchBtn.textContent = "Upgrade to Yearly — $90/yr";
+        switchBtn.dataset.plan = "yearly";
+      }
+    }
+
+    async function refresh() {
+      row = await loadSubscriptionRow();
+      hide(loadingEl);
+      if (!row || !isPremiumStatus(row.subscription_status)) {
+        hide(document.getElementById("manage"));
+        show(document.getElementById("no-sub"));
+        return;
+      }
+      hide(document.getElementById("no-sub"));
+      renderManage();
+      show(document.getElementById("manage"));
+    }
+
+    document.getElementById("switch-btn").onclick = async (e) => {
+      const plan = e.target.dataset.plan;
+      const msg = plan === "yearly"
+        ? "Upgrade to the Yearly plan now? The prorated difference is charged to your saved card."
+        : "Switch to Monthly at the end of your current yearly period?";
+      if (!confirm(msg)) return;
+      e.target.disabled = true;
+      const { ok, data } = await callFn("switch-subscription-plan", { planType: plan });
+      e.target.disabled = false;
+      if (ok) {
+        setNotice(noticeEl, "success",
+          data.scheduled
+            ? `Done — your plan switches to Monthly on ${formatDate(data.effectiveDate)}.`
+            : "Done — your plan has been updated.");
+        await refresh();
+      } else {
+        setNotice(noticeEl, "error", data.error || "Could not change plan. Please try again.");
+      }
+    };
+
+    document.getElementById("keep-yearly-btn").onclick = async (e) => {
+      if (!confirm("Cancel the scheduled switch and stay on the Yearly plan?")) return;
+      e.target.disabled = true;
+      const { ok, data } = await callFn("cancel-scheduled-downgrade", {});
+      e.target.disabled = false;
+      if (ok) {
+        setNotice(noticeEl, "success", "You're staying on the Yearly plan.");
+        await refresh();
+      } else {
+        setNotice(noticeEl, "error", data.error || "Could not update. Please try again.");
+      }
+    };
+
+    document.getElementById("update-card-btn").onclick = async (e) => {
+      e.target.disabled = true;
+      const { ok, data } = await callFn("create-setup-intent", {});
+      if (!ok || !data.clientSecret) {
+        setNotice(noticeEl, "error", data.error || "Could not start card update.");
+        e.target.disabled = false;
+        return;
+      }
+      // Mount Stripe Elements card input
+      stripeJs = stripeJs || Stripe(window.QSPOT_CONFIG.STRIPE_PUBLISHABLE_KEY);
+      const elements = stripeJs.elements();
+      cardElement = elements.create("card");
+      cardElement.mount("#card-element");
+      show(document.getElementById("card-form"));
+      hide(e.target);
+
+      document.getElementById("save-card-btn").onclick = async (ev) => {
+        ev.target.disabled = true;
+        const result = await stripeJs.confirmCardSetup(data.clientSecret, {
+          payment_method: { card: cardElement },
+        });
+        ev.target.disabled = false;
+        if (result.error) {
+          setNotice(noticeEl, "error", result.error.message);
+        } else {
+          setNotice(noticeEl, "success", "Payment method updated.");
+          hide(document.getElementById("card-form"));
+          show(document.getElementById("update-card-btn"));
+          document.getElementById("update-card-btn").disabled = false;
+        }
+      };
+    };
+
+    document.getElementById("cancel-btn").onclick = async (e) => {
+      if (!confirm("Cancel your membership? Benefits stay active until the end of the paid period.")) return;
+      e.target.disabled = true;
+      const { ok, data } = await callFn("cancel-subscription", {});
+      e.target.disabled = false;
+      if (ok) {
+        setNotice(noticeEl, "success", "Your membership will not renew. Benefits remain active until the period ends.");
+        await refresh();
+      } else {
+        setNotice(noticeEl, "error", data.error || "Could not cancel. Please try again.");
+      }
+    };
+
+    (async function init() {
+      const session = await getSession();
+      if (!session) {
+        hide(loadingEl);
+        const c = document.getElementById("login-container");
+        renderLoginCard(c);
+        show(c);
+        return;
+      }
+      await refresh();
+    })();
+  </script>
+</body>
+</html>
