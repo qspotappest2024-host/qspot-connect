@@ -1,14 +1,18 @@
 # QSpot Website — GitHub Pages Deployment
+# Place at: .github/workflows/deploy.yml in the qspot-connect repo
 #
 # This workflow:
 #   1. Injects the MapTiler API key from GitHub Secrets (never committed to source)
-#   2. Merges website/ files with existing Stripe + .well-known paths
-#   3. Deploys to GitHub Pages
+#   2. Injects the Supabase anon key + Stripe publishable key into web/config.js
+#   3. Merges website/ files with existing Stripe + .well-known + web/ paths
+#   4. Deploys to GitHub Pages
 #
 # SETUP REQUIRED (one-time):
 #   1. In MapTiler dashboard: restrict key to your domain (see SETUP_GUIDE.md)
-#   2. In GitHub repo: Settings → Secrets and variables → Actions → New secret
-#      Name: MAPTILER_API_KEY   Value: <your key>
+#   2. In GitHub repo: Settings → Secrets and variables → Actions → New repository secret
+#      Name: MAPTILER_API_KEY        Value: <your MapTiler key>
+#      Name: SUPABASE_ANON_KEY       Value: <same value as SUPABASE_ANON_KEY in secrets.properties>
+#      Name: STRIPE_PUBLISHABLE_KEY  Value: <pk_test_... now; pk_live_... at launch>
 #   3. In GitHub repo: Settings → Pages → Source → GitHub Actions
 
 name: Deploy QSpot Website
@@ -58,10 +62,41 @@ jobs:
           sed -i "s|YOUR_MAPTILER_API_KEY_HERE|${CLEAN_KEY}|g" website/js/config.js
 
       # -----------------------------------------------------------------------
+      # Inject the Supabase anon key + Stripe publishable key into web/config.js
+      # (QSpot Premium subscription pages). Same pattern as the MapTiler step:
+      # the repo keeps placeholders; real values exist only in the built artifact.
+      # Both values are public-by-design (anon key is the public client key
+      # protected by RLS; pk_ keys are publishable) — Secrets are used purely
+      # for consistency and so key rotation never requires a code commit.
+      # -----------------------------------------------------------------------
+      - name: Inject web subscription keys
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+        run: |
+          CLEAN_ANON=$(printf '%s' "$SUPABASE_ANON_KEY" | tr -d '[:space:]')
+          CLEAN_PK=$(printf '%s' "$STRIPE_PUBLISHABLE_KEY" | tr -d '[:space:]')
+
+          if [ -z "$CLEAN_ANON" ]; then
+            echo "::warning::SUPABASE_ANON_KEY secret is not set. Login on /web/ pages will not work."
+          else
+            echo "::notice::SUPABASE_ANON_KEY found, injecting into web/config.js"
+          fi
+          if [ -z "$CLEAN_PK" ]; then
+            echo "::warning::STRIPE_PUBLISHABLE_KEY secret is not set. Card update on /web/account.html will not work."
+          else
+            echo "::notice::STRIPE_PUBLISHABLE_KEY found, injecting into web/config.js"
+          fi
+
+          sed -i "s|PASTE_YOUR_SUPABASE_ANON_KEY_HERE|${CLEAN_ANON}|g" web/config.js
+          sed -i "s|PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE|${CLEAN_PK}|g" web/config.js
+
+      # -----------------------------------------------------------------------
       # Build the _site directory:
       #   - Website files at root (index.html, map.html, about.html, css/, js/)
       #   - .well-known/ preserved at root (Android App Links / assetlinks.json)
       #   - stripe/ preserved at root (Stripe payment redirect pages)
+      #   - web/ preserved at root (QSpot Premium subscription pages → /web/)
       #   - .nojekyll tells GitHub Pages not to process with Jekyll
       # -----------------------------------------------------------------------
       - name: Assemble site
@@ -83,11 +118,19 @@ jobs:
             echo "✓ Copied stripe/"
           fi
 
+          # Preserve QSpot Premium subscription pages (served at /web/)
+          if [ -d "web" ]; then
+            cp -r web _site/
+            echo "✓ Copied web/"
+          fi
+
           # Ensure Jekyll is disabled (important for files starting with _)
           touch _site/.nojekyll
 
           echo "--- Site contents ---"
           ls -la _site/
+          echo "--- /web contents ---"
+          ls -la _site/web/ || true
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
