@@ -3,272 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QSpot — Manage Membership</title>
+  <title>Terms of Service — QSpot</title>
   <link rel="stylesheet" href="qspot.css">
+  <style>
+    .legal { max-width: 720px; width: 100%; }
+    .legal .card { text-align: left; }
+    .legal h2 { font-size: 1.02rem; margin: 22px 0 8px; }
+    .legal p  { font-size: 0.92rem; line-height: 1.65; margin: 0 0 10px; }
+    .legal .muted { opacity: 0.7; font-size: 0.85rem; }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Manage <span class="gold">Membership</span></h1>
+    <h1>QSpot <span class="gold">Terms of Service</span></h1>
   </header>
 
-  <div id="notice" class="notice hidden"></div>
-  <div id="loading" class="spinner">Loading…</div>
-
-  <div id="login-container" class="hidden" style="width:100%;max-width:420px;"></div>
-
-  <!-- No subscription -->
-  <div id="no-sub" class="hidden" style="width:100%;max-width:420px;">
+  <!-- Content ported verbatim from the in-app Terms of Service
+       (LoginLegalDialogs.kt — TOS_SECTIONS). Keep the two in sync: any edit
+       here must be mirrored in the app, and vice-versa. -->
+  <div class="legal">
     <div class="card">
-      <h2>No active membership</h2>
-      <p>You don't have a QSpot Premium membership yet.</p>
+      <p class="muted">Last Updated: April 1, 2026</p>
+      <p>Welcome to QSpot. By creating an account or using our platform, you agree to be bound by these Terms of Service ("Terms"). Please read them carefully before proceeding.</p>
+
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using QSpot's mobile application, website, or related services (collectively, the "Service"), you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html">Privacy Policy</a>. If you do not agree to these Terms, you must not use the Service.</p>
+
+      <h2>2. Who We Are</h2>
+      <p>QSpot Inc. ("QSpot," "we," "us," or "our") operates a peer-to-peer marketplace that allows users to list, discover, reserve, and manage parking spaces and other short-term rental spaces across North America.</p>
+
+      <h2>3. Eligibility</h2>
+      <p>You must be at least 18 years of age and legally capable of entering into binding contracts to use the Service. By using QSpot, you represent and warrant that you meet these requirements. The Service is intended for use in the United States and Canada only.</p>
+
+      <h2>4. Account Registration &amp; Security</h2>
+      <p>To access the Service, you must create an account using a supported third-party authentication provider (Google or Apple). You are solely responsible for maintaining the confidentiality of your account and for all activities that occur under your account. Notify QSpot immediately of any unauthorized use. QSpot is not liable for any losses or damages arising from unauthorized access to your account.</p>
+
+      <h2>5. The QSpot Marketplace</h2>
+      <p>QSpot provides a technology platform connecting space owners ("Hosts") with individuals seeking short-term space rentals ("Renters"). QSpot is not a party to any agreements between Hosts and Renters and does not own, operate, manage, or control the spaces listed on our platform. QSpot is not responsible for the actions or omissions of any Host or Renter.</p>
+
+      <h2>6. Host Rules — Listing Your Space</h2>
+      <p>As a Host, you represent and warrant that:</p>
+      <p>(a) You have the legal right and authority to list and rent the space;<br>
+      (b) Your listing is accurate, current, and not misleading;<br>
+      (c) You will honour all confirmed reservations;<br>
+      (d) Your space complies with all applicable local, municipal, provincial/state, and federal laws, including zoning, strata, and HOA rules;<br>
+      (e) You will not discriminate against Renters on any basis prohibited by applicable law, including the Canadian Human Rights Act or applicable US federal and state civil rights laws;<br>
+      (f) You are responsible for maintaining the space in a safe and usable condition.</p>
+
+      <h2>7. Renter Rules — Booking a Space</h2>
+      <p>As a Renter, you agree to:</p>
+      <p>(a) Use the space only as described and only during the reserved booking period;<br>
+      (b) Follow any instructions provided by the Host;<br>
+      (c) Not damage the property, leave the space in the condition found, and not disturb neighbours or other users;<br>
+      (d) Vacate the space promptly at the end of your booking period;<br>
+      (e) Comply with all applicable traffic, parking, and local laws.</p>
+
+      <h2>8. Fees, Payments &amp; Taxes</h2>
+      <p>QSpot charges service fees on each transaction. All applicable fees are clearly displayed before you confirm a booking. All payments are processed through our third-party payment processor.</p>
+      <p>Hosts are solely responsible for determining, reporting, collecting, and remitting all applicable taxes on income earned through the platform, including GST/HST in Canada and applicable federal, state, or local taxes in the United States. QSpot may withhold and remit taxes as required by applicable law.</p>
+
+      <h2>9. Cancellations &amp; Refunds</h2>
+      <p>Cancellation and refund policies are established by each Host and are displayed on the applicable listing page. QSpot may, at its sole discretion, issue refunds or credits in cases of verified listing inaccuracies, Host-initiated cancellations, or documented extenuating circumstances. QSpot service fees are generally non-refundable unless QSpot determines otherwise in its sole discretion.</p>
+
+      <h2>10. Prohibited Activities</h2>
+      <p>You agree not to:</p>
+      <p>(a) Use the Service for any unlawful purpose or in violation of any applicable law;<br>
+      (b) Post false, misleading, or fraudulent listings or reviews;<br>
+      (c) Circumvent QSpot's payment system or conduct transactions outside the platform;<br>
+      (d) Harass, threaten, intimidate, or discriminate against any other user;<br>
+      (e) Interfere with, disrupt, or attempt to gain unauthorized access to the Service or its infrastructure;<br>
+      (f) Collect or harvest other users' personal information without their express consent;<br>
+      (g) Use automated scripts, bots, or other tools to access or scrape the Service;<br>
+      (h) Impersonate any person or entity or misrepresent your affiliation with any person or entity.</p>
+
+      <h2>11. User Content</h2>
+      <p>By posting content on QSpot, including photos, descriptions, and reviews ("User Content"), you grant QSpot a non-exclusive, royalty-free, perpetual, irrevocable, worldwide licence to use, display, reproduce, adapt, modify, and distribute that content in connection with the Service. You represent and warrant that you have all rights necessary to grant this licence and that your User Content does not infringe any third-party intellectual property, privacy, or other rights.</p>
+
+      <h2>12. Intellectual Property</h2>
+      <p>All QSpot trademarks, logos, trade names, service marks, and software are the exclusive property of QSpot Inc. and its licensors. Nothing in these Terms grants you the right to use any QSpot intellectual property without prior written consent. Any feedback or suggestions you provide to QSpot may be used by QSpot without restriction or compensation to you.</p>
+
+      <h2>13. Privacy</h2>
+      <p>Our <a href="privacy.html">Privacy Policy</a> describes how QSpot collects, uses, and shares your personal information and is incorporated into these Terms by reference. By using the Service, you consent to our data practices as described in the Privacy Policy. QSpot is committed to complying with applicable privacy laws, including the California Consumer Privacy Act (CCPA), the California Privacy Rights Act (CPRA), and Canada's Personal Information Protection and Electronic Documents Act (PIPEDA).</p>
+
+      <h2>14. Disclaimers</h2>
+      <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. QSPOT EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. QSPOT DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS. QSPOT MAKES NO REPRESENTATIONS ABOUT THE ACCURACY, RELIABILITY, OR QUALITY OF ANY SPACE LISTING OR USER CONTENT.</p>
+
+      <h2>15. Limitation of Liability</h2>
+      <p>TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, QSPOT'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL NOT EXCEED THE GREATER OF: (A) THE TOTAL FEES ACTUALLY PAID BY YOU TO QSPOT IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE CLAIM; OR (B) ONE HUNDRED DOLLARS (USD 100 / CAD 135).</p>
+      <p>IN NO EVENT SHALL QSPOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES, EVEN IF QSPOT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+      <h2>16. Indemnification</h2>
+      <p>You agree to indemnify, defend, and hold harmless QSpot Inc. and its officers, directors, employees, contractors, agents, and successors from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable legal fees) arising from or relating to: (a) your use of or inability to use the Service; (b) your breach of these Terms; (c) your violation of any law or the rights of any third party; or (d) any dispute between you and another user.</p>
+
+      <h2>17. Dispute Resolution &amp; Arbitration</h2>
+      <p>PLEASE READ THIS SECTION CAREFULLY — IT AFFECTS YOUR LEGAL RIGHTS.</p>
+      <p>For US Users: Any dispute, claim, or controversy arising out of or relating to these Terms or the Service shall be resolved by binding individual arbitration under the Commercial Arbitration Rules of the American Arbitration Association (AAA), unless the matter qualifies for small claims court. You may opt out of this arbitration agreement by emailing admin@qspotmarketplace.com within 30 days of creating your account.</p>
+      <p>For Canadian Users: Any dispute shall be referred to and finally resolved by arbitration under the Rules of the ADR Institute of Canada.</p>
+      <p>CLASS ACTION WAIVER: Both parties waive any right to participate in a class action lawsuit or class-wide arbitration to the fullest extent permitted by applicable law.</p>
+
+      <h2>18. Governing Law</h2>
+      <p>For US Users: These Terms are governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict-of-law provisions.</p>
+      <p>For Canadian Users: These Terms are governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable therein.</p>
+
+      <h2>19. Termination</h2>
+      <p>QSpot reserves the right, in its sole discretion, to suspend or permanently terminate your account and access to the Service at any time, with or without cause, and with or without notice. Grounds for termination include, without limitation, violation of these Terms, fraudulent activity, or conduct that QSpot determines to be harmful to other users or the Service. You may close your account at any time by contacting admin@qspotmarketplace.com.</p>
+
+      <h2>20. Changes to These Terms</h2>
+      <p>QSpot may modify these Terms at any time. We will notify you of material changes by sending an email to the address associated with your account and/or by displaying a prominent notice within the Service. Your continued use of the Service after such changes take effect constitutes your acceptance of the revised Terms. If you do not agree to the revised Terms, you must stop using the Service.</p>
+
+      <h2>21. Entire Agreement</h2>
+      <p>These Terms, together with our <a href="privacy.html">Privacy Policy</a> and any other policies incorporated by reference, constitute the entire agreement between you and QSpot regarding the Service and supersede all prior agreements and understandings.</p>
+
+      <h2>22. Contact Us</h2>
+      <p>If you have any questions about these Terms, please contact us:</p>
+      <p>QSpot Inc.<br>
+      Email: <a href="mailto:admin@qspotmarketplace.com">admin@qspotmarketplace.com</a><br>
+      Website: <a href="https://www.qspotmarketplace.com">https://www.qspotmarketplace.com</a></p>
     </div>
-    <a class="primary" href="premium.html">See plans</a>
   </div>
 
-  <!-- Active subscription management -->
-  <div id="manage" class="hidden" style="width:100%;max-width:420px;">
-    <div class="card">
-      <h2>Your membership</h2>
-      <div class="row"><span class="label">Status</span><span id="m-status"></span></div>
-      <div class="row"><span class="label">Plan</span><span id="m-plan"></span></div>
-      <div class="row"><span class="label">Renews</span><span id="m-renews"></span></div>
-      <div id="m-downgrade-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:var(--gold-bright);"></div>
-    </div>
-
-    <div class="card">
-      <h2>Change plan</h2>
-      <p id="switch-desc"></p>
-      <button class="secondary" id="switch-btn"></button>
-      <button class="secondary hidden" id="keep-yearly-btn">Keep Yearly Plan</button>
-    </div>
-
-    <div class="card">
-      <h2>Payment method</h2>
-      <p>Update the card used for your membership.</p>
-      <div id="card-form" class="hidden">
-        <div id="card-element"></div>
-        <button class="secondary" id="save-card-btn">Save card</button>
-      </div>
-      <button class="secondary" id="update-card-btn">Update payment method</button>
-    </div>
-
-    <div class="card">
-      <h2>Cancel</h2>
-      <p>Your membership will not renew. Benefits remain active until the end of the paid period.</p>
-      <button class="secondary danger" id="cancel-btn">Cancel membership</button>
-    </div>
-  </div>
-
-  <!-- Email preferences (CASL) — shown for every signed-in user, member or not.
-       This is the page the marketing email's "Email preferences" link targets. -->
-  <div id="email-prefs" class="hidden" style="width:100%;max-width:420px;">
-    <div class="card">
-      <h2>Email preferences</h2>
-      <p>Choose whether QSpot may send you membership offers and other marketing
-         emails. Service emails (receipts, booking and payout notices) are always
-         sent — they're required to operate your account.</p>
-      <label style="display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;">
-        <input type="checkbox" id="marketing-toggle" style="width:18px;height:18px;accent-color:#FFD700;">
-        <span>Send me QSpot offers and marketing emails</span>
-      </label>
-    </div>
-    <button class="signout" onclick="signOut()">Sign out</button>
-  </div>
-
-  <footer>QSpot Marketplace · <a href="premium.html">Plans</a> · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:admin@qspotmarketplace.com">Support</a></footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="config.js"></script>
-  <script src="qspot.js"></script>
-  <script>
-    const noticeEl  = document.getElementById("notice");
-    const loadingEl = document.getElementById("loading");
-    let row = null;
-    let stripeJs = null;
-    let cardElement = null;
-
-    function renderManage() {
-      const statusEl = document.getElementById("m-status");
-      if (row.subscription_status === "trialing") {
-        statusEl.textContent = "Free trial";
-        statusEl.className = "status-trialing";
-      } else if (row.subscription_status === "past_due") {
-        statusEl.textContent = "Payment issue";
-        statusEl.className = "status-other";
-        setNotice(noticeEl, "error",
-          "Your last payment failed. Please update your payment method below to keep your membership.");
-      } else {
-        statusEl.textContent = "Active";
-        statusEl.className = "status-active";
-      }
-
-      const yearly = row.subscription_interval === "year";
-      document.getElementById("m-plan").textContent   = yearly ? "Yearly Plan ($90 CAD/yr)" : "Monthly Plan ($10 CAD/mo)";
-      document.getElementById("m-renews").textContent = formatDate(row.premium_until);
-
-      const downgradeNote = document.getElementById("m-downgrade-note");
-      const keepYearlyBtn = document.getElementById("keep-yearly-btn");
-      const switchBtn     = document.getElementById("switch-btn");
-      const switchDesc    = document.getElementById("switch-desc");
-
-      if (yearly && row.scheduled_subscription_interval === "month") {
-        downgradeNote.textContent = `Switches to Monthly on ${formatDate(row.premium_until)}.`;
-        show(downgradeNote);
-        show(keepYearlyBtn);
-        hide(switchBtn);
-        switchDesc.textContent = "A switch to the Monthly plan is already scheduled.";
-      } else if (yearly) {
-        switchDesc.textContent = "Switch to Monthly at the end of your current year — no mid-period charge or refund.";
-        switchBtn.textContent = "Switch to Monthly (at period end)";
-        switchBtn.dataset.plan = "monthly";
-      } else {
-        switchDesc.textContent = "Upgrade to Yearly and save 25%. The difference is prorated immediately.";
-        switchBtn.textContent = "Upgrade to Yearly — $90/yr";
-        switchBtn.dataset.plan = "yearly";
-      }
-    }
-
-    function renderEmailPrefs() {
-      // CASL email-preferences card — shown for every signed-in user whose row
-      // loaded (member or not). The toggle is the inverse of the opt-out flag.
-      const prefsEl = document.getElementById("email-prefs");
-      const toggle  = document.getElementById("marketing-toggle");
-      toggle.checked = row.marketing_emails_opt_out !== true;
-      show(prefsEl);
-    }
-
-    async function refresh() {
-      row = await loadSubscriptionRow();
-      hide(loadingEl);
-      if (!row) {
-        // Row failed to load — show the no-sub fallback without prefs.
-        hide(document.getElementById("manage"));
-        show(document.getElementById("no-sub"));
-        return;
-      }
-      renderEmailPrefs();
-      if (!isPremiumStatus(row.subscription_status)) {
-        hide(document.getElementById("manage"));
-        show(document.getElementById("no-sub"));
-        return;
-      }
-      hide(document.getElementById("no-sub"));
-      renderManage();
-      show(document.getElementById("manage"));
-    }
-
-    document.getElementById("marketing-toggle").onchange = async (e) => {
-      const optOut = !e.target.checked;
-      e.target.disabled = true;
-      // Direct own-row update — users_update_own RLS guards the row; the
-      // marketing_emails_opt_out column is intentionally owner-writable.
-      const session = await getSession();
-      const { error } = await sb
-        .from("users")
-        .update({ marketing_emails_opt_out: optOut })
-        .eq("id", session.user.id);
-      e.target.disabled = false;
-      if (error) {
-        e.target.checked = !e.target.checked; // revert
-        setNotice(noticeEl, "error", "Could not save your email preference. Please try again.");
-      } else {
-        if (row) row.marketing_emails_opt_out = optOut;
-        setNotice(noticeEl, "success",
-          optOut ? "You won't receive marketing emails." : "Marketing emails are on.");
-      }
-    };
-
-    document.getElementById("switch-btn").onclick = async (e) => {
-      const plan = e.target.dataset.plan;
-      const msg = plan === "yearly"
-        ? "Upgrade to the Yearly plan now? The prorated difference is charged to your saved card."
-        : "Switch to Monthly at the end of your current yearly period?";
-      if (!confirm(msg)) return;
-      e.target.disabled = true;
-      const { ok, data } = await callFn("switch-subscription-plan", { planType: plan });
-      e.target.disabled = false;
-      if (ok) {
-        setNotice(noticeEl, "success",
-          data.scheduled
-            ? `Done — your plan switches to Monthly on ${formatDate(data.effectiveDate)}.`
-            : "Done — your plan has been updated.");
-        await refresh();
-      } else {
-        setNotice(noticeEl, "error", data.error || "Could not change plan. Please try again.");
-      }
-    };
-
-    document.getElementById("keep-yearly-btn").onclick = async (e) => {
-      if (!confirm("Cancel the scheduled switch and stay on the Yearly plan?")) return;
-      e.target.disabled = true;
-      const { ok, data } = await callFn("cancel-scheduled-downgrade", {});
-      e.target.disabled = false;
-      if (ok) {
-        setNotice(noticeEl, "success", "You're staying on the Yearly plan.");
-        await refresh();
-      } else {
-        setNotice(noticeEl, "error", data.error || "Could not update. Please try again.");
-      }
-    };
-
-    document.getElementById("update-card-btn").onclick = async (e) => {
-      e.target.disabled = true;
-      const { ok, data } = await callFn("create-setup-intent", {});
-      if (!ok || !data.clientSecret) {
-        setNotice(noticeEl, "error", data.error || "Could not start card update.");
-        e.target.disabled = false;
-        return;
-      }
-      // Mount Stripe Elements card input
-      stripeJs = stripeJs || Stripe(window.QSPOT_CONFIG.STRIPE_PUBLISHABLE_KEY);
-      const elements = stripeJs.elements();
-      cardElement = elements.create("card");
-      cardElement.mount("#card-element");
-      show(document.getElementById("card-form"));
-      hide(e.target);
-
-      document.getElementById("save-card-btn").onclick = async (ev) => {
-        ev.target.disabled = true;
-        const result = await stripeJs.confirmCardSetup(data.clientSecret, {
-          payment_method: { card: cardElement },
-        });
-        ev.target.disabled = false;
-        if (result.error) {
-          setNotice(noticeEl, "error", result.error.message);
-        } else {
-          setNotice(noticeEl, "success", "Payment method updated.");
-          hide(document.getElementById("card-form"));
-          show(document.getElementById("update-card-btn"));
-          document.getElementById("update-card-btn").disabled = false;
-        }
-      };
-    };
-
-    document.getElementById("cancel-btn").onclick = async (e) => {
-      if (!confirm("Cancel your membership? Benefits stay active until the end of the paid period.")) return;
-      e.target.disabled = true;
-      const { ok, data } = await callFn("cancel-subscription", {});
-      e.target.disabled = false;
-      if (ok) {
-        setNotice(noticeEl, "success", "Your membership will not renew. Benefits remain active until the period ends.");
-        await refresh();
-      } else {
-        setNotice(noticeEl, "error", data.error || "Could not cancel. Please try again.");
-      }
-    };
-
-    (async function init() {
-      const session = await getSession();
-      if (!session) {
-        hide(loadingEl);
-        const c = document.getElementById("login-container");
-        renderLoginCard(c);
-        show(c);
-        return;
-      }
-      await refresh();
-    })();
-  </script>
+  <footer>
+    QSpot Marketplace · <a href="premium.html">Premium</a> · <a href="account.html">Account</a> · <a href="privacy.html">Privacy Policy</a> · <a href="mailto:admin@qspotmarketplace.com">Support</a>
+  </footer>
 </body>
 </html>
