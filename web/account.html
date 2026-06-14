@@ -23,7 +23,6 @@
       <p>You don't have a QSpot Premium membership yet.</p>
     </div>
     <a class="primary" href="premium.html">See plans</a>
-    <button class="signout" onclick="signOut()">Sign out</button>
   </div>
 
   <!-- Active subscription management -->
@@ -58,11 +57,25 @@
       <p>Your membership will not renew. Benefits remain active until the end of the paid period.</p>
       <button class="secondary danger" id="cancel-btn">Cancel membership</button>
     </div>
+  </div>
 
+  <!-- Email preferences (CASL) — shown for every signed-in user, member or not.
+       This is the page the marketing email's "Email preferences" link targets. -->
+  <div id="email-prefs" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>Email preferences</h2>
+      <p>Choose whether QSpot may send you membership offers and other marketing
+         emails. Service emails (receipts, booking and payout notices) are always
+         sent — they're required to operate your account.</p>
+      <label style="display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;">
+        <input type="checkbox" id="marketing-toggle" style="width:18px;height:18px;accent-color:#FFD700;">
+        <span>Send me QSpot offers and marketing emails</span>
+      </label>
+    </div>
     <button class="signout" onclick="signOut()">Sign out</button>
   </div>
 
-  <footer>QSpot Marketplace · <a href="premium.html">Plans</a></footer>
+  <footer>QSpot Marketplace · <a href="premium.html">Plans</a> · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:admin@qspotmarketplace.com">Support</a></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
@@ -116,10 +129,26 @@
       }
     }
 
+    function renderEmailPrefs() {
+      // CASL email-preferences card — shown for every signed-in user whose row
+      // loaded (member or not). The toggle is the inverse of the opt-out flag.
+      const prefsEl = document.getElementById("email-prefs");
+      const toggle  = document.getElementById("marketing-toggle");
+      toggle.checked = row.marketing_emails_opt_out !== true;
+      show(prefsEl);
+    }
+
     async function refresh() {
       row = await loadSubscriptionRow();
       hide(loadingEl);
-      if (!row || !isPremiumStatus(row.subscription_status)) {
+      if (!row) {
+        // Row failed to load — show the no-sub fallback without prefs.
+        hide(document.getElementById("manage"));
+        show(document.getElementById("no-sub"));
+        return;
+      }
+      renderEmailPrefs();
+      if (!isPremiumStatus(row.subscription_status)) {
         hide(document.getElementById("manage"));
         show(document.getElementById("no-sub"));
         return;
@@ -128,6 +157,27 @@
       renderManage();
       show(document.getElementById("manage"));
     }
+
+    document.getElementById("marketing-toggle").onchange = async (e) => {
+      const optOut = !e.target.checked;
+      e.target.disabled = true;
+      // Direct own-row update — users_update_own RLS guards the row; the
+      // marketing_emails_opt_out column is intentionally owner-writable.
+      const session = await getSession();
+      const { error } = await sb
+        .from("users")
+        .update({ marketing_emails_opt_out: optOut })
+        .eq("id", session.user.id);
+      e.target.disabled = false;
+      if (error) {
+        e.target.checked = !e.target.checked; // revert
+        setNotice(noticeEl, "error", "Could not save your email preference. Please try again.");
+      } else {
+        if (row) row.marketing_emails_opt_out = optOut;
+        setNotice(noticeEl, "success",
+          optOut ? "You won't receive marketing emails." : "Marketing emails are on.");
+      }
+    };
 
     document.getElementById("switch-btn").onclick = async (e) => {
       const plan = e.target.dataset.plan;
