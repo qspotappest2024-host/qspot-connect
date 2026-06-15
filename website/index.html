@@ -6,25 +6,29 @@
     <title>QSpot — Discover Local Spots Near You</title>
     <meta name="description" content="QSpot is a peer-to-peer marketplace to discover, list, and book local spots and services. Download the app today.">
     <!-- Theme color: tells Google & browsers this site supports light + dark -->
-    <meta name="theme-color" content="#6200EE" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1c1c2a" media="(prefers-color-scheme: dark)">
     <!-- color-scheme: key signal for Google to recognize dark mode support -->
     <meta name="color-scheme" content="light dark">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://qspot.app/">
+    <link rel="canonical" href="https://www.qspotmarketplace.com/">
 
     <!-- Open Graph -->
     <meta property="og:title" content="QSpot — Discover Local Spots Near You">
     <meta property="og:description" content="A peer-to-peer marketplace to discover, list, and book local spots and services.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="QSpot">
-    <meta property="og:url" content="https://qspot.app/">
+    <meta property="og:url" content="https://www.qspotmarketplace.com/">
+    <meta property="og:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="QSpot — discover and share local spots near you">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="QSpot — Discover Local Spots Near You">
     <meta name="twitter:description" content="A peer-to-peer marketplace to discover, list, and book local spots and services.">
-    <meta name="twitter:site" content="@qspotapp">
+    <meta name="twitter:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="1024x1024" href="assets/images/app-icon-1024.png">
@@ -41,22 +45,17 @@
                 "description": "QSpot is a peer-to-peer marketplace to discover, list, and book local spots and services.",
                 "applicationCategory": "LifestyleApplication",
                 "operatingSystem": "iOS, Android",
-                "url": "https://qspot.app",
+                "url": "https://www.qspotmarketplace.com",
                 "offers": {
                     "@type": "Offer",
                     "price": "0",
                     "priceCurrency": "USD"
-                },
-                "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": "5",
-                    "ratingCount": "1"
                 }
             },
             {
                 "@type": "Organization",
                 "name": "QSpot",
-                "url": "https://qspot.app",
+                "url": "https://www.qspotmarketplace.com",
                 "contactPoint": {
                     "@type": "ContactPoint",
                     "email": "admin@qspotmarketplace.com",
@@ -84,6 +83,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="map.html">Live Map</a></li>
                 <li><a href="about.html">About</a></li>
+                <li><a href="web/premium.html">Premium</a></li>
                 <li><a href="#download" class="nav-cta">Get the App</a></li>
             </ul>
             <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Switch to dark mode" title="Toggle dark mode">
@@ -120,7 +120,7 @@
                                 <div style="text-align:center;">
                                     <div style="font-size:3rem;margin-bottom:8px;" aria-hidden="true">&#127759;</div>
                                     <p>Interactive map with live spots</p>
-                                    <a href="map.html" style="color:#6200EE;font-weight:600;margin-top:8px;display:inline-block;">View Live Map &rarr;</a>
+                                    <a href="map.html" style="color:var(--primary-light);font-weight:600;margin-top:8px;display:inline-block;">View Live Map &rarr;</a>
                                 </div>
                             </div>
                         </div>
@@ -198,6 +198,36 @@
             </div>
         </section>
 
+        <!-- Premium -->
+        <section class="section" id="premium" style="background:var(--bg-light);">
+            <div class="container">
+                <div class="section-header">
+                    <h2>QSpot <span style="color:var(--gold-text);">Premium</span></h2>
+                    <p>A membership that pays for itself — save on every transaction you make in the marketplace.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">&#128176;</div>
+                        <h3>Lower fees</h3>
+                        <p>Members pay a reduced QSpot Secure Listing Fee on every sale — the savings add up fast.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">&#127915;</div>
+                        <h3>Free monthly listing</h3>
+                        <p>One free spot listing credit every month, applied to your account automatically.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">&#11088;</div>
+                        <h3>30-day free trial</h3>
+                        <p>First-time members start free. A card is required and is only charged when the trial ends.</p>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:40px;">
+                    <a href="web/premium.html" class="btn btn-primary" style="background:var(--gold);color:#1a1a1a;">View Premium Plans</a>
+                </div>
+            </div>
+        </section>
+
         <!-- CTA Banner -->
         <section class="cta-banner" id="download">
             <div class="container">
@@ -239,6 +269,7 @@
                     <ul class="footer-links">
                         <li><a href="map.html">Live Map</a></li>
                         <li><a href="#features">Features</a></li>
+                        <li><a href="web/premium.html">Premium</a></li>
                         <li><a href="#download">Download</a></li>
                     </ul>
                 </div>
@@ -252,8 +283,8 @@
                 <div>
                     <h4>Legal</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="web/privacy.html">Privacy Policy</a></li>
+                        <li><a href="web/terms.html">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
