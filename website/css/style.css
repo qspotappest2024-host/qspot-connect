@@ -1,6 +1,10 @@
 /* ============================================================
    QSpot Website — Core Stylesheet
-   Brand colors: Primary #6200EE (purple), Secondary #03DAC6 (teal)
+   Brand palette (from the QSpot logo):
+     Aubergine  #3F1842  (primary)
+     Steel blue #4D72A0  (secondary / accent — the logo's drop-shadow)
+     White      #FFFFFF  (wordmark)
+   Gold (#F0B429) is reserved exclusively as the QSpot Premium accent.
    ============================================================ */
 
 /* --- Reset & Base --- */
@@ -11,11 +15,13 @@
 }
 
 :root {
-    --primary: #6200EE;
-    --primary-dark: #3700B3;
-    --primary-light: #BB86FC;
-    --secondary: #03DAC6;
-    --secondary-dark: #018786;
+    --primary: #3F1842;
+    --primary-dark: #2A0F2D;
+    --primary-light: #7A3A7C;
+    --secondary: #4D72A0;
+    --secondary-dark: #3A5A82;
+    --gold: #F0B429;
+    --gold-text: #8A6A0B; /* AA-contrast gold for text on light backgrounds */
     --text-primary: #1a1a2e;
     --text-secondary: #555;
     --text-light: #888;
@@ -323,7 +329,7 @@ p {
     display: flex;
     align-items: center;
     padding-top: 64px;
-    background: linear-gradient(135deg, var(--bg-light) 0%, #ede7f6 50%, #e0f7fa 100%);
+    background: linear-gradient(135deg, var(--bg-light) 0%, #efe7f3 50%, #e3ecf6 100%);
     overflow: hidden;
     position: relative;
 }
@@ -389,7 +395,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #e8eaf6, #e0f2f1);
+    background: linear-gradient(135deg, #efe7f3, #e3ecf6);
     color: var(--text-light);
     font-size: 1.1rem;
 }
@@ -608,7 +614,7 @@ body.page-map {
 .spot-marker {
     width: 32px;
     height: 32px;
-    background: #6200EE;
+    background: var(--primary);
     border: 3px solid white;
     border-radius: 50%;
     cursor: pointer;
@@ -1259,6 +1265,7 @@ body.page-map {
 /* --- Shared dark theme variable set --- */
 .dark-theme-vars,
 html[data-theme="dark"] {
+    --gold-text: #F0B429;
     --text-primary: #e1e1f0;
     --text-secondary: #a8a8bc;
     --text-light: #6a6a82;
@@ -1274,6 +1281,7 @@ html[data-theme="dark"] {
 /* --- Auto dark mode (OS preference) --- */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
+        --gold-text: #F0B429;
         --text-primary: #e1e1f0;
         --text-secondary: #a8a8bc;
         --text-light: #6a6a82;
@@ -1299,11 +1307,11 @@ html[data-theme="dark"] {
     }
 
     html:not([data-theme="light"]) .hero {
-        background: linear-gradient(135deg, #1c1c2a 0%, #1e1530 50%, #0c1f20 100%);
+        background: linear-gradient(135deg, #1c1c2a 0%, #2a1530 50%, #0d1626 100%);
     }
 
     html:not([data-theme="light"]) .placeholder-map {
-        background: linear-gradient(135deg, #1e1e30, #0d2020);
+        background: linear-gradient(135deg, #221830, #101a28);
         color: #6a6a82;
     }
 
@@ -1331,7 +1339,7 @@ html[data-theme="dark"] {
 
     html:not([data-theme="light"]) .hero-map-preview {
         background: var(--bg-light);
-        border-color: rgba(187, 134, 252, 0.15);
+        border-color: rgba(123, 160, 204, 0.18);
     }
 }
 
@@ -1371,7 +1379,7 @@ html[data-theme="dark"] .hero {
 }
 
 html[data-theme="dark"] .placeholder-map {
-    background: linear-gradient(135deg, #1e1e30, #0d2020);
+    background: linear-gradient(135deg, #221830, #101a28);
     color: #6a6a82;
 }
 
