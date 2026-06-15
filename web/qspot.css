@@ -1,31 +1,107 @@
-/* QSpot web — shared styles */
+/* QSpot web — shared styles for the Premium, account and legal pages.
+   Unified with the marketing site: same QSpot logo, navbar, footer, fonts,
+   and the logo-derived palette (aubergine #3F1842 + steel-blue #4D72A0),
+   with automatic light/dark. Gold (#F0B429) is reserved as the QSpot
+   Premium accent only. */
+
 :root {
-  --bg: #0f1115;
-  --card: #1a1d24;
-  --card-border: #2a2e38;
-  --text: #f2f3f5;
-  --text-dim: #9aa0ab;
-  --gold: #d4a017;
-  --gold-bright: #f0b429;
-  --green: #2ecc71;
-  --red: #e74c3c;
+  --primary: #3F1842;
+  --primary-dark: #2A0F2D;
+  --primary-light: #7A3A7C;
+  --secondary: #4D72A0;
+  --secondary-light: #7BA0CC;
+  --gold: #D4A017;
+  --gold-bright: #F0B429;
+  --gold-text: #8A6A0B; /* AA-contrast gold for text on light backgrounds */
+  --green: #2E7D46;
+  --red: #C0392B;
+  --text: #1a1a2e;
+  --text-dim: #555;
+  --bg: #ffffff;
+  --bg-soft: #f6f4fa;
+  --card: #ffffff;
+  --card-border: #e6e3ee;
+  --footer-bg: #1a1a2e;
   --radius: 14px;
+  --shadow-sm: 0 2px 8px rgba(63, 24, 66, 0.08);
+  --shadow-md: 0 10px 30px rgba(63, 24, 66, 0.12);
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-light: #c79ac8;
+    --gold-text: #F0B429; /* bright gold reads fine on dark cards */
+    --text: #e7e3ee;
+    --text-dim: #a8a2b6;
+    --bg: #121018;
+    --bg-soft: #1a1622;
+    --card: #1e1a28;
+    --card-border: #322a3e;
+    --footer-bg: #0c0a12;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
+  }
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; color-scheme: light dark; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px 64px;
+  padding: 0 16px 64px;
+  -webkit-font-smoothing: antialiased;
 }
-header { text-align: center; margin: 24px 0 32px; }
-header h1 { font-size: 1.6rem; letter-spacing: 0.5px; }
-header h1 .gold { color: var(--gold-bright); }
-header p { color: var(--text-dim); margin-top: 6px; font-size: 0.95rem; }
+a { color: inherit; text-decoration: none; }
+
+/* ---- Shared navbar (full-bleed, matches the marketing site) ---- */
+.qnav {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--card-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  .qnav { background: rgba(18, 16, 24, 0.95); }
+}
+.qnav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.qnav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--text); }
+.qnav-logo img { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; display: block; }
+.qnav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+.qnav-links a { font-size: 0.92rem; font-weight: 500; color: var(--text-dim); transition: color 0.2s; }
+.qnav-links a:hover, .qnav-links a.active { color: var(--primary-light); }
+.qnav-cta { background: var(--gold-bright); color: #1a1a1a !important; padding: 7px 16px; border-radius: 9px; font-weight: 700; }
+.qnav-cta:hover { filter: brightness(0.96); }
+@media (max-width: 600px) { .qnav-links .hide-sm { display: none; } .qnav-links { gap: 16px; } }
+
+/* ---- Page header ---- */
+header { text-align: center; margin: 40px 0 28px; padding: 0 8px; }
+header h1 { font-size: 1.7rem; letter-spacing: 0.3px; }
+header h1 .gold { color: var(--gold-text); }
+header p { color: var(--text-dim); margin-top: 8px; font-size: 0.98rem; }
+
+/* ---- Cards & content ---- */
 .card {
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -34,9 +110,11 @@ header p { color: var(--text-dim); margin-top: 6px; font-size: 0.95rem; }
   width: 100%;
   max-width: 420px;
   margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
 }
 .card h2 { font-size: 1.1rem; margin-bottom: 12px; }
-.card p  { color: var(--text-dim); font-size: 0.92rem; line-height: 1.5; }
+.card p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; }
+
 .plans { display: flex; gap: 12px; width: 100%; max-width: 420px; }
 .plan {
   flex: 1;
@@ -47,9 +125,10 @@ header p { color: var(--text-dim); margin-top: 6px; font-size: 0.95rem; }
   text-align: center;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.plan.selected { border-color: var(--gold-bright); }
+.plan:hover { border-color: var(--gold); }
+.plan.selected { border-color: var(--gold-bright); box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.15); }
 .plan .badge {
   position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
   background: var(--gold-bright); color: #1a1a1a;
@@ -57,54 +136,86 @@ header p { color: var(--text-dim); margin-top: 6px; font-size: 0.95rem; }
   white-space: nowrap;
 }
 .plan .name { font-weight: 600; margin-bottom: 6px; }
-.plan .price { font-size: 1.4rem; font-weight: 700; color: var(--gold-bright); }
+.plan .price { font-size: 1.4rem; font-weight: 700; color: var(--gold-text); }
 .plan .per { color: var(--text-dim); font-size: 0.8rem; }
 .plan .note { color: var(--text-dim); font-size: 0.75rem; margin-top: 6px; }
+
 button.primary, a.primary {
   display: block; width: 100%; max-width: 420px;
   background: var(--gold-bright); color: #1a1a1a;
   border: none; border-radius: var(--radius);
   font-size: 1rem; font-weight: 700;
   padding: 14px; margin-top: 16px; cursor: pointer;
-  text-align: center; text-decoration: none;
+  text-align: center; text-decoration: none; transition: filter 0.15s;
 }
+button.primary:hover, a.primary:hover { filter: brightness(0.97); }
 button.primary:disabled { opacity: 0.5; cursor: default; }
 button.secondary {
   display: block; width: 100%;
   background: transparent; color: var(--text);
   border: 1px solid var(--card-border); border-radius: var(--radius);
   font-size: 0.95rem; padding: 12px; margin-top: 10px; cursor: pointer;
+  transition: border-color 0.15s;
 }
+button.secondary:hover { border-color: var(--primary-light); }
 button.danger { border-color: var(--red); color: var(--red); }
 button.oauth {
   display: flex; align-items: center; justify-content: center; gap: 10px;
   width: 100%; background: #fff; color: #1a1a1a;
-  border: none; border-radius: var(--radius);
+  border: 1px solid #dadce0; border-radius: var(--radius);
   font-size: 0.95rem; font-weight: 600;
   padding: 12px; margin-top: 10px; cursor: pointer;
 }
 button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
+
 .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.95rem; }
 .row .label { color: var(--text-dim); }
 .status-active   { color: var(--green); font-weight: 600; }
-.status-trialing { color: var(--gold-bright); font-weight: 600; }
+.status-trialing { color: var(--gold-text); font-weight: 600; }
 .status-other    { color: var(--text-dim); font-weight: 600; }
+
 .notice {
   width: 100%; max-width: 420px;
   border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px;
   font-size: 0.9rem; line-height: 1.45;
 }
-.notice.info    { background: #1b2738; border: 1px solid #2d4a6e; }
-.notice.success { background: #16301f; border: 1px solid #2e6e45; color: #c9f0d6; }
-.notice.error   { background: #381b1b; border: 1px solid #6e2d2d; color: #f0c9c9; }
+.notice.info    { background: rgba(77, 114, 160, 0.12); border: 1px solid rgba(77, 114, 160, 0.40); color: var(--text); }
+.notice.success { background: rgba(46, 125, 70, 0.12);  border: 1px solid rgba(46, 125, 70, 0.45);  color: var(--text); }
+.notice.error   { background: rgba(192, 57, 43, 0.10);  border: 1px solid rgba(192, 57, 43, 0.40);  color: var(--text); }
+
 .benefits { list-style: none; margin-top: 10px; }
 .benefits li { padding: 6px 0; font-size: 0.92rem; color: var(--text); }
-.benefits li::before { content: "✓ "; color: var(--gold-bright); font-weight: 700; }
+.benefits li::before { content: "✓ "; color: var(--gold-text); font-weight: 700; }
+
 .hidden { display: none !important; }
 .spinner { text-align: center; color: var(--text-dim); padding: 24px; }
-footer { margin-top: auto; padding-top: 32px; color: var(--text-dim); font-size: 0.8rem; text-align: center; }
-footer a { color: var(--text-dim); }
-#card-element {
-  background: #fff; border-radius: 8px; padding: 12px; margin: 12px 0;
-}
+#card-element { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 12px; margin: 12px 0; }
 .signout { background: none; border: none; color: var(--text-dim); font-size: 0.85rem; cursor: pointer; text-decoration: underline; margin-top: 8px; }
+
+/* ---- Legal pages ---- */
+.legal { max-width: 760px; width: 100%; }
+.legal .card { text-align: left; max-width: 760px; }
+.legal h2 { font-size: 1.04rem; margin: 22px 0 8px; }
+.legal p { font-size: 0.92rem; line-height: 1.65; margin: 0 0 10px; }
+.legal .muted { opacity: 0.7; font-size: 0.85rem; }
+
+/* ---- Shared footer (full-bleed, branded) ---- */
+.qfooter {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: auto;
+  background: var(--footer-bg);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 40px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+}
+.qfooter-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.qfooter-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: #fff; font-size: 1.1rem; }
+.qfooter-brand img { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; display: block; }
+.qfooter-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; list-style: none; }
+.qfooter-links a { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; transition: color 0.2s; }
+.qfooter-links a:hover { color: var(--secondary-light); }
+.qfooter-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+
+/* Legacy bare <footer> fallback (any page not yet upgraded to .qfooter) */
+footer:not(.qfooter) { margin-top: auto; padding-top: 32px; color: var(--text-dim); font-size: 0.8rem; text-align: center; }
+footer:not(.qfooter) a { color: var(--text-dim); }
