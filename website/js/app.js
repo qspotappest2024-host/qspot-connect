@@ -3,8 +3,9 @@
  * Navigation, mobile menu, scroll effects, utilities
  */
 
-// Apply stored/OS dark mode preference ASAP (before DOMContentLoaded) to avoid flash
+// Mark JS as active (enables scroll-reveal styles) + apply theme ASAP to avoid flash
 (function () {
+    document.documentElement.classList.add('js');
     const stored = localStorage.getItem('qspot-theme');
     if (stored === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setActiveNavLink();
     wireAppStoreLinks();
     initDarkModeToggle();
+    initScrollReveal();
 });
 
 /* --- Navbar scroll effect --- */
@@ -136,6 +138,29 @@ function initDarkModeToggle() {
     const stored = localStorage.getItem('qspot-theme');
     const isDark = stored === 'dark' || (stored !== 'light' && osDark);
     btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+/* --- Scroll reveal on view (progressive enhancement) --- */
+function initScrollReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('in-view'));
+        return;
+    }
+
+    const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+
+    els.forEach(el => io.observe(el));
 }
 
 /* --- Utility: Format currency --- */
