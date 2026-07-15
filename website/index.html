@@ -67,8 +67,58 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/rebrand.css">
+
+    <!-- QSpot access gate (soft pre-launch veil) -->
+    <style>
+      html.qs-locked,body.qs-locked{overflow:hidden!important}
+      #qs-gate{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:22px;padding:24px;text-align:center;
+        background:linear-gradient(135deg,#3F1842 0%,#4D72A0 100%);
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+      #qs-gate img{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(0,0,0,.35))}
+      #qs-gate form{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:300px}
+      #qs-gate label{color:rgba(255,255,255,.85);font-size:1rem;margin:0}
+      #qs-gate input{width:100%;padding:14px 16px;font-size:1.05rem;border-radius:12px;text-align:center;
+        border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.95);color:#1a1a2e;outline:none}
+      #qs-gate input:focus{box-shadow:0 0 0 3px rgba(240,180,41,.6)}
+      #qs-gate button{width:100%;padding:13px 16px;font-size:1rem;font-weight:700;cursor:pointer;
+        border:none;border-radius:12px;background:#F0B429;color:#1a1a1a}
+      #qs-gate .qs-err{min-height:1.2em;color:#ffd9d9;font-size:.9rem;margin:0;opacity:0;transition:opacity .15s}
+      #qs-gate.qs-bad .qs-err{opacity:1}
+      #qs-gate.qs-bad input{animation:qsshake .35s}
+      @keyframes qsshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    </style>
 </head>
 <body>
+
+    <!-- QSpot access gate (soft pre-launch veil) -->
+    <div id="qs-gate" role="dialog" aria-modal="true" aria-label="Enter access word">
+      <img src="assets/images/qspot_logo.png" alt="QSpot">
+      <form id="qs-gate-form" autocomplete="off">
+        <label for="qs-gate-input">Enter the access word to continue</label>
+        <input id="qs-gate-input" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" aria-describedby="qs-gate-err">
+        <button type="submit">Enter</button>
+        <p id="qs-gate-err" class="qs-err" role="alert">That's not it &mdash; try again.</p>
+      </form>
+    </div>
+    <script>
+    (function(){
+      var PASS='whistler', KEY='qspot-gate-ok', g=document.getElementById('qs-gate');
+      if(!g) return;
+      function unlock(){ if(g.parentNode) g.parentNode.removeChild(g);
+        document.documentElement.classList.remove('qs-locked'); document.body.classList.remove('qs-locked'); }
+      try{ if(localStorage.getItem(KEY)==='1'){ unlock(); return; } }catch(e){}
+      document.documentElement.classList.add('qs-locked'); document.body.classList.add('qs-locked');
+      var f=document.getElementById('qs-gate-form'), i=document.getElementById('qs-gate-input');
+      if(i) i.focus();
+      if(f) f.addEventListener('submit',function(e){
+        e.preventDefault();
+        if(i.value.trim().toLowerCase()===PASS){ try{localStorage.setItem(KEY,'1');}catch(_){} unlock(); }
+        else{ g.classList.add('qs-bad'); i.value=''; i.focus(); setTimeout(function(){g.classList.remove('qs-bad');},600); }
+      });
+    })();
+    </script>
 
     <!-- Skip to content for keyboard users -->
     <a href="#main" class="skip-to-content">Skip to content</a>
