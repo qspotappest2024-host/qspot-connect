@@ -69,6 +69,7 @@
       charged only when the trial ends).
     </p>
     <button class="signout" onclick="signOut()">Sign out</button>
+    <button class="signout" onclick="signOutEverywhere()">Sign out of all devices</button>
   </div>
 
   <!-- Shown when signed in and already premium -->
@@ -79,6 +80,7 @@
     </div>
     <a class="primary" href="account.html">Manage membership</a>
     <button class="signout" onclick="signOut()">Sign out</button>
+    <button class="signout" onclick="signOutEverywhere()">Sign out of all devices</button>
   </div>
 
   <footer class="qfooter">
@@ -113,6 +115,27 @@
         selectedPlan = el.dataset.plan;
       };
     });
+
+    // Remote sign-out (Issue #161). The full explanation lives on account.html;
+    // here it's a one-tap security action, so a native confirm() carries the
+    // consequences rather than an inline two-step panel on a purchase page.
+    async function signOutEverywhere() {
+      if (!confirm(
+        "Sign out of QSpot on every device, including this browser?\n\n" +
+        "You'll need to sign in again on each device, and a new security code " +
+        "will be required. Devices with the app already open may take up to an " +
+        "hour to be signed out."
+      )) return;
+      const { ok, status } = await signOutAllDevices();
+      if (ok) {
+        // Session is gone — reload lands on the sign-in card.
+        window.location.reload();
+      } else {
+        setNotice(noticeEl, "error", status === 429
+          ? "Too many attempts. Please wait a few minutes and try again."
+          : "Could not sign out of all devices. Please try again from the account page.");
+      }
+    }
 
     document.getElementById("subscribe-btn").onclick = async () => {
       const btn = document.getElementById("subscribe-btn");

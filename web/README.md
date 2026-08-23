@@ -1,45 +1,75 @@
-# QSpot Web (GitHub Pages)
+# QSpot Web — Premium subscription pages
 
-Static site for QSpot Premium subscription purchase and management.
-Purchase happens via Stripe Checkout (hosted by Stripe); all server logic lives
-in Supabase Edge Functions. **No secrets belong in this repo** — only the
-Supabase anon key and the Stripe publishable key (both public by design).
+Static pages for QSpot Premium purchase and management. Lives in the
+`qspot-connect` repo as the `web/` folder and is served at
+**https://www.qspotmarketplace.com/web/** by the existing GitHub Actions deploy
+workflow. Purchase happens via Stripe Checkout (hosted by Stripe); all server
+logic lives in Supabase Edge Functions. **No secrets belong in this repo** —
+only the Supabase anon key and the Stripe publishable key (both public by design).
 
 ## Files
 
-| File | Purpose |
-|---|---|
-| `index.html` | Landing page (link Premium, future privacy policy / account deletion) |
-| `premium.html` | Login + plan selection → `create-checkout-session` → Stripe Checkout |
-| `premium-success.html` | Post-checkout confirmation |
-| `account.html` | Manage membership: status, plan switch, keep-yearly, card update, cancel |
-| `config.js` | **Fill in** anon key + Stripe publishable key before deploying |
-| `CNAME` | Custom domain for GitHub Pages (`qspotmarketplace.com`) |
+| File | Live URL | Purpose |
+|---|---|---|
+| `premium.html` | /web/premium.html | Login + plan selection → `create-checkout-session` → Stripe Checkout |
+| `premium-success.html` | /web/premium-success.html | Post-checkout confirmation |
+| `account.html` | /web/account.html | Manage: status, plan switch, keep-yearly, card update, cancel |
+| `index.html` | /web/ | Mini landing (optional — safe to delete) |
+| `config.js` | — | Anon key + Stripe publishable key (placeholders; injected by deploy.yml or filled manually) |
+| `qspot.js` / `qspot.css` | — | Shared helpers / styles |
 
-## Deploy
+`CNAME` and `.nojekyll` in this folder are NOT needed in the qspot-connect repo
+(the custom domain is set in Pages settings; `.nojekyll` is added by the workflow).
+They only matter if this folder is ever deployed as its own standalone Pages repo.
 
-1. Create a GitHub repo (e.g. `qspot-web`), copy this folder's contents to its root, push.
-2. Repo → Settings → Pages → Deploy from branch → `main` / root.
-3. Custom domain: `qspotmarketplace.com` (the CNAME file handles this) + enforce HTTPS.
-4. Porkbun DNS for qspotmarketplace.com:
-   - A records on apex `@`: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
-   - CNAME on `www` → `<your-github-username>.github.io`
-5. Fill in `config.js`.
+## deploy.yml requirement
+
+The qspot-connect workflow must copy this folder into the published artifact.
+In the "Assemble site" step, alongside the `.well-known` and `stripe` blocks:
+
+```yaml
+          # Preserve QSpot Premium subscription pages (served at /web/)
+          if [ -d "web" ]; then
+            cp -r web _site/
+            echo "✓ Copied web/"
+          fi
+```
+
+Optional (mirrors the MapTiler pattern — inject keys from GitHub Secrets instead
+of committing them in config.js):
+
+```yaml
+      - name: Inject web subscription keys
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+        run: |
+          sed -i "s|PASTE_YOUR_SUPABASE_ANON_KEY_HERE|${SUPABASE_ANON_KEY}|g" web/config.js
+          sed -i "s|PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE|${STRIPE_PUBLISHABLE_KEY}|g" web/config.js
+```
+
+(Place the inject step BEFORE "Assemble site". Both values are public-by-design,
+so committing them directly in config.js is also acceptable.)
 
 ## Supabase configuration (one-time)
 
-- Auth → URL Configuration → Redirect URLs: add
-  `https://qspotmarketplace.com/premium.html`, `https://qspotmarketplace.com/account.html`
-  (and the same paths under `https://www.qspotmarketplace.com` and your
-  `https://<user>.github.io/<repo>` URL if testing pre-DNS).
-- Edge Functions called from this site (CORS allows qspotmarketplace.com):
-  `create-checkout-session`, `create-subscription` (not used by web but shares CORS),
-  `switch-subscription-plan`, `cancel-subscription`, `cancel-scheduled-downgrade`,
-  `create-setup-intent`.
-- For pre-DNS testing from `*.github.io`:
-  `supabase secrets set EXTRA_WEB_ORIGIN=https://<user>.github.io`
+- Auth → URL Configuration → Redirect URLs:
+  `https://www.qspotmarketplace.com/web/premium.html`
+  `https://www.qspotmarketplace.com/web/account.html`
+  (+ the `https://www.qspotmarketplace.com/...` variants if www resolves)
+- Edge Function CORS already allows `qspotmarketplace.com` (+ optional
+  `EXTRA_WEB_ORIGIN` secret for other origins).
+- `create-checkout-session` success/cancel URLs default to
+  `https://www.qspotmarketplace.com/web/...`. Override with:
+  `supabase secrets set WEB_BASE_URL=...` if the pages move.
 
 ## Stripe configuration
 
-- `stripe-subscription-webhook` endpoint must include the
+- The `stripe-subscription-webhook` endpoint must include the
   `checkout.session.completed` event.
+
+## Verify after deploy
+
+1. https://www.qspotmarketplace.com/web/premium.html loads with plan cards
+2. https://www.qspotmarketplace.com/web/config.js shows real (non-placeholder) values
+3. Test checkout with card 4242 4242 4242 4242 (Stripe test mode)

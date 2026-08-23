@@ -30,6 +30,32 @@ async function signOut() {
 }
 
 /**
+ * Signs the user out EVERYWHERE — this browser, the mobile apps, every device.
+ *
+ * Calls the sign-out-all-devices Edge Function, which revokes all Supabase
+ * sessions, deletes every push token, and clears MFA device trust (so the next
+ * sign-in on any device requires a fresh SMS code).
+ *
+ * Returns { ok, status, data }. The caller owns the UI. This function does NOT
+ * reload — callers usually want to show a confirmation first.
+ *
+ * ⚠️ Two things worth knowing:
+ *  - Other devices are not kicked out instantly. Supabase revokes *refresh*
+ *    tokens; an access token already issued stays valid until it expires
+ *    (~1 hour), so a phone mid-session keeps working until its next refresh.
+ *  - The local sign-out below is best-effort: once the server revokes globally,
+ *    this browser's own token is dead too, so sb.auth.signOut() can throw. The
+ *    session is gone either way.
+ */
+async function signOutAllDevices() {
+  const result = await callFn("sign-out-all-devices", {});
+  if (result.ok) {
+    try { await sb.auth.signOut(); } catch (_e) { /* already revoked server-side */ }
+  }
+  return result;
+}
+
+/**
  * Calls a Supabase Edge Function with the user's JWT.
  * Returns { ok, status, data } — data is parsed JSON (or {} on parse failure).
  */
@@ -56,7 +82,10 @@ async function loadSubscriptionRow() {
   if (!session) return null;
   const { data, error } = await sb
     .from("users")
-    .select("subscription_status, subscription_interval, premium_until, scheduled_subscription_interval, display_name")
+    // F45: cancel_at_period_end is REQUIRED here. Without it account.html cannot tell a
+    // cancelled membership from a renewing one and renders "Renews <date>" to a member
+    // who has already cancelled — the exact opposite of the truth.
+    .select("subscription_status, subscription_interval, premium_until, scheduled_subscription_interval, cancel_at_period_end, display_name, marketing_emails_opt_out")
     .eq("id", session.user.id)
     .single();
   if (error) {

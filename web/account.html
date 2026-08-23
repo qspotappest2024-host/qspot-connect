@@ -49,7 +49,8 @@
       <h2>Your membership</h2>
       <div class="row"><span class="label">Status</span><span id="m-status"></span></div>
       <div class="row"><span class="label">Plan</span><span id="m-plan"></span></div>
-      <div class="row"><span class="label">Renews</span><span id="m-renews"></span></div>
+      <div class="row"><span class="label" id="m-renews-label">Renews</span><span id="m-renews"></span></div>
+      <div id="m-cancel-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:#c1440e;"></div>
       <div id="m-downgrade-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:var(--gold-bright);"></div>
     </div>
 
@@ -91,6 +92,63 @@
       </label>
     </div>
     <button class="signout" onclick="signOut()">Sign out</button>
+  </div>
+
+  <!-- Security (Issue #161) — remote sign-out for a lost or stolen device.
+       Shown for every signed-in user, member or not. This is the only place a
+       user can reach the revocation without the phone in their hand, which is
+       exactly the case it exists for. -->
+  <div id="security" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>Security</h2>
+      <p>Lost a phone, or signed in somewhere you shouldn't have? This signs you
+         out of the QSpot app on every device and this browser, and requires a
+         new security code the next time you sign in anywhere.</p>
+      <div id="signout-all-confirm" class="hidden" style="margin-top:12px;">
+        <p style="font-size:0.9rem;">You'll need to sign in again on each device.
+           Devices already open may take up to an hour to be signed out.</p>
+        <button class="secondary danger" id="signout-all-confirm-btn"
+                style="margin-top:10px;">Yes, sign out everywhere</button>
+        <button class="signout" id="signout-all-cancel-btn">Cancel</button>
+      </div>
+      <button class="secondary" id="signout-all-btn">Sign out of all devices…</button>
+    </div>
+  </div>
+
+  <!-- Account deletion (Issue #145) — this page is the web deletion URL
+       declared in the Google Play Data Safety form. Shown for every
+       signed-in user, member or not. -->
+  <div id="danger-zone" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>Delete account</h2>
+      <p>Schedules your QSpot account for deletion in 7 days. Sign in to the
+         QSpot app within 7 days to cancel. After that, your account and all
+         associated data — listings, messages, and reviews —
+         are permanently deleted and any remaining Premium is forfeited.</p>
+      <!-- GDPR Art. 12(4)/13: erasure is partially refused for completed-payment
+           records, retained under Art. 17(3)(b). Must be stated at the point of
+           asking. Kept verbatim-consistent with the in-app string
+           settings_delete_account_retention_note (LEGAL_REVIEW A4).
+           ⚠️ "transaction history" was removed from the list above on 2026-08-05:
+           it was an affirmative false statement. Do not reinstate it. -->
+      <p style="font-size:0.9rem;opacity:0.85;">Records of completed payments are
+         kept in a de-identified form for 7 years (10 in the EU) because tax law
+         requires it. They contain no name, email or location.</p>
+      <div id="delete-blockers" class="hidden" style="margin-top:10px;font-size:0.9rem;"></div>
+      <div id="delete-confirm" class="hidden" style="margin-top:12px;">
+        <p style="font-size:0.9rem;"><strong>Type DELETE to confirm:</strong></p>
+        <input id="delete-input" type="text" autocomplete="off" placeholder="DELETE"
+               style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #888;background:transparent;color:inherit;">
+        <button class="secondary danger" id="delete-confirm-btn" disabled
+                style="margin-top:10px;">Schedule account deletion</button>
+      </div>
+      <button class="secondary danger" id="delete-start-btn">Delete my account…</button>
+      <p style="margin-top:10px;font-size:0.8rem;">
+        Can't sign in? Email
+        <a href="mailto:admin@qspotmarketplace.com?subject=Account%20deletion%20request">admin@qspotmarketplace.com</a>
+        from your account email to request deletion.
+      </p>
+    </div>
   </div>
 
   <footer class="qfooter">
@@ -139,10 +197,33 @@
       document.getElementById("m-plan").textContent   = yearly ? "Yearly Plan ($90 CAD/yr)" : "Monthly Plan ($10 CAD/mo)";
       document.getElementById("m-renews").textContent = formatDate(row.premium_until);
 
+      // ── F45 (2026-08-21) ────────────────────────────────────────────────
+      // cancel_at_period_end was never selected, so this row always read "Renews"
+      // — telling a member who had cancelled that their membership renews, and
+      // (with F52) telling a member whose payment failed that it renews years out.
+      // The date is the same either way; only its MEANING changes, so the label is
+      // what has to move.
+      const cancelPending = row.cancel_at_period_end === true;
+      const renewsLabel   = document.getElementById("m-renews-label");
+      const cancelNote    = document.getElementById("m-cancel-note");
+      renewsLabel.textContent = cancelPending ? "Access until" : "Renews";
+      if (cancelPending) {
+        cancelNote.textContent =
+          "Your membership is set to cancel and will not renew. Benefits stay active until this date.";
+        show(cancelNote);
+      } else {
+        hide(cancelNote);
+      }
+
       const downgradeNote = document.getElementById("m-downgrade-note");
       const keepYearlyBtn = document.getElementById("keep-yearly-btn");
       const switchBtn     = document.getElementById("switch-btn");
       const switchDesc    = document.getElementById("switch-desc");
+
+      // A membership already set to cancel cannot be cancelled again — hide the
+      // control rather than leaving a button whose only outcome is an error.
+      const cancelBtn = document.getElementById("cancel-btn");
+      if (cancelBtn) { if (cancelPending) hide(cancelBtn); else show(cancelBtn); }
 
       if (yearly && row.scheduled_subscription_interval === "month") {
         downgradeNote.textContent = `Switches to Monthly on ${formatDate(row.premium_until)}.`;
@@ -290,6 +371,119 @@
       }
     };
 
+    // ── Account deletion (Issue #145) ─────────────────────────────────────
+    // Mirrors the in-app Settings flow: checkOnly pre-flight → blockers OR
+    // typed-DELETE confirmation → real deletion → local sign-out.
+    const DELETE_BLOCKER_MESSAGES = {
+      active_transactions: "You have an active transaction. Complete or cancel it first.",
+      open_dispute: "A dispute on one of your transactions is under review.",
+      pending_payout: "You have pending payouts. Claim them or wait for them to settle.",
+      counterparty_payout_pending: "A payout to your transaction partner has not settled yet. Please try again once it completes.",
+      dispute_window_open: "A recent transaction is still within its dispute window. Please try again shortly.",
+    };
+
+    function renderDeleteBlockers(blockers) {
+      const el = document.getElementById("delete-blockers");
+      const items = (blockers || []).map((b) => {
+        let msg = DELETE_BLOCKER_MESSAGES[b.type] ||
+          "Unsettled payment activity on your account.";
+        if (b.type === "pending_payout" && b.amountCents) {
+          msg = `You have ${(b.amountCents / 100).toFixed(2)} ${b.currency || "CAD"} ` +
+                "in pending payouts. Claim them or wait for them to settle.";
+        }
+        return `<li>${msg}</li>`;
+      });
+      el.innerHTML =
+        `<strong>Your account can't be deleted yet:</strong>` +
+        `<ul>${items.join("")}</ul>` +
+        `<span>Please resolve the above and try again.</span>`;
+      show(el);
+    }
+
+    // ── Sign out of all devices (Issue #161) ────────────────────────────────
+    // Two-step: the first button only reveals the consequences, so a stray tap
+    // can't revoke every session. Failures are shown here but NOT explained in
+    // detail — the server reports the failed step to the admin dashboard.
+    document.getElementById("signout-all-btn").onclick = (e) => {
+      hide(e.target);
+      show(document.getElementById("signout-all-confirm"));
+    };
+
+    document.getElementById("signout-all-cancel-btn").onclick = () => {
+      hide(document.getElementById("signout-all-confirm"));
+      show(document.getElementById("signout-all-btn"));
+    };
+
+    document.getElementById("signout-all-confirm-btn").onclick = async (e) => {
+      e.target.disabled = true;
+      e.target.textContent = "Signing out…";
+      const { ok, status } = await signOutAllDevices();
+      if (ok) {
+        // The session is gone — hide every signed-in panel rather than reloading,
+        // so the confirmation stays readable.
+        ["manage", "no-sub", "email-prefs", "security", "danger-zone"].forEach(
+          (id) => hide(document.getElementById(id)));
+        setNotice(noticeEl, "success",
+          "Signed out of all devices. Devices with an app already open may take up to an hour to be signed out.");
+      } else if (status === 429) {
+        setNotice(noticeEl, "error",
+          "Too many attempts. Please wait a few minutes and try again.");
+        e.target.disabled = false;
+        e.target.textContent = "Yes, sign out everywhere";
+      } else {
+        setNotice(noticeEl, "error",
+          "Could not sign out of all devices. Please try again, or contact admin@qspotmarketplace.com.");
+        e.target.disabled = false;
+        e.target.textContent = "Yes, sign out everywhere";
+      }
+    };
+
+    document.getElementById("delete-start-btn").onclick = async (e) => {
+      e.target.disabled = true;
+      hide(document.getElementById("delete-blockers"));
+      const { ok, status, data } = await callFn("delete-account", { checkOnly: true });
+      e.target.disabled = false;
+      if (ok && data.canDelete) {
+        hide(e.target);
+        show(document.getElementById("delete-confirm"));
+      } else if (status === 409) {
+        renderDeleteBlockers(data.blockers);
+      } else {
+        setNotice(noticeEl, "error", "Could not check your account. Please try again.");
+      }
+    };
+
+    document.getElementById("delete-input").oninput = (e) => {
+      document.getElementById("delete-confirm-btn").disabled =
+        e.target.value.trim() !== "DELETE";
+    };
+
+    document.getElementById("delete-confirm-btn").onclick = async (e) => {
+      if (!confirm("This schedules your QSpot account for deletion in 7 days. You can cancel by signing into the app within 7 days. Continue?")) return;
+      e.target.disabled = true;
+      const { ok, status, data } = await callFn("delete-account", {});
+      if (ok && (data.scheduled || data.deleted)) {
+        // Deletion scheduled (7-day grace) — clear the local session (no reload
+        // so the confirmation stays visible).
+        try { await sb.auth.signOut(); } catch (_e) { /* session already invalid */ }
+        ["manage", "no-sub", "email-prefs", "danger-zone"].forEach(
+          (id) => hide(document.getElementById(id)));
+        setNotice(noticeEl, "success", data.deleted
+          ? "Your account has been permanently deleted. We're sorry to see you go."
+          : "Your account is scheduled for deletion in 7 days. Sign into the QSpot app within 7 days to cancel.");
+      } else if (status === 409) {
+        // Race: something became blocking between pre-flight and confirm.
+        hide(document.getElementById("delete-confirm"));
+        show(document.getElementById("delete-start-btn"));
+        renderDeleteBlockers(data.blockers);
+        e.target.disabled = false;
+      } else {
+        setNotice(noticeEl, "error",
+          "Account deletion failed. Please try again or contact admin@qspotmarketplace.com.");
+        e.target.disabled = false;
+      }
+    };
+
     (async function init() {
       const session = await getSession();
       if (!session) {
@@ -299,6 +493,10 @@
         show(c);
         return;
       }
+      // Security + danger zone are available to every signed-in user, even if
+      // the subscription row fails to load.
+      show(document.getElementById("security"));
+      show(document.getElementById("danger-zone"));
       await refresh();
     })();
   </script>

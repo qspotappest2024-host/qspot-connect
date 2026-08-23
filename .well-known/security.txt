@@ -1,0 +1,22 @@
+# QSpot — security contact (RFC 9116)
+#
+# ⚠️ DEPLOYMENT NOTE (not part of the served file's meaning — comments are permitted by RFC 9116):
+# This file must be served at the ROOT of the domain:
+#     https://qspotmarketplace.com/.well-known/security.txt
+# The site is built by the qspot-connect GitHub Actions workflow, which copies the
+# repository-root `.well-known/` directory into the published artifact. Copy this file to
+# `.well-known/security.txt` in the qspot-connect repository root — a copy under `web/`
+# would only ever serve at /web/.well-known/, which is NOT where clients look.
+#
+# ⏳ Expires must be refreshed at least annually (RFC 9116 §2.5.5). Add it to the
+# scheduled-obligations calendar in security/PATCH_AND_UPDATE_MANAGEMENT.md §7.
+#
+# ⏳ The Policy URI below must resolve before this file is published. Publish the contents of
+# SECURITY.md as a page at /security on qspotmarketplace.com (or change the URI to wherever the
+# policy is actually served). A dangling Policy link undermines the credibility of the whole file.
+
+Contact: mailto:admin@qspotmarketplace.com
+Expires: 2027-06-30T23:59:59.000Z
+Preferred-Languages: en, fr
+Canonical: https://qspotmarketplace.com/.well-known/security.txt
+Policy: https://qspotmarketplace.com/security
