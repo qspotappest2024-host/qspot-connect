@@ -1,0 +1,15 @@
+
+# Cloudflare Pages staging directory (npx wrangler pages deploy _site).
+# ⚠️ CONTAINS web/config.js AND js/config.js WITH REAL INJECTED KEYS, pulled
+# from the live site per WEB_DEPLOYMENT_AND_REPOS.md §4. THIS REPO IS PUBLIC.
+_site/
+
+# wrangler local state
+.wrangler/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# npx wrangler
+node_modules/
