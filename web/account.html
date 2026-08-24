@@ -334,7 +334,16 @@
         return;
       }
       // Mount Stripe Elements card input
+      // F61 (2026-08-24): destroy any previously mounted element first. Without
+      // this, a second press of Update payment method stacked a second Card Element
+      // inside #card-element and left the first one orphaned but still holding the
+      // node — two card inputs, and confirmCardSetup reading whichever `cardElement`
+      // happened to point at.
       stripeJs = stripeJs || Stripe(window.QSPOT_CONFIG.STRIPE_PUBLISHABLE_KEY);
+      if (cardElement) {
+        try { cardElement.destroy(); } catch (_e) { /* already unmounted */ }
+        cardElement = null;
+      }
       const elements = stripeJs.elements();
       cardElement = elements.create("card");
       cardElement.mount("#card-element");
@@ -350,10 +359,27 @@
         if (result.error) {
           setNotice(noticeEl, "error", result.error.message);
         } else {
-          setNotice(noticeEl, "success", "Payment method updated.");
+          // ── F61 (2026-08-24): report what happened, then RE-READ ──────────────
+          // This said "Payment method updated." the instant confirmCardSetup
+          // resolved, which only means Stripe accepted the card. The promotion to
+          // default happens later and elsewhere — in stripe-subscription-webhook's
+          // setup_intent.succeeded handler — and if that handler throws, its catch
+          // returns 200 and Stripe never retries. The member then sees a green
+          // banner while the subscription still bills the old card: the same shape
+          // as F45/F56/F57, where the screen says the thing happened and the bytes
+          // say otherwise. The copy now claims only what is known to be true, and
+          // the page re-reads its own state instead of predicting it, as every
+          // other action on this page already does.
+          setNotice(noticeEl, "success",
+            "Card saved. It can take a few seconds to become your default payment method.");
           hide(document.getElementById("card-form"));
+          if (cardElement) {
+            try { cardElement.destroy(); } catch (_e) { /* already unmounted */ }
+            cardElement = null;
+          }
           show(document.getElementById("update-card-btn"));
           document.getElementById("update-card-btn").disabled = false;
+          await refresh();
         }
       };
     };
