@@ -1,11 +1,13 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.qspot.qspot",
       "sha256_cert_fingerprints": [
-        "3E:73:94:0D:99:8B:F8:EA:78:F3:BD:AF:81:D3:AE:D4:F5:83:21:C6:AC:8A:46:D3:63:F2:E7:6A:6F:85:A3:C8"
+        "D3:02:62:7D:ED:06:C3:25:12:77:20:E7:7B:95:A0:FC:EC:EA:2B:9A:0F:6C:7C:40:C7:98:91:F6:1C:42:9D:E7"
       ]
     }
   }
