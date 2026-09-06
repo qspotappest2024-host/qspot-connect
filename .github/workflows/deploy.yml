@@ -14,6 +14,19 @@
 #      Name: SUPABASE_ANON_KEY       Value: <same value as SUPABASE_ANON_KEY in secrets.properties>
 #      Name: STRIPE_PUBLISHABLE_KEY  Value: <pk_test_... now; pk_live_... at launch>
 #   3. In GitHub repo: Settings → Pages → Source → GitHub Actions
+#
+# ⚠️ 2026-09-06 — THE DOTFILE INCIDENT. Read before touching the upload step.
+#    actions/upload-pages-artifact@v4 added an unconditional `--exclude=".[^/]*"`
+#    to its internal tar, silently discarding EVERY dotfile and dot-directory
+#    from the artifact: .well-known/ and the .nojekyll this workflow writes.
+#    Assembly logged "✓ Copied .well-known/", the run went green, the site
+#    deployed — and /.well-known/assetlinks.json, /.well-known/security.txt and
+#    /.well-known/apple-app-site-association all served 404 while / and
+#    /web/premium.html were fine. Android App Links and iOS Universal Links were
+#    both silently unverifiable for as long as the pin sat on v4.
+#    v3 has no exclude. v5 makes it opt-out via include-hidden-files.
+#    NEVER pin this back to v4. The post-deploy check below exists to make a
+#    regression of this class fail the run instead of failing in the dark.
 
 name: Deploy QSpot Website
 
@@ -37,7 +50,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,7 +88,6 @@ jobs:
         run: |
           CLEAN_ANON=$(printf '%s' "$SUPABASE_ANON_KEY" | tr -d '[:space:]')
           CLEAN_PK=$(printf '%s' "$STRIPE_PUBLISHABLE_KEY" | tr -d '[:space:]')
-
           if [ -z "$CLEAN_ANON" ]; then
             echo "::warning::SUPABASE_ANON_KEY secret is not set. Login on /web/ pages will not work."
           else
@@ -87,7 +98,6 @@ jobs:
           else
             echo "::notice::STRIPE_PUBLISHABLE_KEY found, injecting into web/config.js"
           fi
-
           sed -i "s|PASTE_YOUR_SUPABASE_ANON_KEY_HERE|${CLEAN_ANON}|g" web/config.js
           sed -i "s|PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE|${CLEAN_PK}|g" web/config.js
 
@@ -132,14 +142,76 @@ jobs:
           echo "--- /web contents ---"
           ls -la _site/web/ || true
 
+      # -----------------------------------------------------------------------
+      # Assembly assertion. Cheap, and it localises a broken copy step to HERE
+      # rather than to a 404 discovered weeks later. It does NOT catch the
+      # v4 tar-exclude bug — that happens after assembly — which is what the
+      # post-deploy check further down is for.
+      # -----------------------------------------------------------------------
+      - name: Verify assembled site
+        run: |
+          fail=0
+          for f in .nojekyll .well-known/assetlinks.json; do
+            if [ -e "_site/$f" ]; then
+              echo "✓ _site/$f"
+            else
+              echo "::error::_site/$f is MISSING after assembly"
+              fail=1
+            fi
+          done
+          [ "$fail" -eq 0 ] || exit 1
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      # -----------------------------------------------------------------------
+      # ⚠️ v5 + include-hidden-files:true is LOAD-BEARING — see the header note.
+      #    v4 strips every dotfile from the artifact with no way to opt out.
+      # -----------------------------------------------------------------------
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: '_site'
+          include-hidden-files: true
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      # -----------------------------------------------------------------------
+      # Post-deploy check against the LIVE origin. This is the guard that would
+      # have caught the v4 dotfile incident: assembly was correct, the artifact
+      # was not, and only a real request could tell the difference.
+      #
+      # Requires 200 AND no redirect — Android rejects a redirected
+      # assetlinks.json, which is why the host is www and never the apex.
+      # -----------------------------------------------------------------------
+      - name: Verify live deployment
+        run: |
+          BASE="https://www.qspotmarketplace.com"
+          PATHS="/.well-known/assetlinks.json /.well-known/apple-app-site-association /.well-known/security.txt /web/premium.html /"
+          sleep 20
+          fail=0
+          for p in $PATHS; do
+            code=""
+            for attempt in 1 2 3 4 5 6; do
+              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$BASE$p" || echo 000)
+              [ "$code" = "200" ] && break
+              echo "  $p → $code (attempt $attempt), retrying in 15s"
+              sleep 15
+            done
+            if [ "$code" = "200" ]; then
+              echo "✓ $p → 200"
+            else
+              echo "::error::$BASE$p returned $code after the deploy completed."
+              echo "::error::If assembly logged the file but this 404s, suspect the artifact packer stripping dotfiles (upload-pages-artifact v4)."
+              fail=1
+            fi
+          done
+          # assetlinks.json must additionally be served WITHOUT a redirect
+          redir=$(curl -sS -o /dev/null -w '%{num_redirects}' --max-time 20 "$BASE/.well-known/assetlinks.json" || echo 0)
+          if [ "$redir" != "0" ]; then
+            echo "::error::assetlinks.json is served via $redir redirect(s). Android's App Link verifier rejects any redirect."
+            fail=1
+          fi
+          [ "$fail" -eq 0 ] || exit 1
