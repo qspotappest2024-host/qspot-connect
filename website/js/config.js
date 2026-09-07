@@ -9,8 +9,8 @@
 
 const QSPOT_CONFIG = {
     // Supabase (read-only anon access — RLS enforces spots_select_anon_live_only)
-    SUPABASE_URL: 'https://zlfrcgznovxcinsxzclt.supabase.co',
-    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsZnJjZ3pub3Z4Y2luc3h6Y2x0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5Mjg2NDksImV4cCI6MjA2NDUwNDY0OX0.i_nowvP_RrRuSm4orRpVpTYW-PrU9HEbTcdLxUKDvew',
+    SUPABASE_URL: 'https://lrvrmcmuhkdqhtxoumij.supabase.co',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxydnJtY211aGtkcWh0eG91bWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzODkxMDAsImV4cCI6MjEwMzk2NTEwMH0.yJNgqqo_reBzb_2CSHr6G03HL4-9wqqrmQSlqL4rQF4',
 
     // MapTiler — Sign up free at https://cloud.maptiler.com/ (100k map loads/month free)
     // TODO: Replace with your MapTiler API key

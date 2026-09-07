@@ -7,8 +7,9 @@
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
-  <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/qspot_logo.png">
-  <link rel="apple-touch-icon" href="/assets/images/app-icon-1024.png">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
   <link rel="stylesheet" href="qspot.css">
 </head>
 <body>
@@ -28,16 +29,40 @@
     <h1>Welcome to QSpot <span class="gold">Premium</span> 🎉</h1>
   </header>
 
+  <!-- ⚠️ DO NOT restore "Payment received" here (2026-08-28, T8.1).
+       This one string serves BOTH checkout paths and was only true on one of
+       them. A trial-eligible subscriber gets trial_period_days from
+       create-checkout-session:199, so Stripe issues a CA$0.00 invoice and takes
+       NOTHING today — measured live: T8.1 amount_paid 0.00, T8.2 amount_paid
+       90.00, same page shown for both. Telling a trial user their payment was
+       received is false, and it also sends them looking for a charge that will
+       not appear on their statement for 30 days.
+       "Checkout complete" is true on both paths and needs no server round-trip
+       to decide, which is why it is worded this way rather than branched on
+       session_id. -->
   <div class="notice success" style="text-align:center;">
-    Payment received — your membership is being activated.
+    Checkout complete — your membership is being activated.
   </div>
 
   <div class="card">
-    <h2>One quick step</h2>
+    <!-- Heading followed the copy: there is no step any more, so it no longer
+         claims one. A heading that promises an action the body does not give
+         is the same defect in smaller type. -->
+    <h2>What happens next</h2>
+    <!-- ⚠️ The "reopen the app" instruction was REMOVED as the primary advice
+         (2026-08-28, T8.1/T8.2). Measured on both platforms: the badge appears
+         via Realtime in ~1.4 s without any interaction — iOS 1.33 s, Android
+         1.40 s, against a ~10 s allowance. Leading with "reopen the app" told
+         users to work around a problem that does not exist, and it made the
+         Realtime→UI leg of T8.1 unmeasurable for any tester who followed it.
+         Kept only as a fallback, worded so it cannot be mistaken for a step. -->
     <p style="font-size:1rem;color:var(--text);">
-      Return to the QSpot app to see your Premium benefits. If your gold badge
-      isn't showing yet, <strong>reopen the app</strong> — close it from your
-      recent-apps view, then tap its icon again.
+      Return to the QSpot app — your Premium benefits appear automatically,
+      usually within a few seconds. There is nothing else to do.
+    </p>
+    <p style="font-size:0.95rem;color:var(--muted);margin-top:10px;">
+      Still not showing after a minute? Close the app from your recent-apps view
+      and tap its icon again.
     </p>
     <p style="margin-top:12px;">
       Your gold Premium badge, reduced QSpot Secure Listing Fee, and monthly offline-payment

@@ -7,6 +7,13 @@ workflow. Purchase happens via Stripe Checkout (hosted by Stripe); all server
 logic lives in Supabase Edge Functions. **No secrets belong in this repo** —
 only the Supabase anon key and the Stripe publishable key (both public by design).
 
+> ⚠️ **Publishing lives in a different repo and a different GitHub account.**
+> Before copying anything into `qspot-connect`, read
+> [`../WEB_DEPLOYMENT_AND_REPOS.md`](../WEB_DEPLOYMENT_AND_REPOS.md) — it covers the
+> two-account 403, the drift check, the `config.js` placeholder trap, the
+> root-only `.well-known/` rule, and the wrangler path.
+
+
 ## Files
 
 | File | Live URL | Purpose |

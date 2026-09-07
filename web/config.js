@@ -8,7 +8,7 @@
 // Never put sk_..., whsec_..., or the service-role key in this repo.
 
 window.QSPOT_CONFIG = {
-  SUPABASE_URL: "https://zlfrcgznovxcinsxzclt.supabase.co",
+  SUPABASE_URL: "https://lrvrmcmuhkdqhtxoumij.supabase.co",
   SUPABASE_ANON_KEY: "PASTE_YOUR_SUPABASE_ANON_KEY_HERE",
   STRIPE_PUBLISHABLE_KEY: "PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE",
 };
