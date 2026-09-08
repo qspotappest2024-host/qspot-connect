@@ -6,6 +6,83 @@ const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.QSPOT_CONFIG;
 // supabase-js v2 UMD exposes window.supabase.createClient
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ─── Pricing ─────────────────────────────────────────────────────────────────
+// 🔴 THE PRICE IS FETCHED, NEVER WRITTEN HERE. On 2026-09-07 the same figures
+//    were hand-written in 114 places across the app, the emails, three web
+//    pages and the Terms of Service, and nothing compared any of them to
+//    Stripe — the only one that charges. get-pricing reads the two configured
+//    Stripe prices and derives everything else.
+//
+// ⚠️ NO STALE FALLBACK, DELIBERATELY. If the fetch fails these pages show an
+//    unavailable state rather than a number that might be wrong. The figure
+//    appears in consent copy — "charged only when the trial ends" sits beside
+//    it — and a wrong number in the sentence that obtains agreement to be
+//    charged is worse than no number.
+const PRICING_URL = `${SUPABASE_URL}/functions/v1/get-pricing`;
+let _pricing = null;
+
+/** Fetches the live price list once per page load. Returns null on any failure. */
+async function loadPricing() {
+  if (_pricing) return _pricing;
+  try {
+    const res = await fetch(PRICING_URL, { headers: { "Content-Type": "application/json" } });
+    if (!res.ok) { console.error("get-pricing HTTP", res.status); return null; }
+    const p = await res.json();
+    if (!p || !p.monthly || typeof p.monthly.amountCents !== "number") return null;
+    _pricing = p;
+    return p;
+  } catch (e) {
+    console.error("get-pricing fetch failed:", e);
+    return null;
+  }
+}
+
+/**
+ * The pricing already fetched, or null. SYNCHRONOUS on purpose.
+ *
+ * ⚠️ Render paths must not be made `async` just to read a price. account.html's
+ *    renderManage() is a plain function called from several places; awaiting
+ *    inside it was a SyntaxError caught by `node --check`, and making it async
+ *    would have spread `await` through every caller. Instead init awaits
+ *    loadPricing() once, and render paths read the cached value here.
+ *
+ * 🔴 Returns null until that first await resolves — callers must handle null by
+ *    omitting the figure, never by substituting one.
+ */
+function pricingNow() { return _pricing; }
+
+/**
+ * Formats integer cents in the reader's own locale.
+ * ⚠️ Intl decides where the symbol goes — `CA$90.00` in en-CA, `90,00 $` in
+ *    fr-CA. Hard-coding one arrangement is how a French reader gets English
+ *    punctuation; that is the same defect as hard-coding the amount, one layer
+ *    down.
+ */
+function formatMoney(cents, currency) {
+  const cur = (currency || "cad").toUpperCase();
+  try {
+    return new Intl.NumberFormat(navigator.language || "en-CA", {
+      style: "currency", currency: cur,
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    }).format(cents / 100);
+  } catch (_e) {
+    return `${cur} ${(cents / 100).toFixed(2)}`;   // last resort, still no invented amount
+  }
+}
+
+/** Same, but always two decimals — for legal and consent copy. */
+function formatMoneyExact(cents, currency) {
+  const cur = (currency || "cad").toUpperCase();
+  try {
+    return new Intl.NumberFormat(navigator.language || "en-CA", {
+      style: "currency", currency: cur,
+      minimumFractionDigits: 2, maximumFractionDigits: 2,
+    }).format(cents / 100);
+  } catch (_e) {
+    return `${cur} ${(cents / 100).toFixed(2)}`;
+  }
+}
+
 /** Returns the current session or null. */
 async function getSession() {
   const { data: { session } } = await sb.auth.getSession();

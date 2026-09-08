@@ -195,7 +195,17 @@
       }
 
       const yearly = row.subscription_interval === "year";
-      document.getElementById("m-plan").textContent   = yearly ? "Yearly Plan ($90 CAD/yr)" : "Monthly Plan ($10 CAD/mo)";
+      // 🔴 The plan label used to read "Yearly Plan ($90 CAD/yr)" with the amount
+      //    typed in. It is a member's own billing summary — the one place a
+      //    wrong figure is most likely to be believed — so it now names the plan
+      //    only, and states an amount solely when get-pricing has supplied one.
+      const _p   = pricingNow();
+      const _cur = _p ? (_p.currency || "cad").toUpperCase() : null;
+      const _amt = _p ? (yearly ? (_p.yearly && _p.yearly.amountCents) : _p.monthly.amountCents) : null;
+      const _sfx = yearly ? "/yr" : "/mo";
+      document.getElementById("m-plan").textContent =
+        (yearly ? "Yearly Plan" : "Monthly Plan") +
+        (_amt != null ? ` (${formatMoney(_amt, _cur)} ${_cur}${_sfx})` : "");
       document.getElementById("m-renews").textContent = formatDate(row.premium_until);
 
       // ── F45 (2026-08-21) ────────────────────────────────────────────────
@@ -237,8 +247,19 @@
         switchBtn.textContent = "Switch to Monthly (at period end)";
         switchBtn.dataset.plan = "monthly";
       } else {
-        switchDesc.textContent = "Upgrade to Yearly and save 25%. The difference is prorated immediately.";
-        switchBtn.textContent = "Upgrade to Yearly — $90/yr";
+        // Both strings derive from the same fetch. savePercent is floored
+        // server-side, so this can never overstate the saving; when pricing is
+        // unavailable the sentence simply omits the claim rather than guessing.
+        const _up   = pricingNow();
+        const _upc  = _up ? (_up.currency || "cad").toUpperCase() : null;
+        const _save = _up && _up.savePercent && _up.savePercent > 0 ? _up.savePercent : null;
+        const _yr   = _up && _up.yearly ? _up.yearly.amountCents : null;
+        switchDesc.textContent = _save
+          ? `Upgrade to Yearly and save ${_save}%. The difference is prorated immediately.`
+          : "Upgrade to Yearly. The difference is prorated immediately.";
+        switchBtn.textContent = _yr != null
+          ? `Upgrade to Yearly — ${formatMoney(_yr, _upc)}/yr`
+          : "Upgrade to Yearly";
         switchBtn.dataset.plan = "yearly";
       }
     }
@@ -524,6 +545,10 @@
       // the subscription row fails to load.
       show(document.getElementById("security"));
       show(document.getElementById("danger-zone"));
+      // Fetch pricing BEFORE the first render, so renderManage() can read it
+      // synchronously. A failure here is not fatal to this page: the plan label
+      // simply names the plan without an amount.
+      await loadPricing();
       await refresh();
     })();
   </script>

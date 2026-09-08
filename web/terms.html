@@ -87,7 +87,7 @@
       <p>When a marketplace transaction completes, the Seller's proceeds are held for a short period (a dispute window) before being released, and are then transferred to the Seller through our payment processor. To receive payouts, a Seller must complete the payment processor's onboarding, including any identity or banking information it requires. If a Seller does not complete this onboarding within thirty (30) days after funds first become payable, the unclaimed funds may be forfeited. QSpot will notify you before any forfeiture and give you an opportunity to claim your funds.</p>
 
       <h2>11. QSpot Premium Subscription</h2>
-      <p>QSpot offers an optional paid membership, QSpot Premium, which provides benefits such as reduced service fees. Premium is offered on a monthly plan (CAD $10.00 per month) and an annual plan (CAD $90.00 per year), sold through our website using Stripe. First-time members may be offered a free trial; if you do not cancel before the trial ends, your paid subscription begins automatically and your payment method is charged.</p>
+      <p>QSpot offers an optional paid membership, QSpot Premium, which provides benefits such as reduced service fees. Premium is offered on a monthly plan and an annual plan<span id="px-terms-rates">, at the rates shown on our <a href="premium.html">Premium page</a></span>, sold through our website using Stripe. First-time members may be offered a free trial; if you do not cancel before the trial ends, your paid subscription begins automatically and your payment method is charged.</p>
       <p>QSPOT PREMIUM IS AN AUTOMATICALLY RENEWING SUBSCRIPTION. It renews for successive periods at the then-current price until you cancel, and your payment method is charged at the start of each period. You may cancel at any time from your account page; cancellation stops future renewals, and your benefits continue until the end of the period you have already paid for. Subscription fees are non-refundable except where a refund is required by applicable law. We will notify you in advance of any change to the subscription price.</p>
 
       <h2>12. Cancellations, Disputes &amp; Refunds</h2>
@@ -167,5 +167,40 @@
       <div class="qfooter-copy">© 2026 QSpot Technologies Inc. All rights reserved.</div>
     </div>
   </footer>
+<script src="config.js"></script>
+<script>
+  // 🔴 THE PRICE IN THIS DOCUMENT IS FETCHED, NOT TYPED. Until 2026-09-07 this
+  //    paragraph carried "CAD $10.00 per month" and "CAD $90.00 per year" as
+  //    literal text, in the one document a member is asked to agree to. It was
+  //    one of 114 hand-written copies of a figure only Stripe actually charges,
+  //    and the likeliest of all of them to be forgotten in a price change.
+  //
+  // ⚠️ IF THE FETCH FAILS THE SENTENCE STAYS TRUE. The default wording already
+  //    reads "at the rates shown on our Premium page" — a statement that is
+  //    correct at any price. It is never replaced by a number this page cannot
+  //    confirm.
+  (async function () {
+    try {
+      const base = (window.QSPOT_CONFIG || {}).SUPABASE_URL;
+      if (!base) return;
+      const res = await fetch(`${base}/functions/v1/get-pricing`);
+      if (!res.ok) return;
+      const p = await res.json();
+      if (!p || !p.monthly || !p.yearly) return;
+      const cur = (p.currency || "cad").toUpperCase();
+      // Two decimals always: this is legal copy, not a price badge.
+      const money = (c) => {
+        try {
+          return new Intl.NumberFormat(navigator.language || "en-CA", {
+            style: "currency", currency: cur,
+            minimumFractionDigits: 2, maximumFractionDigits: 2,
+          }).format(c / 100);
+        } catch (_e) { return `${cur} ${(c / 100).toFixed(2)}`; }
+      };
+      document.getElementById("px-terms-rates").textContent =
+        ` (${money(p.monthly.amountCents)} per month and ${money(p.yearly.amountCents)} per year)`;
+    } catch (_e) { /* leave the rate-free wording standing */ }
+  })();
+</script>
 </body>
 </html>

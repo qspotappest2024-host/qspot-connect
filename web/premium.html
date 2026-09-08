@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QSpot Premium</title>
-  <meta name="description" content="Save on every transaction with QSpot Premium — reduced fees, a free monthly offline-payment listing credit, and a 30-day free trial.">
+  <meta name="description" content="Save on every transaction with QSpot Premium — reduced fees, a free monthly offline-payment listing credit, and a free trial.">
   <link rel="canonical" href="https://www.qspotmarketplace.com/web/premium.html">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
@@ -44,30 +44,36 @@
       <ul class="benefits">
         <li>Reduced QSpot Secure Listing Fee on every sale</li>
         <li>1 free offline-payment listing credit each month</li>
-        <li>30-day free trial for first-time members</li>
+        <li><span id="px-trial-benefit">Free</span> trial for first-time members</li>
       </ul>
     </div>
 
     <div class="plans">
+      <!-- 🔴 NO PRICE IS WRITTEN IN THIS MARKUP. Every figure below is a slot
+           filled from get-pricing at load; see fillPricing() at the foot of the
+           page. Typing an amount here is what made this page disagree with
+           Stripe in 114 places on 2026-09-07. The dashes are what a reader sees if the
+           fetch fails — deliberately, because a stale number sits beside the
+           words "charged only when the trial ends". -->
       <div class="plan" id="plan-monthly" data-plan="monthly">
         <div class="name">Monthly</div>
-        <div class="price">$10</div>
-        <div class="per">CAD / month</div>
+        <div class="price" id="px-monthly">—</div>
+        <div class="per"   id="px-monthly-per">&nbsp;</div>
       </div>
       <div class="plan selected" id="plan-yearly" data-plan="yearly">
-        <div class="badge">BEST VALUE — SAVE 25%</div>
+        <div class="badge" id="px-badge">BEST VALUE</div>
         <div class="name">Yearly</div>
-        <div class="price">$90</div>
-        <div class="per">CAD / year</div>
-        <div class="note">= CA$7.50/month</div>
+        <div class="price" id="px-yearly">—</div>
+        <div class="per"   id="px-yearly-per">&nbsp;</div>
+        <div class="note"  id="px-yearly-permonth"></div>
       </div>
     </div>
 
     <button class="primary" id="subscribe-btn">Start membership</button>
     <p style="max-width:420px;margin-top:12px;font-size:0.8rem;color:var(--text-dim);text-align:center;">
       Secure payment by Stripe. Cancel anytime — benefits continue to the end of
-      the paid period. First-time members get a 30-day free trial (card required,
-      charged only when the trial ends).
+      the paid period. First-time members get a <span id="px-trial"></span>
+      free trial (card required, charged only when the trial ends).
     </p>
     <button class="signout" onclick="signOut()">Sign out</button>
     <button class="signout" onclick="signOutEverywhere()">Sign out of all devices</button>
@@ -108,6 +114,58 @@
     const noticeEl  = document.getElementById("notice");
     const loadingEl = document.getElementById("loading");
     let selectedPlan = "yearly";
+
+    // ── Pricing ──────────────────────────────────────────────────────────────
+    // 🔴 THE BUTTON STAYS DISABLED UNTIL A PRICE IS ON SCREEN. Checkout would
+    //    succeed without it — the amount is decided server-side from the price
+    //    id — but starting a purchase while the page cannot say what it costs
+    //    is not consent. A network failure here means nobody can subscribe for
+    //    a moment; that is the accepted cost of never showing a wrong figure.
+    const subscribeBtn = document.getElementById("subscribe-btn");
+    subscribeBtn.disabled = true;
+
+    async function fillPricing() {
+      const p = await loadPricing();
+      if (!p) {
+        setNotice(noticeEl, "error",
+          "We couldn't load current pricing. Please refresh — we won't show a " +
+          "price we can't confirm.");
+        return;                       // slots keep their dashes; button stays disabled
+      }
+      const cur = (p.currency || "cad").toUpperCase();
+
+      document.getElementById("px-monthly").textContent     = formatMoney(p.monthly.amountCents, cur);
+      document.getElementById("px-monthly-per").textContent = `${cur} / month`;
+
+      if (p.yearly) {
+        document.getElementById("px-yearly").textContent     = formatMoney(p.yearly.amountCents, cur);
+        document.getElementById("px-yearly-per").textContent = `${cur} / year`;
+        // "≈" when the year does not divide evenly by twelve — the server says
+        // which, so the copy can never quietly round a member's arithmetic.
+        const per = p.yearlyPerMonthCents;
+        document.getElementById("px-yearly-permonth").textContent =
+          per == null ? "" : `${p.yearlyPerMonthExact ? "=" : "≈"} ${formatMoneyExact(per, cur)}/month`;
+        // savePercent is FLOORED server-side, so this can never overstate.
+        document.getElementById("px-badge").textContent =
+          p.savePercent && p.savePercent > 0
+            ? `BEST VALUE — SAVE ${p.savePercent}%`
+            : "BEST VALUE";
+      } else {
+        document.getElementById("plan-yearly").classList.add("hidden");
+        selectedPlan = "monthly";
+      }
+
+      // ⚠️ Both trial mentions, or the page contradicts itself. The default
+      //    text is EMPTY rather than a length: unfilled it reads "get a free
+      //    trial", true at any trial length, where a leftover number would be a
+      //    stale promise about when a card is charged.
+      if (typeof p.trialDays === "number" && p.trialDays > 0) {
+        document.getElementById("px-trial").textContent = `${p.trialDays}-day `;
+        document.getElementById("px-trial-benefit").textContent = `${p.trialDays}-day free`;
+      }
+      subscribeBtn.disabled = false;
+    }
+    fillPricing();
 
     document.querySelectorAll(".plan").forEach((el) => {
       el.onclick = () => {
