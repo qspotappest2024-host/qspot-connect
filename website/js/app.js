@@ -239,6 +239,13 @@ function initSwapDemo() {
         running = false;
         clearTimers();
         resetSlots();
+        // Restart the story from 1-for-1 next time the demo is seen.
+        // Without this, `count` keeps whatever phase was interrupted and
+        // start() replays it. 3-for-3 is the busiest phase and so the one a
+        // visitor is most likely to scroll away during, which means they come
+        // back to 3-for-3 over and over and never see the 1-for-1 this
+        // section is actually about.
+        count = 1;
     }
 
     function applyMotionPreference() {
