@@ -367,6 +367,42 @@ p {
     flex-wrap: wrap;
 }
 
+/* Gold Premium CTA below the hero buttons */
+.hero-premium {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.btn-premium {
+    background: var(--gold);
+    color: #1a1a1a;
+    box-shadow: 0 4px 16px rgba(240, 180, 41, 0.32);
+}
+
+.btn-premium:hover {
+    filter: brightness(0.97);
+    transform: translateY(-1px);
+}
+
+.hero-premium-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding-left: 4px;
+}
+
+.hero-premium-link:hover { color: var(--gold); }
+
+@media (max-width: 480px) {
+    .hero-premium { align-items: center; width: 100%; }
+    .hero-premium .btn { width: 100%; max-width: 300px; justify-content: center; }
+}
+
 .hero-visual {
     position: relative;
     display: flex;
@@ -663,60 +699,425 @@ body.page-map {
     height: 100%;
 }
 
-/* Map popup */
-.spot-popup {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    min-width: 220px;
-    max-width: 280px;
+/* ══════════════════════════════════════════════════════════════════════════
+   Map popup + photo gallery + spiderfy
+   ──────────────────────────────────────────────────────────────────────────
+   Every class below is emitted by js/map.js (buildSpotPopup, buildGallery,
+   openSpiderfy). Renaming one here without renaming it there leaves the
+   element unstyled, silently — there is no build step to catch it.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* --- Popup shell -------------------------------------------------------- */
+/* Scoped to .spot-popup-shell — the className passed to maplibregl.Popup —
+   so these overrides cannot reach any other popup on the site. */
+.maplibregl-popup.spot-popup-shell .maplibregl-popup-content {
+    padding: 0;                    /* the photo bleeds to the edge; .spot-popup-body puts padding back on the text */
+    border-radius: 14px;
+    overflow: hidden;              /* clips the photo to the rounded top corners */
+    background: var(--bg-white);
+    box-shadow: var(--shadow-md);
 }
 
-.spot-popup-image {
-    width: calc(100% + 20px);
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-    margin: -10px -10px 10px -10px;
+/* The tip is a CSS triangle, so only the border facing the popup carries a
+   colour — and which border that is depends on the anchor MapLibre chose.
+   Miss one and that anchor shows a white tip on a dark popup. */
+.spot-popup-shell.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.spot-popup-shell.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.spot-popup-shell.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+    border-bottom-color: var(--bg-white);
+}
+.spot-popup-shell.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.spot-popup-shell.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.spot-popup-shell.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+    border-top-color: var(--bg-white);
+}
+.spot-popup-shell.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    border-right-color: var(--bg-white);
+}
+.spot-popup-shell.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    border-left-color: var(--bg-white);
+}
+
+/* Sits over the photo, so it needs its own contrast rather than the theme's. */
+.spot-popup-shell .maplibregl-popup-close-button {
+    z-index: 3;
+    top: 7px;
+    right: 7px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.15s ease;
+}
+
+.spot-popup-shell .maplibregl-popup-close-button:hover,
+.spot-popup-shell .maplibregl-popup-close-button:focus-visible {
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+}
+
+/* --- Popup body --------------------------------------------------------- */
+.spot-popup {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    width: 268px;
+    /* Accent pair. --primary is NOT redefined in dark mode, so the popup
+       carries its own and overrides it at the bottom of this section. */
+    --popup-accent: var(--primary);
+    --popup-cta-bg: var(--primary);
+    --popup-cta-fg: #ffffff;
+}
+
+.spot-popup-body {
+    padding: 12px 14px 14px;
 }
 
 .spot-popup h3 {
     font-size: 1rem;
-    margin-bottom: 4px;
+    line-height: 1.3;
+    margin: 0 0 6px;
     color: var(--text-primary);
 }
 
+/* --cat-color is set inline by map.js from the category palette. All eight
+   palette values are Material 700/800 shades, so white text clears AA on
+   every one of them, in either theme. */
 .spot-popup-category {
     display: inline-block;
-    background: var(--bg-light);
-    color: var(--primary);
-    padding: 2px 10px;
+    background: var(--cat-color, var(--primary));
+    color: #fff;
+    padding: 3px 10px;
     border-radius: 12px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
+    letter-spacing: 0.01em;
     margin-bottom: 8px;
 }
 
 .spot-popup-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 4px;
+    color: var(--popup-accent);
+    margin-bottom: 6px;
 }
 
-.spot-popup-rating {
-    font-size: 0.85rem;
+.spot-popup-desc {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    margin: 0 0 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Seller rating, not spot rating (Issue #110). Hidden entirely at zero
+   reviews by map.js, so this never renders an empty star row. */
+.spot-popup-seller {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.spot-popup-star {
+    color: var(--gold);
+    font-size: 0.9rem;
+}
+
+.spot-popup-seller strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.spot-popup-seller-meta {
     color: var(--text-light);
 }
 
 .spot-popup-cta {
     display: block;
     text-align: center;
-    margin-top: 10px;
-    padding: 8px;
-    background: var(--primary);
-    color: white;
+    padding: 9px 8px;
+    background: var(--popup-cta-bg);
+    color: var(--popup-cta-fg);
     border-radius: var(--radius-sm);
     font-size: 0.85rem;
     font-weight: 600;
+    text-decoration: none;
+    transition: filter 0.15s ease;
+}
+
+.spot-popup-cta:hover,
+.spot-popup-cta:focus-visible {
+    filter: brightness(1.12);
+    color: var(--popup-cta-fg);
+}
+
+/* --- Photo gallery ------------------------------------------------------ */
+.spot-gallery {
+    position: relative;
+    background: var(--bg-light);
+}
+
+/* No photos at all: there is no .spot-gallery-frame in this case, so the
+   wrapper needs its own height or the absolutely-positioned placeholder
+   would collapse it to nothing. */
+.spot-gallery.is-empty {
+    min-height: 84px;
+}
+
+.spot-gallery-frame {
+    position: relative;
+    height: 158px;                 /* fixed rather than aspect-ratio, for older Safari */
+    overflow: hidden;
+}
+
+.spot-gallery-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* [hidden] lives in the UA stylesheet, so ANY author `display` above beats
+   it. Without these two rules the failure placeholder would sit over every
+   photo permanently, and a dead URL would show both states at once. */
+.spot-gallery-img[hidden],
+.spot-gallery-empty[hidden] {
+    display: none;
+}
+
+.spot-gallery-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    background: var(--bg-light);
+}
+
+.spot-gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);   /* keep transform for centring only — hover must not fight it */
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.spot-gallery-nav.is-prev { left: 7px; }
+.spot-gallery-nav.is-next { right: 7px; }
+
+.spot-gallery-nav:hover,
+.spot-gallery-nav:focus-visible {
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.spot-gallery-nav svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* Top-LEFT: the popup close button owns the top-right corner. */
+.spot-gallery-counter {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    z-index: 2;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.spot-gallery-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+}
+
+/* A 22px transparent button so the tap target is usable, with a 6px pill
+   drawn inside it — the dot people see is not the dot they have to hit. */
+.spot-gallery-dot {
+    width: 22px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spot-gallery-dot::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: width 0.18s ease, background 0.18s ease;
+}
+
+.spot-gallery-dot.is-active::after {
+    width: 14px;
+    background: #fff;
+}
+
+/* --- Spiderfy ----------------------------------------------------------- */
+/* One marker anchored at the shared coordinate; the pins are absolutely
+   positioned children, so the root itself has no size. */
+.spider-root {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+/* pointer-events: none is load-bearing — the SVG covers the whole fan, and
+   without it the legs would swallow every pin click. */
+.spider-legs {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.spider-leg {
+    stroke: var(--primary-light);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    opacity: 0.7;
+}
+
+.spider-hub {
+    fill: var(--primary-light);
+    opacity: 0.85;
+}
+
+/* Centred on its offset point with negative margins rather than a translate,
+   leaving transform free for the pop-in. */
+.spider-pin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    padding: 0;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spiderPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.spider-pin:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+
+.spider-pin.is-active {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.35), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.spider-pin:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+@keyframes spiderPop {
+    from { transform: scale(0.4); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spider-pin { animation: none; }
+    .spot-gallery-dot::after { transition: none; }
+}
+
+/* --- "N spots share this location" hint --------------------------------- */
+.map-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 34px;                  /* clears the MapLibre attribution bar */
+    transform: translateX(-50%);
+    z-index: 2;
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(26, 26, 46, 0.88);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;          /* never intercepts a map drag */
+    box-shadow: var(--shadow-sm);
+}
+
+/* Same [hidden] trap as the gallery above: the rule sets display, so the
+   UA's [hidden] no longer wins. */
+.map-hint[hidden] {
+    display: none;
+}
+
+/* --- Popup accents in dark mode ----------------------------------------- */
+/* --primary (#3F1842) is deliberately not redefined in the dark variable
+   set, and at 2.4:1 on the dark card it is unreadable. These pairs are the
+   only popup colours that need a theme override; everything else already
+   rides on the --text and --bg variables, which the dark set does redefine. */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .spot-popup {
+        --popup-accent: #C58FC7;
+        --popup-cta-bg: #C58FC7;
+        --popup-cta-fg: #1a0f1c;
+    }
+}
+
+html[data-theme="dark"] .spot-popup {
+    --popup-accent: #C58FC7;
+    --popup-cta-bg: #C58FC7;
+    --popup-cta-fg: #1a0f1c;
 }
 
 .map-loading {

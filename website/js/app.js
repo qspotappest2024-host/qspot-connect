@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     wireAppStoreLinks();
     initDarkModeToggle();
     initScrollReveal();
+    initSwapDemo();
 });
 
 /* --- Navbar scroll effect --- */
@@ -161,6 +162,117 @@ function initScrollReveal() {
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
 
     els.forEach(el => io.observe(el));
+}
+
+/* --- Hero one-for-one demo: cycles 1-for-1 -> 2-for-2 -> 3-for-3 --- */
+function initSwapDemo() {
+    const demo = document.querySelector('.ofo-demo');
+    if (!demo) return;
+
+    const slots = Array.from(demo.querySelectorAll('.ofo-slot'));
+    const badge = demo.querySelector('.ofo-badge');
+    const caption = demo.querySelector('.ofo-caption-text');
+    if (!slots.length || !badge || !caption) return;
+
+    const MAX_SWAPS = Math.min(3, slots.length);
+    const STAGGER = 130;   // ms between each spot in a multi-swap
+    const T_SWAP = 1000;   // sellers step out / buyers step in
+    const T_SETTLE = 3000; // buyers become part of the line
+    const T_RESET = 4200;  // invisible loop reset (after every transition has landed)
+    const T_NEXT = 4500;   // next count starts
+
+    const captionFor = (n) => n === 1
+        ? 'Seller <b>steps out</b> \u00b7 buyer <b>steps in</b>'
+        : n + ' sellers <b>step out</b> \u00b7 ' + n + ' buyers <b>step in</b>';
+
+    let timers = [];
+    let count = 1;
+    let running = false;
+    let inView = true;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const after = (fn, ms) => timers.push(window.setTimeout(fn, ms));
+    const clearTimers = () => { timers.forEach(window.clearTimeout); timers = []; };
+
+    function resetSlots() {
+        demo.classList.add('no-anim');
+        slots.forEach((slot) => {
+            slot.classList.remove('is-listed', 'is-swapped', 'is-settled');
+            slot.style.removeProperty('--ofo-delay');
+        });
+        void demo.offsetWidth; // flush the change before transitions come back
+        demo.classList.remove('no-anim');
+    }
+
+    function label(n) {
+        badge.textContent = n + '-for-' + n;
+        caption.innerHTML = captionFor(n);
+    }
+
+    function runPhase(n) {
+        timers = []; // every timer from the previous phase has already fired
+        count = n;
+        label(n);
+        badge.classList.add('is-bump');
+        after(() => badge.classList.remove('is-bump'), 420);
+
+        const active = slots.slice(0, n);
+        active.forEach((slot, i) => {
+            slot.style.setProperty('--ofo-delay', (i * STAGGER) + 'ms');
+            slot.classList.add('is-listed');
+        });
+
+        after(() => active.forEach(s => s.classList.add('is-swapped')), T_SWAP);
+        after(() => active.forEach(s => s.classList.add('is-settled')), T_SETTLE);
+        after(resetSlots, T_RESET);
+        after(() => runPhase(n < MAX_SWAPS ? n + 1 : 1), T_NEXT);
+    }
+
+    function start() {
+        if (running || !inView || document.hidden || reduceMotion.matches) return;
+        running = true;
+        runPhase(count);
+    }
+
+    function stop() {
+        if (!running) return;
+        running = false;
+        clearTimers();
+        resetSlots();
+    }
+
+    function applyMotionPreference() {
+        if (reduceMotion.matches) {
+            stop();
+            label(1);
+            slots[0].classList.add('is-listed'); // static diagram, no movement
+        } else {
+            slots.forEach(s => s.classList.remove('is-listed'));
+            count = 1;
+            start();
+        }
+    }
+
+    // Only animate while the demo is on screen and the tab is visible.
+    if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                inView = entry.isIntersecting;
+                if (inView) start(); else stop();
+            });
+        }, { threshold: 0.15 });
+        io.observe(demo);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop(); else start();
+    });
+
+    if (typeof reduceMotion.addEventListener === 'function') {
+        reduceMotion.addEventListener('change', applyMotionPreference);
+    }
+
+    applyMotionPreference();
 }
 
 /* --- Utility: Format currency --- */

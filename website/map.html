@@ -29,9 +29,9 @@
     <meta name="twitter:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="1024x1024" href="assets/images/app-icon-1024.png">
-    <link rel="apple-touch-icon" href="assets/images/app-icon-1024.png">
-
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
     <!-- MapLibre GL CSS -->
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css">
 
@@ -82,6 +82,10 @@
                 <div class="spinner" aria-hidden="true"></div>
                 <span>Loading spots...</span>
             </div>
+            <!-- Shown only while spots are fanned out, so it is clear why one
+                 pin became several. role="status" announces it without stealing
+                 focus from the map. -->
+            <p class="map-hint" id="map-hint" role="status" hidden></p>
         </div>
     </main>
 

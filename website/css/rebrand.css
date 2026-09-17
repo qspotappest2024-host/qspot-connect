@@ -55,8 +55,10 @@ html[data-theme="dark"] {
 
 @media (prefers-reduced-motion: reduce) {
     .js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    .ofo-seller, .ofo-buyer, .hero-home::before, .hero-home::after,
+    .hero-home::before, .hero-home::after,
     .hero-home .snow { animation: none !important; }
+    .ofo-seller, .ofo-buyer, .ofo-seller::before, .ofo-buyer::before,
+    .ofo-slot::after, .ofo-badge { transition: none !important; }
     .hero-content, .ofo-demo { animation: none !important; }
 }
 
@@ -175,6 +177,11 @@ html[data-theme="dark"] .hero-home .snow { opacity: .28; }
 .hero-home .hero-buttons .btn-secondary { background: var(--glass-bg); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 
 /* ---------- One-for-one animated hero visual ---------- */
+:root {
+    --ofo-waiting: linear-gradient(160deg, #b9c6d6, #93a6bc);
+    --ofo-seller: linear-gradient(160deg, #7A3A7C, #3F1842);
+    --ofo-buyer: linear-gradient(160deg, #7FB6E6, #4D72A0);
+}
 .ofo-demo {
     width: 100%; max-width: 460px;
     background: var(--glass-bg);
@@ -188,35 +195,74 @@ html[data-theme="dark"] .hero-home .snow { opacity: .28; }
 .ofo-line { display: flex; align-items: flex-end; gap: 12px; height: 96px; position: relative; }
 .ofo-person {
     width: 34px; height: 34px; border-radius: 50%;
-    background: linear-gradient(160deg, #b9c6d6, #93a6bc);
+    background: var(--ofo-waiting);
     box-shadow: inset 0 -3px 6px rgba(0,0,0,.12);
     flex-shrink: 0;
 }
 .ofo-slot { position: relative; width: 34px; height: 34px; flex-shrink: 0; }
-.ofo-seller, .ofo-buyer { position: absolute; inset: 0; width: 34px; height: 34px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,.22); }
-.ofo-seller { background: linear-gradient(160deg, #7A3A7C, #3F1842); animation: sellerOut 6s ease-in-out infinite; }
-.ofo-buyer  { background: linear-gradient(160deg, #7FB6E6, #4D72A0); opacity: 0; animation: buyerIn 6s ease-in-out infinite; }
-.ofo-slot::after { /* the fixed position marker in the line */
+
+/* Both occupants of a spot share the same geometry; state classes move them. */
+.ofo-seller, .ofo-buyer {
+    position: absolute; inset: 0; border-radius: 50%;
+    transition: opacity .5s ease,
+                transform .55s cubic-bezier(.2,.7,.2,1),
+                box-shadow .45s ease;
+    transition-delay: var(--ofo-delay, 0ms);
+}
+/* The seller is simply someone waiting until their spot is listed. */
+.ofo-seller { background: var(--ofo-waiting); box-shadow: inset 0 -3px 6px rgba(0,0,0,.12); }
+.ofo-buyer  { background: var(--ofo-buyer); box-shadow: 0 4px 12px rgba(0,0,0,.22); opacity: 0; transform: translateY(26px) scale(.85); }
+
+/* Gradients can't be interpolated, so colour changes ride on a fading overlay. */
+.ofo-seller::before, .ofo-buyer::before {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+    opacity: 0; transition: opacity .45s ease; transition-delay: var(--ofo-delay, 0ms);
+}
+.ofo-seller::before { background: var(--ofo-seller); }
+.ofo-buyer::before  { background: var(--ofo-waiting); box-shadow: inset 0 -3px 6px rgba(0,0,0,.12); }
+
+/* Listed: the spot is on the market, so the seller takes the brand colour. */
+.ofo-slot.is-listed .ofo-seller { box-shadow: 0 4px 12px rgba(0,0,0,.22); }
+.ofo-slot.is-listed .ofo-seller::before { opacity: 1; }
+
+/* Swapped: the seller steps out the moment the buyer steps in. */
+.ofo-slot.is-swapped .ofo-seller { opacity: 0; transform: translateY(-26px) scale(.85); }
+.ofo-slot.is-swapped .ofo-buyer  { opacity: 1; transform: none; }
+
+/* Settled: the buyer is now just another person waiting in line. */
+.ofo-slot.is-settled .ofo-buyer { box-shadow: none; }
+.ofo-slot.is-settled .ofo-buyer::before { opacity: 1; }
+
+/* The gold marker sits under every spot currently in play. */
+.ofo-slot::after {
     content: ""; position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%);
-    width: 40px; height: 5px; border-radius: 3px; background: var(--gold); opacity: .85;
+    width: 40px; height: 5px; border-radius: 3px; background: var(--gold);
+    opacity: 0; transition: opacity .45s ease; transition-delay: var(--ofo-delay, 0ms);
 }
-@keyframes sellerOut {
-    0%, 34% { opacity: 1; transform: translateY(0) scale(1); }
-    46% { opacity: 0; transform: translateY(-26px) scale(.85); }
-    92% { opacity: 0; transform: translateY(-26px) scale(.85); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes buyerIn {
-    0%, 40% { opacity: 0; transform: translateY(26px) scale(.85); }
-    54%, 90% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(26px) scale(.85); }
-}
+.ofo-slot.is-listed::after { opacity: .85; }
+.ofo-slot.is-settled::after { opacity: 0; }
+
+/* Used for the instant, invisible loop reset. */
+.ofo-demo.no-anim .ofo-seller,
+.ofo-demo.no-anim .ofo-buyer,
+.ofo-demo.no-anim .ofo-slot::after,
+.ofo-demo.no-anim .ofo-seller::before,
+.ofo-demo.no-anim .ofo-buyer::before { transition: none !important; }
+
 .ofo-caption {
     margin-top: 26px; display: flex; align-items: center; gap: 10px;
     font-size: .92rem; font-weight: 600; color: var(--text-secondary);
 }
 .ofo-caption b { color: var(--primary); }
-.ofo-badge { margin-left: auto; font-size: .72rem; font-weight: 800; letter-spacing: .04em; color: #1a1a1a; background: var(--gold); padding: 5px 11px; border-radius: 999px; }
+.ofo-caption-text { min-height: 1.3em; }
+.ofo-badge {
+    margin-left: auto; font-size: .72rem; font-weight: 800; letter-spacing: .04em;
+    color: #1a1a1a; background: var(--gold); padding: 5px 11px; border-radius: 999px;
+    white-space: nowrap;
+    transition: transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.ofo-badge.is-bump { transform: scale(1.09); }
+.ofo-note { margin: 12px 0 0; font-size: .8rem; color: var(--text-light); }
 
 /* ---------- Trust strip ---------- */
 .trust-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-light); }
@@ -313,13 +359,20 @@ html[data-theme="dark"] .aud-card.buyer .aud-tag { color: var(--qs-frost); }
 @media (max-width: 768px) {
     .swap-steps { grid-template-columns: 1fr; max-width: 420px; }
     .ofo-demo { max-width: 380px; margin: 0 auto; }
+    /* Keep the caption and the N-for-N badge on one line as the count grows. */
+    .ofo-caption { font-size: .82rem; gap: 8px; }
+    .ofo-badge { font-size: .66rem; padding: 4px 9px; }
     .hero-home .hero-trust-line { justify-content: center; }
     .trust-strip .container { gap: 12px 22px; }
     .trust-item { font-size: .85rem; }
 }
 @media (max-width: 480px) {
+    .ofo-demo { padding: 26px 22px 22px; }
     .ofo-line { gap: 8px; }
-    .ofo-person, .ofo-slot, .ofo-seller, .ofo-buyer { width: 28px; height: 28px; }
+    .ofo-caption { font-size: .78rem; }
+    .ofo-note { font-size: .74rem; }
+    .ofo-person, .ofo-slot { width: 28px; height: 28px; }
+    .ofo-slot::after { width: 34px; }
     .usecase { padding: 14px 16px; }
     .hero-home h1 { font-size: clamp(1.9rem, 8vw, 2.4rem); }
     .oneforone .big-statement { font-size: clamp(1.35rem, 6vw, 1.8rem); }
