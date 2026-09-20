@@ -201,6 +201,19 @@ p {
     flex-shrink: 0;
 }
 
+/* QSpot Marketplace horizontal lockup (purple ground baked in, clear space built into the file) */
+.logo-lockup {
+    height: 36px;
+    width: auto;
+    border-radius: 8px;
+    display: block;
+    flex-shrink: 0;
+}
+.footer .logo-lockup--footer { height: 40px; }
+@media (max-width: 480px) {
+    .logo-lockup { height: 30px; }
+}
+
 /* Larger logo in footer */
 .footer .logo-img {
     width: 40px;
