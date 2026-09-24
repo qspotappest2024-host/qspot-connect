@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service — QSpot</title>
   <link rel="canonical" href="https://www.qspotmarketplace.com/web/terms.html">
+  <link rel="alternate" hreflang="fr-CA" href="https://www.qspotmarketplace.com/web/conditions.html">
+  <link rel="alternate" hreflang="en-CA" href="https://www.qspotmarketplace.com/web/terms.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.qspotmarketplace.com/web/conditions.html">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -17,6 +20,10 @@
     .legal h2 { font-size: 1.02rem; margin: 22px 0 8px; }
     .legal p  { font-size: 0.92rem; line-height: 1.65; margin: 0 0 10px; }
     .legal .muted { opacity: 0.7; font-size: 0.85rem; }
+    .langbar { max-width: 720px; width: 100%; margin: 0 auto 10px; text-align: right;
+               font-size: 0.85rem; opacity: 0.85; }
+    .langbar a { text-decoration: underline; }
+    .langbar .cur { font-weight: 600; text-decoration: none; opacity: 1; }
   </style>
 </head>
 <body>
@@ -36,12 +43,18 @@
     <h1>QSpot <span class="gold">Terms of Service</span></h1>
   </header>
 
+  <!-- English version. Charter of the French Language s. 52/s. 55: this page and its
+       French counterpart must stay available on terms at least as favourable, and
+       must say the same thing. Any edit here must be mirrored in web/conditions.html
+       and in the app (LoginLegalDialogs.kt / LegalContentFr.kt). -->
+  <div class="langbar"><a href="conditions.html">Français</a> &nbsp;|&nbsp; <span class="cur">English</span></div>
+
   <!-- Content ported verbatim from the in-app Terms of Service
        (LoginLegalDialogs.kt — TOS_SECTIONS). Keep the two in sync: any edit
        here must be mirrored in the app, and vice-versa. -->
   <div class="legal">
     <div class="card">
-      <p class="muted">Last Updated: July 27, 2026</p>
+      <p class="muted">Last Updated: September 24, 2026</p>
       <p>Welcome to QSpot. By creating an account or using our platform, you agree to be bound by these Terms of Service ("Terms"). Please read them carefully before proceeding.</p>
 
       <h2>1. Acceptance of Terms</h2>
@@ -80,19 +93,20 @@
       <p>QSpot transactions involve meeting another person face-to-face in a public place. You are solely responsible for your own safety. We encourage you to meet in well-lit, public areas, stay aware of your surroundings, and end any interaction that makes you uncomfortable. QSpot does not perform criminal background checks on users. Identity verification, where offered, confirms a user's identity document but does not guarantee any user's conduct or trustworthiness.</p>
 
       <h2>9. Fees, Payments &amp; Taxes</h2>
-      <p>QSpot charges service fees on marketplace transactions. The total amount you will pay as a Buyer — including any QSpot processing fee — is shown to you in full before you confirm a purchase, and the fees deducted from a Seller's proceeds are disclosed before a listing is created. All payments are processed by our third-party payment processor, Stripe; QSpot does not store your full card details.</p>
-      <p>You are solely responsible for determining, reporting, and remitting any taxes that apply to amounts you earn through the Service. QSpot charges and remits GST/HST on its own service fees as required by Canadian law, and may collect and remit other taxes where required.</p>
-
+      <p>QSpot charges service fees on marketplace transactions. The total amount you will pay as a Buyer — including any QSpot processing fee — is shown to you in full before you confirm a purchase, and the fees deducted from a Seller's proceeds are disclosed before a listing is created. Before you confirm any purchase you are shown an itemized breakdown of the price, each QSpot fee, and the total you will be charged. All marketplace purchases are charged, and all Seller proceeds are paid, in Canadian dollars (CAD). A Seller may enter a listing price in US dollars; it is converted to Canadian dollars at a published reference exchange rate when the listing is created or edited, and the Seller is shown the resulting Canadian-dollar price before publishing. The app may also show Buyers an estimated conversion of a price into another currency; these estimates are marked with the symbol ≈, are for information only, and are not the amount charged. Your card issuer may convert the Canadian-dollar charge at its own exchange rate and may charge you additional fees. All payments are processed by our third-party payment processor, Stripe; QSpot does not store your full card details.</p>
+      <p>You are solely responsible for determining, reporting, and remitting any taxes that apply to amounts you earn through the Service. QSpot charges and remits GST/HST and QST on its own service fees as required by Canadian and Quebec law, and may collect and remit other taxes where required.</p>
       <h2>10. Seller Payouts</h2>
-      <p>When a marketplace transaction completes, the Seller's proceeds are held for a short period (a dispute window) before being released, and are then transferred to the Seller through our payment processor. To receive payouts, a Seller must complete the payment processor's onboarding, including any identity or banking information it requires. If a Seller does not complete this onboarding within thirty (30) days after funds first become payable, the unclaimed funds may be forfeited. QSpot will notify you before any forfeiture and give you an opportunity to claim your funds.</p>
+      <p>To list a Spot for sale you must first set up payouts with our payment processor, Stripe, which may require identity and banking information. When a marketplace transaction completes, the Buyer's payment (less QSpot's fees) is routed to your Stripe account. Funds are held by Stripe, not by QSpot, and are paid to your bank account on Stripe's payout schedule, which includes a short delay during which a Buyer may raise a dispute (see Section 12). If a dispute is resolved in the Buyer's favour, the amount is refunded from your Stripe balance, or recovered from you if it has already been paid out. QSpot never takes ownership of your sale proceeds.</p>
 
       <h2>11. QSpot Premium Subscription</h2>
-      <p>QSpot offers an optional paid membership, QSpot Premium, which provides benefits such as reduced service fees. Premium is offered on a monthly plan and an annual plan<span id="px-terms-rates">, at the rates shown on our <a href="premium.html">Premium page</a></span>, sold through our website using Stripe. First-time members may be offered a free trial; if you do not cancel before the trial ends, your paid subscription begins automatically and your payment method is charged.</p>
-      <p>QSPOT PREMIUM IS AN AUTOMATICALLY RENEWING SUBSCRIPTION. It renews for successive periods at the then-current price until you cancel, and your payment method is charged at the start of each period. You may cancel at any time from your account page; cancellation stops future renewals, and your benefits continue until the end of the period you have already paid for. Subscription fees are non-refundable except where a refund is required by applicable law. We will notify you in advance of any change to the subscription price.</p>
-
+      <p>QSpot offers an optional paid membership, QSpot Premium, which provides benefits such as reduced service fees. Premium is offered on a monthly plan and an annual plan, at the rates shown on the Premium screen in the app and on our website, sold through our website using Stripe. Any one-time or non-recurring charge is shown next to the recurring amount before you subscribe.</p>
+      <p>First-time members may be offered a free trial. We will send you a written notice between two (2) and ten (10) days before a free trial or promotional rate ends, telling you the date it ends and the price you will be charged from that date. If you do not cancel before that date, your paid subscription begins and your payment method is charged.</p>
+      <p>QSPOT PREMIUM RENEWS AUTOMATICALLY UNTIL YOU CANCEL. The monthly plan renews from month to month. The annual plan runs for one (1) year and then continues from month to month at the then-current monthly rate — it does not renew for a further year. Before an annual plan reaches the end of its first year we will send you a written notice of the expiry date, between sixty (60) and ninety (90) days beforehand.</p>
+      <p>You may cancel at any time using the clearly identified cancellation control on your account page. You never need to telephone us, wait for an agent, or take any additional step in order to cancel. Cancellation stops future renewals, and your benefits continue until the end of the period you have already paid for. Subscription fees are non-refundable except where a refund is required by applicable law. We will notify you in advance of any change to the subscription price.</p>
       <h2>12. Cancellations, Disputes &amp; Refunds</h2>
-      <p>Either party may cancel a transaction before it is completed, in accordance with the options shown in the app. If a problem arises with a completed transaction, either party may raise a dispute within the dispute window shown in the app. While a dispute is open, the Seller's payout is paused. QSpot will review disputes and may, acting reasonably, resolve them by releasing the disputed amount to the Seller or refunding it to the Buyer. QSpot service fees are generally non-refundable, except where a refund is required by applicable consumer-protection law. Nothing in these Terms limits any refund or other right you have that cannot be waived under applicable law.</p>
-
+      <p>Either party may cancel a transaction before it is completed, in accordance with the options shown in the app. If a problem arises with a completed transaction, either party may raise a dispute within the dispute window shown in the app. While a dispute is open, the Seller's payout is paused. QSpot will review disputes and may, acting reasonably, resolve them by releasing the disputed amount to the Seller or refunding it to the Buyer from the Seller's Stripe balance. QSpot service fees are generally non-refundable, except where a refund is required by applicable consumer-protection law.</p>
+      <p>Separately from the above, contracts you enter into with QSpot are distance contracts. We send you a copy of each such contract by email within fifteen (15) days of it being entered into. If we fail to disclose the information the law requires before the contract is entered into, or fail to send you that copy, you may have a statutory right to cancel — in Quebec, within seven (7) days of receiving the contract, or within thirty (30) days where no copy was sent.</p>
+      <p>Nothing in these Terms limits any refund, cancellation, or other right you have that cannot be waived under applicable law.</p>
       <h2>13. Prohibited Activities</h2>
       <p>You agree not to:</p>
       <p>(a) Use the Service for any unlawful purpose or in violation of any applicable law;<br>
@@ -112,7 +126,7 @@
       <p>All QSpot trademarks, logos, trade names, service marks, and software are the exclusive property of QSpot Technologies Inc. and its licensors. Nothing in these Terms grants you the right to use any QSpot intellectual property without prior written consent. Any feedback or suggestions you provide to QSpot may be used by QSpot without restriction or compensation to you.</p>
 
       <h2>16. Privacy</h2>
-      <p>Our <a href="privacy.html">Privacy Policy</a> explains how QSpot collects, uses, and shares your personal information and is incorporated into these Terms by reference. By using the Service, you agree to the practices described in the Privacy Policy. QSpot is committed to complying with applicable privacy laws, including Canada's Personal Information Protection and Electronic Documents Act (PIPEDA), British Columbia's Personal Information Protection Act (PIPA), Quebec's Law 25, and, where applicable, the California Consumer Privacy Act (CCPA/CPRA) and, for users in the European Economic Area, the United Kingdom, and Switzerland, the EU/UK General Data Protection Regulation (GDPR).</p>
+      <p>Our <a href="privacy.html">Privacy Policy</a> explains how QSpot collects, uses, and shares your personal information and is incorporated into these Terms by reference. By using the Service, you agree to the practices described in the Privacy Policy. QSpot is committed to complying with applicable privacy laws, including Canada's Personal Information Protection and Electronic Documents Act (PIPEDA), British Columbia's Personal Information Protection Act (PIPA), Quebec's Act respecting the protection of personal information in the private sector (Law 25), and, where applicable, the California Consumer Privacy Act (CCPA/CPRA) and, for users in the European Economic Area, the United Kingdom, and Switzerland, the EU/UK General Data Protection Regulation (GDPR).</p>
 
       <h2>17. Disclaimers</h2>
       <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. QSPOT EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. QSPOT DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS, AND MAKES NO REPRESENTATIONS ABOUT THE ACCURACY, RELIABILITY, OR QUALITY OF ANY LISTING OR USER CONTENT.</p>
@@ -121,31 +135,46 @@
       <h2>18. Limitation of Liability</h2>
       <p>TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, QSPOT'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL NOT EXCEED THE GREATER OF: (A) THE TOTAL FEES ACTUALLY PAID BY YOU TO QSPOT IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE CLAIM; OR (B) ONE HUNDRED DOLLARS (USD 100 / CAD 135).</p>
       <p>IN NO EVENT SHALL QSPOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES, EVEN IF QSPOT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
-      <p>Some jurisdictions do not allow the exclusion or limitation of certain damages or of statutory consumer rights. Nothing in this section limits any liability that cannot be limited under applicable law, including your rights under the British Columbia Business Practices and Consumer Protection Act and other applicable consumer-protection legislation.</p>
-
+      <p>Some jurisdictions do not allow the exclusion or limitation of certain damages or of statutory consumer rights. Nothing in this section limits any liability that cannot be limited under applicable law, including your rights under the British Columbia Business Practices and Consumer Protection Act and other applicable consumer-protection legislation. THIS SECTION DOES NOT APPLY TO RESIDENTS OF QUEBEC — SEE SECTION 25.</p>
       <h2>19. Indemnification</h2>
       <p>To the extent permitted by applicable law, you agree to indemnify, defend, and hold harmless QSpot Technologies Inc. and its officers, directors, employees, contractors, agents, and successors from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable legal fees) arising from or relating to: (a) your use of or inability to use the Service; (b) your breach of these Terms; (c) your violation of any law or the rights of any third party; or (d) any dispute between you and another user.</p>
-
+      <p>This section does not apply to residents of Quebec — see Section 25.</p>
       <h2>20. Dispute Resolution &amp; Arbitration</h2>
-      <p>PLEASE READ THIS SECTION CAREFULLY — IT AFFECTS YOUR LEGAL RIGHTS.</p>
+      <p>PLEASE READ THIS SECTION CAREFULLY — IT AFFECTS YOUR LEGAL RIGHTS. THIS SECTION DOES NOT APPLY TO RESIDENTS OF QUEBEC — SEE SECTION 25.</p>
       <p>For US Users: Any dispute, claim, or controversy arising out of or relating to these Terms or the Service shall be resolved by binding individual arbitration under the Commercial Arbitration Rules of the American Arbitration Association (AAA), except that either party may bring a qualifying claim in small-claims court. You may opt out of this arbitration agreement by emailing admin@qspotmarketplace.com within 30 days of creating your account.</p>
-      <p>For Canadian Users: Please contact us first so we can try to resolve your concern directly. Any dispute we cannot resolve informally may, by agreement, be referred to arbitration under the Rules of the ADR Institute of Canada. However, NOTHING IN THIS SECTION requires you to arbitrate, or prevents you from commencing or joining a court action or class proceeding, to the extent that a mandatory-arbitration or class-action-waiver term is prohibited or made unenforceable by applicable consumer-protection law (including the British Columbia Business Practices and Consumer Protection Act and Quebec's Consumer Protection Act). Canadian users retain the right to bring a claim in the courts of British Columbia.</p>
-      <p>CLASS ACTION WAIVER: To the fullest extent permitted by applicable law, and except where prohibited by the consumer-protection laws referred to above, the parties waive any right to participate in a class action or class-wide arbitration.</p>
-
+      <p>For Canadian Users: Please contact us first so we can try to resolve your concern directly. Any dispute we cannot resolve informally may, by agreement reached after the dispute has arisen, be referred to arbitration under the Rules of the ADR Institute of Canada. NOTHING IN THIS SECTION requires you to arbitrate, or prevents you from commencing or joining a court action or class proceeding, to the extent that a mandatory-arbitration or class-action-waiver term is prohibited or made unenforceable by applicable consumer-protection law. Canadian users retain the right to bring a claim in the courts of their home province.</p>
+      <p>CLASS ACTION WAIVER: To the fullest extent permitted by applicable law, and except where prohibited by applicable consumer-protection law, the parties waive any right to participate in a class action or class-wide arbitration. This waiver does not apply to residents of Quebec.</p>
       <h2>21. Governing Law</h2>
+      <p>THIS SECTION DOES NOT APPLY TO RESIDENTS OF QUEBEC — SEE SECTION 25.</p>
       <p>For US Users: These Terms are governed by the laws of the State of Delaware, without regard to its conflict-of-law provisions, except that the mandatory consumer-protection laws of your state of residence continue to apply.</p>
-      <p>For Canadian Users: These Terms are governed by the laws of the Province of British Columbia and the federal laws of Canada applicable therein. You and QSpot submit to the courts of British Columbia, without limiting any right you have to bring a claim in your home province where required by applicable law.</p>
-
+      <p>For Canadian Users: These Terms are governed by the laws of the Province of British Columbia and the federal laws of Canada applicable therein. You and QSpot submit to the courts of British Columbia, without limiting any right you have to bring a claim in your home province where applicable law gives you that right.</p>
       <h2>22. Termination</h2>
-      <p>QSpot reserves the right, in its sole discretion, to suspend or permanently terminate your account and access to the Service at any time, with or without cause, and with or without notice. Grounds for termination include, without limitation, violation of these Terms, fraudulent activity, or conduct that QSpot determines to be harmful to other users or the Service. You may close your account at any time from the app's account settings, where available, or by contacting admin@qspotmarketplace.com.</p>
-
+      <p>QSpot may suspend or permanently terminate your account and access to the Service where you breach these Terms, engage in fraudulent or unlawful activity, or where your conduct creates a genuine risk to the safety, rights, or property of other users, of QSpot, or of third parties. Except where immediate action is required to prevent harm or is required by law, we will tell you the reason.</p>
+      <p>We will never suspend or terminate your account, withhold funds, or take any other measure against you because you have published an honest review, rating, or comment about QSpot, about the Service, or about a transaction.</p>
+      <p>You may close your account at any time from the app's account settings, or by contacting admin@qspotmarketplace.com.</p>
       <h2>23. Changes to These Terms</h2>
       <p>QSpot may modify these Terms at any time. We will notify you of material changes by sending an email to the address associated with your account and/or by displaying a prominent notice within the Service. Your continued use of the Service after such changes take effect constitutes your acceptance of the revised Terms. If you do not agree to the revised Terms, you must stop using the Service.</p>
 
       <h2>24. Entire Agreement</h2>
       <p>These Terms, together with our <a href="privacy.html">Privacy Policy</a> and any other policies incorporated by reference, constitute the entire agreement between you and QSpot regarding the Service and supersede all prior agreements and understandings.</p>
 
-      <h2>25. Contact Us</h2>
+      <h2>25. Quebec Residents</h2>
+      <p>If you are a resident of Quebec, this section applies to you and prevails over anything else in these Terms that conflicts with it. It reflects rights that Quebec law gives you and that you cannot give up.</p>
+      <p>(a) Courts and jurisdiction — You may bring any claim against QSpot before the courts of Quebec. Article 3149 of the Civil Code of Quebec gives Quebec authorities jurisdiction over an action based on a consumer contract where the consumer is domiciled or resident in Quebec, and a waiver of that jurisdiction by the consumer cannot be set up against them. Section 21 does not apply to you to the extent it would require you to litigate elsewhere;</p>
+      <p>(b) Applicable law — Whatever these Terms say about governing law, you keep the protection of the mandatory rules of Quebec law, including the Consumer Protection Act (CQLR, c. P-40.1), as provided by article 3117 of the Civil Code of Quebec;</p>
+      <p>(c) No arbitration and no class-action waiver — Section 20 does not apply to you. Section 11.1 of the Consumer Protection Act prohibits any stipulation that obliges a consumer to refer a dispute to arbitration, that restricts the consumer's right to go before a court, or that prevents the consumer from bringing or being a member of a class action. You keep all of those rights in full. You may agree to arbitration after a dispute has arisen, but you are never required to;</p>
+      <p>(d) Our liability — Sections 18 and 19 do not apply to you to the extent they would liberate QSpot from the consequences of its own act or the act of its representative, which section 10 of the Consumer Protection Act prohibits;</p>
+      <p>(e) Your reviews — Nothing in these Terms restricts your right to publish an honest review, rating, or comment about QSpot, the Service, or a transaction, and we will not penalise you for doing so;</p>
+      <p>(f) Distance contracts — Contracts you enter into with QSpot are distance contracts under the Consumer Protection Act. Before you are bound, we disclose the information required by section 54.4 of that Act, including our name and address, a description of what you are buying, an itemized price and total, the currency, and the applicable cancellation conditions, and we give you an express opportunity to accept or decline and to correct any error. We send you a copy of the contract by email within fifteen (15) days. If we fail to do either, you may cancel as provided by sections 54.8 and 54.9 of that Act;</p>
+      <p>(g) Premium subscriptions — Your annual Premium subscription does not renew for a further fixed term. It continues for an indeterminate term, from month to month, as required by section 214.3 of the Consumer Protection Act, and we send you the expiry notice required by section 214.4. You may cancel at any time using the cancellation control on your account page;</p>
+      <p>(h) No waiver — You cannot be required to waive a right given to you by the Consumer Protection Act, and nothing in these Terms is intended to do so. If any provision of these Terms conflicts with that Act, that Act prevails and the provision is without effect against you to that extent.</p>
+
+      <h2>26. Language</h2>
+      <p>These Terms and our Privacy Policy are available in French and in English. Both versions are available at all times in the app and at qspotmarketplace.com, on terms at least as favourable, and the French version is presented first where Quebec law requires it.</p>
+      <p>If you have chosen to enter into these Terms in English, you confirm that the French version was made available to you beforehand and that it is your express wish that these Terms, and all documents related to them, be drawn up in English.</p>
+      <p>Les présentes Conditions et notre Politique de confidentialité sont offertes en français et en anglais. Les deux versions sont disponibles en tout temps dans l'application et à qspotmarketplace.com, à des conditions au moins aussi favorables, et la version française est présentée en premier lorsque la loi québécoise l'exige. Si vous avez choisi de conclure les présentes Conditions en anglais, vous confirmez que la version française vous a été remise au préalable et que c'est votre volonté expresse que les présentes Conditions, et tous les documents qui s'y rattachent, soient rédigés en anglais.</p>
+
+      <h2>27. Contact Us</h2>
       <p>If you have any questions about these Terms, please contact us:</p>
       <p>QSpot Technologies Inc.<br>
       9155 Emerald Drive, Whistler, British Columbia V8E 0G5, Canada<br>
@@ -167,40 +196,5 @@
       <div class="qfooter-copy">© 2026 QSpot Technologies Inc. All rights reserved.</div>
     </div>
   </footer>
-<script src="config.js"></script>
-<script>
-  // 🔴 THE PRICE IN THIS DOCUMENT IS FETCHED, NOT TYPED. Until 2026-09-07 this
-  //    paragraph carried "CAD $10.00 per month" and "CAD $90.00 per year" as
-  //    literal text, in the one document a member is asked to agree to. It was
-  //    one of 114 hand-written copies of a figure only Stripe actually charges,
-  //    and the likeliest of all of them to be forgotten in a price change.
-  //
-  // ⚠️ IF THE FETCH FAILS THE SENTENCE STAYS TRUE. The default wording already
-  //    reads "at the rates shown on our Premium page" — a statement that is
-  //    correct at any price. It is never replaced by a number this page cannot
-  //    confirm.
-  (async function () {
-    try {
-      const base = (window.QSPOT_CONFIG || {}).SUPABASE_URL;
-      if (!base) return;
-      const res = await fetch(`${base}/functions/v1/get-pricing`);
-      if (!res.ok) return;
-      const p = await res.json();
-      if (!p || !p.monthly || !p.yearly) return;
-      const cur = (p.currency || "cad").toUpperCase();
-      // Two decimals always: this is legal copy, not a price badge.
-      const money = (c) => {
-        try {
-          return new Intl.NumberFormat(navigator.language || "en-CA", {
-            style: "currency", currency: cur,
-            minimumFractionDigits: 2, maximumFractionDigits: 2,
-          }).format(c / 100);
-        } catch (_e) { return `${cur} ${(c / 100).toFixed(2)}`; }
-      };
-      document.getElementById("px-terms-rates").textContent =
-        ` (${money(p.monthly.amountCents)} per month and ${money(p.yearly.amountCents)} per year)`;
-    } catch (_e) { /* leave the rate-free wording standing */ }
-  })();
-</script>
 </body>
 </html>
