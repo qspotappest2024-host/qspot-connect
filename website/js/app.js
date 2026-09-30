@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkModeToggle();
     initScrollReveal();
     initSwapDemo();
+    initRoleTabs();
 });
 
 /* --- Navbar scroll effect --- */
@@ -325,4 +326,34 @@ function timeAgo(epochMs) {
         if (count >= 1) return `${count} ${label}${count > 1 ? 's' : ''} ago`;
     }
     return 'Just now';
+}
+
+/* --- Home v2: seller / buyer step switcher (WAI-ARIA tabs pattern) ---
+   Without JS both step lists render stacked, so nothing is ever hidden. */
+function initRoleTabs() {
+    const root = document.querySelector('[data-roles]');
+    if (!root) return;
+    const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+
+    function select(i, focus) {
+        tabs.forEach((t, j) => {
+            const on = i === j;
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+            t.tabIndex = on ? 0 : -1;
+            panels[j].hidden = !on;
+        });
+        if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((t, i) => {
+        t.addEventListener('click', () => select(i, false));
+        t.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                select((i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length, true);
+            }
+        });
+    });
+    select(0, false);
 }

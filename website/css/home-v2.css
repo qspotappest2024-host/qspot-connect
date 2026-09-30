@@ -1,0 +1,264 @@
+/* ============================================================
+   QSpot — Home v2 middle section
+   Loads AFTER style.css + rebrand.css. Only styles .hv-* classes
+   plus the trust strip, so removing this file + the new markup
+   rolls the page back.
+   ============================================================ */
+
+:root {
+    --hv-accent: var(--primary);          /* icon stroke, active tab */
+    --hv-accent-2: var(--secondary);
+    --hv-tint: rgba(63, 24, 66, 0.07);    /* icon wells */
+    --hv-tint-2: rgba(77, 114, 160, 0.10);
+    --hv-card: var(--bg-white);
+    --hv-line: var(--border);
+    --hv-gold-tint: rgba(240, 180, 41, 0.14);
+}
+html[data-theme="dark"] {
+    --hv-accent: #C58FC7;
+    --hv-accent-2: var(--qs-frost);
+    --hv-tint: rgba(197, 143, 199, 0.12);
+    --hv-tint-2: rgba(127, 182, 230, 0.12);
+    --hv-card: #17171f;
+    --hv-gold-tint: rgba(240, 180, 41, 0.12);
+}
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        --hv-accent: #C58FC7;
+        --hv-accent-2: var(--qs-frost);
+        --hv-tint: rgba(197, 143, 199, 0.12);
+        --hv-tint-2: rgba(127, 182, 230, 0.12);
+        --hv-card: #17171f;
+        --hv-gold-tint: rgba(240, 180, 41, 0.12);
+    }
+}
+
+/* Shared icon rules — every <svg><use> in the section */
+.hv-trust svg, .hv-how svg, .hv-lines svg, .hv-safe svg, .hv-premium svg {
+    fill: none; stroke: currentColor; stroke-width: 1.75;
+    stroke-linecap: round; stroke-linejoin: round; flex: none;
+}
+.hv-how h2, .hv-lines h2, .hv-safe h2 { text-wrap: balance; }
+.hv-anchor { position: relative; top: -90px; display: block; height: 0; }
+
+
+/* Dark mode: the brand gradient (#3F1842 → #4D72A0) is near-invisible on the dark
+   background (pre-existing on the live site). Lighter stops for the new headings only. */
+html[data-theme="dark"] :is(.hv-how, .hv-safe) .section-header h2 .grad {
+    background: linear-gradient(135deg, #D7A6D9 0%, #8EC1EC 100%);
+    -webkit-background-clip: text; background-clip: text;
+}
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) :is(.hv-how, .hv-safe) .section-header h2 .grad {
+        background: linear-gradient(135deg, #D7A6D9 0%, #8EC1EC 100%);
+        -webkit-background-clip: text; background-clip: text;
+    }
+}
+
+/* ---------- 1 · Trust strip ---------- */
+.hv-trust .hv-ic { width: 18px; height: 18px; color: var(--hv-accent); }
+.hv-trust .trust-item { gap: 8px; }
+
+/* ---------- 2 · How it works ---------- */
+.hv-how { background: linear-gradient(135deg, #f4eff8 0%, #e9f0f8 100%); }
+html[data-theme="dark"] .hv-how { background: linear-gradient(135deg, #1a1426 0%, #101a28 100%); }
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .hv-how { background: linear-gradient(135deg, #1a1426 0%, #101a28 100%); } }
+.hv-how .section-header { margin-bottom: 32px; }
+.hv-how .section-header h2 { max-width: 760px; margin-left: auto; margin-right: auto; }
+
+.hv-roles { max-width: 980px; margin: 0 auto; }
+.hv-seg {
+    display: none;                         /* shown only when JS can switch */
+    width: max-content; max-width: 100%; margin: 0 auto 28px; padding: 4px;
+    border-radius: 999px; background: var(--hv-card); border: 1px solid var(--hv-line);
+    box-shadow: var(--shadow-sm);
+}
+.js .hv-seg { display: flex; }
+.hv-seg-btn {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    min-height: 44px; padding: 0 20px; border-radius: 999px;
+    font: inherit; font-size: .95rem; font-weight: 700; color: var(--text-secondary);
+    transition: background .2s ease, color .2s ease;
+}
+.hv-seg-btn[aria-selected="true"] { background: var(--grad-brand); color: #fff; }
+
+.hv-steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    counter-reset: hvstep; position: relative;
+}
+.hv-steps + .hv-steps { margin-top: 28px; }         /* no-JS: both lists stacked */
+.js .hv-steps + .hv-steps { margin-top: 0; }
+.js .hv-steps[hidden] { display: none; }
+.hv-step {
+    counter-increment: hvstep; position: relative;
+    background: var(--hv-card); border: 1px solid var(--hv-line);
+    border-radius: var(--radius-lg); padding: 24px 22px 22px;
+    box-shadow: var(--shadow-sm);
+}
+.hv-step-ic {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--hv-tint); color: var(--hv-accent); margin-bottom: 14px; position: relative;
+}
+.hv-step-ic svg { width: 22px; height: 22px; }
+.hv-step-ic::after {                                 /* step number badge */
+    content: counter(hvstep); position: absolute; top: -8px; right: -8px;
+    width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+    font-size: .72rem; font-weight: 800; color: #1a1a1a; background: var(--gold);
+    box-shadow: 0 0 0 3px var(--hv-card);
+}
+.hv-step h3 { font-size: 1.08rem; margin-bottom: 6px; color: var(--text-primary); }
+.hv-step p { font-size: .93rem; line-height: 1.55; margin: 0; }
+
+.hv-how-cta { text-align: center; margin: 28px 0 0; }
+.hv-link {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    font-weight: 700; color: var(--hv-accent);
+    border-bottom: 2px solid currentColor;
+}
+.hv-link svg { width: 18px; height: 18px; transition: transform .2s ease; }
+.hv-link:hover svg { transform: translateX(3px); }
+
+/* ---------- 3 · Any line ---------- */
+.hv-lines { background: var(--bg-white); }
+.hv-lines .section-header { margin-bottom: 28px; }
+.hv-chips {
+    list-style: none; margin: 0 auto; padding: 0; max-width: 900px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.hv-chips li {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--bg-light); border: 1px solid var(--hv-line);
+    font-size: .92rem; font-weight: 600; color: var(--text-primary);
+}
+.hv-chips svg { width: 18px; height: 18px; color: var(--hv-accent-2); }
+
+/* ---------- 4 · Protected (bento) ---------- */
+.hv-safe { background: var(--bg-light); }
+.hv-bento {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+        "hero hero a b"
+        "hero hero c d";
+}
+.hv-tile {
+    background: var(--hv-card); border: 1px solid var(--hv-line);
+    border-radius: var(--radius-lg); padding: 22px;
+    display: flex; flex-direction: column; gap: 12px;
+}
+.hv-bento > .hv-tile:nth-child(2) { grid-area: a; }
+.hv-bento > .hv-tile:nth-child(3) { grid-area: b; }
+.hv-bento > .hv-tile:nth-child(4) { grid-area: c; }
+.hv-bento > .hv-tile:nth-child(5) { grid-area: d; }
+.hv-tile h3 { font-size: 1.02rem; margin-bottom: 4px; color: var(--text-primary); }
+.hv-tile p { font-size: .9rem; line-height: 1.55; margin: 0; }
+.hv-tile-ic {
+    width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+    background: var(--hv-tint); color: var(--hv-accent);
+}
+.hv-tile-ic svg { width: 20px; height: 20px; }
+
+.hv-tile-hero {
+    grid-area: hero; padding: 30px;
+    background:
+        radial-gradient(80% 70% at 100% 0%, var(--qs-aurora-2) 0%, transparent 60%),
+        radial-gradient(70% 60% at 0% 100%, var(--qs-aurora-1) 0%, transparent 60%),
+        var(--hv-card);
+}
+.hv-tile-hero h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); line-height: 1.2; }
+.hv-tile-hero p { font-size: .98rem; max-width: 520px; }
+
+.hv-flow {
+    list-style: none; margin: auto 0 0; padding: 12px 0 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; position: relative;
+}
+.hv-flow::before {                                   /* connector line */
+    content: ""; position: absolute; top: 22px; left: 16%; right: 16%; height: 2px;
+    background: linear-gradient(90deg, var(--hv-accent), var(--hv-accent-2));
+    opacity: .35;
+}
+.hv-flow li { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.hv-flow-ic {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--hv-card); color: var(--hv-accent);
+    border: 2px solid var(--hv-line); margin-bottom: 6px;
+}
+.hv-flow li:last-child .hv-flow-ic { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
+.hv-flow-ic svg { width: 20px; height: 20px; }
+.hv-flow b { font-size: .88rem; color: var(--text-primary); }
+.hv-flow small { font-size: .76rem; color: var(--text-light); line-height: 1.3; }
+
+.hv-stripe { text-align: center; margin-top: 28px; }
+.hv-stripe .pay-note { margin-top: 10px; font-size: .8rem; }
+
+/* ---------- 5 · Premium banner ---------- */
+.hv-premium-wrap { padding: 0 0 72px; background: var(--bg-light); }
+.hv-premium {
+    display: flex; align-items: center; gap: 22px;
+    padding: 24px 28px; border-radius: var(--radius-lg);
+    background: linear-gradient(120deg, var(--hv-gold-tint), transparent 70%), var(--hv-card);
+    border: 1px solid rgba(240, 180, 41, .45);
+}
+.hv-premium-ic {
+    width: 52px; height: 52px; flex: none; border-radius: 14px; display: grid; place-items: center;
+    background: var(--gold); color: #1a1a1a;
+}
+.hv-premium-ic svg { width: 26px; height: 26px; }
+.hv-premium-copy { flex: 1; }
+.hv-premium-copy h2 { font-size: 1.3rem; margin-bottom: 4px; }
+.hv-premium-copy h2 span { color: var(--gold-text); }
+.hv-premium-copy p { margin: 0; font-size: .95rem; line-height: 1.55; }
+.hv-btn-gold { background: var(--gold); color: #1a1a1a; white-space: nowrap; }
+.hv-btn-gold:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+    .hv-bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "hero hero" "a b" "c d";
+    }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 640px) {
+    .hv-trust .container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+    .hv-trust .trust-item { font-size: .82rem; line-height: 1.3; }
+
+    .hv-how .section-header { margin-bottom: 22px; }
+    .hv-seg { width: 100%; }
+    .hv-seg-btn { flex: 1; padding: 0 10px; font-size: .88rem; }
+
+    /* Steps become a compact vertical timeline — no card per step */
+    .hv-steps { grid-template-columns: 1fr; gap: 0; }
+    .hv-step {
+        display: grid; grid-template-columns: 44px 1fr; gap: 14px;
+        background: none; border: 0; box-shadow: none; padding: 0 0 20px;
+    }
+    .hv-step:last-child { padding-bottom: 0; }
+    .hv-step:not(:last-child)::before {              /* timeline rail */
+        content: ""; position: absolute; left: 21px; top: 48px; bottom: 4px; width: 2px;
+        background: linear-gradient(var(--hv-accent), var(--hv-accent-2)); opacity: .25;
+    }
+    .hv-step-ic { margin: 0; background: var(--hv-card); box-shadow: var(--shadow-sm); }
+    .hv-step h3 { font-size: 1rem; margin: 2px 0 2px; }
+    .hv-step p { font-size: .9rem; }
+    .hv-how-cta { margin-top: 22px; }
+
+    .hv-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .hv-chips li { padding: 10px 12px; font-size: .86rem; border-radius: 12px; }
+
+    .hv-bento { grid-template-columns: 1fr; grid-template-areas: "hero" "a" "b" "c" "d"; gap: 12px; }
+    .hv-tile { flex-direction: row; align-items: flex-start; gap: 14px; padding: 18px; }
+    .hv-tile-hero { flex-direction: column; padding: 22px; }
+    .hv-flow small { font-size: .72rem; }
+
+    .hv-premium-wrap { padding-bottom: 48px; }
+    .hv-premium { flex-direction: column; align-items: flex-start; gap: 14px; padding: 22px; }
+    .hv-premium .btn { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hv-seg-btn, .hv-link svg { transition: none; }
+}
