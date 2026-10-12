@@ -136,6 +136,13 @@
       <p style="font-size:0.9rem;opacity:0.85;">Records of completed payments are
          kept in a de-identified form for 7 years (10 in the EU) because tax law
          requires it. They contain no name, email or location.</p>
+      <!-- Issue #284 / App Store 5.1.1(v), TN3194 fallback: QSpot holds no Apple
+           refresh token, so it cannot revoke Sign in with Apple server-side.
+           Kept consistent with the in-app string settings_delete_account_apple_note. -->
+      <p style="font-size:0.9rem;opacity:0.85;">Signed in with Apple? After deleting,
+         also remove QSpot from Sign in with Apple: on your iPhone open Settings ›
+         your name › Sign-In &amp; Security › Sign in with Apple, or visit
+         <a href="https://account.apple.com" target="_blank" rel="noopener">account.apple.com</a>.</p>
       <div id="delete-blockers" class="hidden" style="margin-top:10px;font-size:0.9rem;"></div>
       <div id="delete-confirm" class="hidden" style="margin-top:12px;">
         <p style="font-size:0.9rem;"><strong>Type DELETE to confirm:</strong></p>
