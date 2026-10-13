@@ -42,6 +42,10 @@ let spiderfyState = null;
  */
 let ownerRatingAvailable = true;
 
+/** True while a spots request is running, so a second tap on Refresh (or a
+ *  Refresh during the first load) cannot start an overlapping request. */
+let spotsRequestInFlight = false;
+
 // ─── Source / layer IDs ──────────────────────────────────────────────────────
 const MARKERS_SOURCE_ID       = 'qspot-markers-source';
 const MARKERS_LAYER_ID        = 'qspot-markers-layer';
@@ -112,6 +116,11 @@ const SPIDER_SPIRAL_ARC    = 36;   // px between consecutive spiral pins
 
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
+
+    const refreshBtn = document.getElementById('map-refresh');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => fetchSpots({ refresh: true }));
+    }
 });
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -951,8 +960,21 @@ async function requestSpots(columns) {
     return response.json();
 }
 
-async function fetchSpots() {
-    showLoading(true);
+/**
+ * Load the live spots and draw them.
+ *
+ * The first load frames the map around every spot. A Refresh keeps the camera
+ * where the viewer left it (they may be zoomed in on one area) and shows its
+ * progress on the Refresh button instead of covering the map — unless there
+ * were no spots before, in which case framing the new ones is what they want.
+ */
+async function fetchSpots({ refresh = false } = {}) {
+    if (spotsRequestInFlight || !map) return;
+    spotsRequestInFlight = true;
+
+    const hadSpots = spotsData.length > 0;
+    setRefreshBusy(true);
+    if (!refresh) showLoading(true);
     clearOverlays();
     closeSpiderfy();
     if (activePopup) { activePopup.remove(); activePopup = null; }
@@ -988,11 +1010,15 @@ async function fetchSpots() {
         updateSpotCount(spotsData.length);
 
         if (spotsData.length === 0) {
+            // A refresh can empty a map that had pins — clear them, or the
+            // "no spots" message would sit on top of stale markers.
+            if (map.getSource(MARKERS_SOURCE_ID)) renderSpotsOnMap([]);
             showEmptyState();
         } else {
             renderSpotsOnMap(spotsData);
-            fitMapToSpots(spotsData);
+            if (!refresh || !hadSpots) fitMapToSpots(spotsData);
         }
+        markRefreshed();
     } catch (error) {
         console.error('Failed to fetch spots:', error);
         showMapError(
@@ -1000,8 +1026,27 @@ async function fetchSpots() {
             'There was a problem connecting to the server. Please check your internet connection and try again.'
         );
     } finally {
+        spotsRequestInFlight = false;
         showLoading(false);
+        setRefreshBusy(false);
     }
+}
+
+/** Spin and disable the Refresh button while a request is running. */
+function setRefreshBusy(busy) {
+    const btn = document.getElementById('map-refresh');
+    if (!btn) return;
+    btn.disabled = busy;
+    btn.classList.toggle('is-loading', busy);
+    btn.setAttribute('aria-busy', busy ? 'true' : 'false');
+}
+
+/** Record when the spots were last loaded, in the button's tooltip. */
+function markRefreshed() {
+    const btn = document.getElementById('map-refresh');
+    if (!btn) return;
+    const time = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    btn.title = `Refresh live spots (last updated ${time})`;
 }
 
 /** Normalise the images column, which may arrive as an array, a Postgres
@@ -1124,7 +1169,7 @@ function showMapError(title, detail) {
         retryBtn.textContent = 'Try Again';
         retryBtn.addEventListener('click', () => {
             clearOverlays();
-            fetchSpots();
+            fetchSpots({ refresh: spotsData.length > 0 });
         });
         overlay.appendChild(retryBtn);
     }

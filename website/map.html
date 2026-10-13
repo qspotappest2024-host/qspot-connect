@@ -74,7 +74,13 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4D72A0" stroke-width="2" style="vertical-align:middle;margin-right:6px;" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 0 0-8-8z"/></svg>
                 Live Spots
             </h2>
-            <span class="spot-count" id="spot-count" aria-live="polite">Loading...</span>
+            <div class="map-toolbar-actions">
+                <span class="spot-count" id="spot-count" aria-live="polite">Loading...</span>
+                <button type="button" class="map-refresh" id="map-refresh" aria-label="Refresh live spots" title="Refresh live spots" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
+                    <span class="map-refresh-label">Refresh</span>
+                </button>
+            </div>
         </div>
         <div class="map-container">
             <div id="map" role="application" aria-label="Map showing QSpot Marketplace listings"></div>
