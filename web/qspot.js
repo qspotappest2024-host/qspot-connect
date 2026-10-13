@@ -198,6 +198,9 @@ function renderLoginCard(container) {
         Signed up in the app with Apple and "Hide My Email"? Use
         <strong>Continue with Apple</strong> here so your accounts match.
       </p>
+      <p style="margin-top:14px;font-size:0.75rem;text-align:center;">
+        <a href="/web/patents.html" style="text-decoration:underline;">U.S. Patent Pending</a>
+      </p>
     </div>`;
   container.querySelector("#login-google").onclick = () => signInWith("google");
   container.querySelector("#login-apple").onclick  = () => signInWith("apple");

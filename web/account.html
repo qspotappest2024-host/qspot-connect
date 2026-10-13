@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com https://*.js.stripe.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://lrvrmcmuhkdqhtxoumij.supabase.co wss://lrvrmcmuhkdqhtxoumij.supabase.co https://api.stripe.com https://maps.googleapis.com; frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com; img-src 'self' data: https:; font-src 'self' data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
-  <title>QSpot — Manage Membership</title>
-  <meta name="description" content="Manage your QSpot Premium membership: view status, switch plans, update your payment method, or cancel.">
+  <title>QSpot Marketplace — Account, Membership &amp; Account Deletion</title>
+  <meta name="description" content="Manage your QSpot Marketplace account (by QSpot Technologies Inc.): delete your account, change email preferences, sign out of all devices, or manage your QSpot Premium membership.">
   <link rel="canonical" href="https://www.qspotmarketplace.com/web/account.html">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
@@ -21,14 +21,19 @@
       <ul class="qnav-links">
         <li class="hide-sm"><a href="/">Home</a></li>
         <li class="hide-sm"><a href="/map.html">Live Map</a></li>
-        <li><a href="/web/premium.html" class="active">Premium</a></li>
+        <li><a href="/web/premium.html">Premium</a></li>
         <li><a href="/index.html#download" class="qnav-cta">Get the App</a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Google Play account-deletion URL: https://www.qspotmarketplace.com/web/account.html#delete-account
+       Play requires the app or developer name as shown on the store listing:
+       app "QSpot Marketplace", developer "QSpot Technologies Inc." Keep both names here. -->
   <header>
-    <h1>Manage <span class="gold">Membership</span></h1>
+    <h1>Your QSpot Marketplace <span class="gold">Account</span></h1>
+    <p>For the QSpot Marketplace app by QSpot Technologies Inc.</p>
+    <p style="font-size:0.9rem;"><a href="#delete-account" style="text-decoration:underline;">How to delete your account</a></p>
   </header>
 
   <div id="notice" class="notice hidden"></div>
@@ -117,12 +122,42 @@
     </div>
   </div>
 
+  <!-- How to delete your account — ALWAYS visible, signed in or not (Google Play:
+       the deletion steps must be readable without signing in or reinstalling the app).
+       The actions themselves are in #danger-zone, shown after sign-in. Keep the
+       retention sentence verbatim with settings_delete_account_retention_note. -->
+  <div id="delete-account" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2>Delete your QSpot Marketplace account</h2>
+      <p>You can ask QSpot Technologies Inc. to delete your QSpot Marketplace account
+         and the data linked to it in any of these ways. You don't need to reinstall
+         the app.</p>
+      <ol class="steps">
+        <li><strong>In the app:</strong> Profile › Settings › Delete Account.</li>
+        <li><strong>On this page:</strong> sign in with the same Google or Apple account
+            you use in the app, then choose <strong>Delete my account</strong>.</li>
+        <li><strong>By email:</strong> write to
+            <a href="mailto:admin@qspotmarketplace.com?subject=QSpot%20Marketplace%20account%20deletion%20request">admin@qspotmarketplace.com</a>
+            from the email address on your account.</li>
+      </ol>
+      <h3>What happens</h3>
+      <p>Your account is scheduled for deletion and is permanently deleted after
+         7 days. Signing in to the app during those 7 days cancels it. Your account
+         and all associated data — listings, messages, and reviews — are deleted,
+         and any remaining Premium is forfeited. If a purchase, payout or dispute is
+         still in progress, deletion waits until it is settled.</p>
+      <p>Records of completed payments are kept in a de-identified form for 7 years
+         (10 in the EU) because tax law requires it. They contain no name, email or
+         location.</p>
+    </div>
+  </div>
+
   <!-- Account deletion (Issue #145) — this page is the web deletion URL
        declared in the Google Play Data Safety form. Shown for every
        signed-in user, member or not. -->
   <div id="danger-zone" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Delete account</h2>
+      <h2>Delete my account</h2>
       <p>Schedules your QSpot account for deletion in 7 days. Sign in to the
          QSpot app within 7 days to cancel. After that, your account and all
          associated data — listings, messages, and reviews —
@@ -162,7 +197,7 @@
 
   <footer class="qfooter">
     <div class="qfooter-inner">
-      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot</a>
+      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot Marketplace</a>
       <ul class="qfooter-links">
         <li><a href="/">Home</a></li>
         <li><a href="/map.html">Live Map</a></li>
@@ -172,7 +207,7 @@
         <li><a href="/web/privacy.html">Privacy</a></li>
         <li><a href="mailto:admin@qspotmarketplace.com">Support</a></li>
       </ul>
-      <div class="qfooter-copy">© 2026 QSpot. All rights reserved.</div>
+      <div class="qfooter-copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
     </div>
   </footer>
 

@@ -1394,6 +1394,17 @@ html[data-theme="dark"] .spot-popup {
     color: rgba(255, 255, 255, 0.35);
 }
 
+.footer-bottom .footer-patent {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+}
+
+.footer-bottom .footer-patent:hover {
+    color: var(--secondary);
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
     /* Layout */

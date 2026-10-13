@@ -114,6 +114,10 @@ header p { color: var(--text-dim); margin-top: 8px; font-size: 0.98rem; }
 }
 .card h2 { font-size: 1.1rem; margin-bottom: 12px; }
 .card p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; }
+.card h3 { font-size: 0.98rem; margin: 16px 0 6px; }
+.card ol.steps { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; padding-left: 1.3em; margin: 10px 0 4px; }
+.card ol.steps li { margin-bottom: 6px; }
+.card ol.steps a, header p a { text-decoration: underline; }
 
 .plans { display: flex; gap: 12px; width: 100%; max-width: 420px; }
 .plan {
@@ -215,6 +219,8 @@ button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
 .qfooter-links a { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; transition: color 0.2s; }
 .qfooter-links a:hover { color: var(--secondary-light); }
 .qfooter-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+.qfooter-copy a.qfooter-patent { color: rgba(255, 255, 255, 0.6); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.qfooter-copy a.qfooter-patent:hover { color: var(--secondary-light); }
 
 /* Legacy bare <footer> fallback (any page not yet upgraded to .qfooter) */
 footer:not(.qfooter) { margin-top: auto; padding-top: 32px; color: var(--text-dim); font-size: 0.8rem; text-align: center; }
