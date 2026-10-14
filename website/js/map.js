@@ -46,6 +46,26 @@ let ownerRatingAvailable = true;
  *  Refresh during the first load) cannot start an overlapping request. */
 let spotsRequestInFlight = false;
 
+/**
+ * False once a request has proved the view has no buyer_fee_cents column, i.e.
+ * supabase/public_live_spots_buyer_fee.sql has not been applied yet. Prices
+ * then fall back to the pre-fee spot price. Apply the migration BEFORE
+ * publishing this file so the fallback never runs: the all-in price is what
+ * keeps the advertised figure equal to what the buyer pays (Issue #287).
+ */
+let buyerFeeAvailable = true;
+
+/**
+ * The price a buyer actually pays: spot price + the QSpot Processing Fee frozen
+ * on the listing. Pay to Post listings carry no fee (NULL), so they show the
+ * spot price. Summed in cents so 50.00 + 2.99 is exactly 52.99.
+ */
+function buyerTotalPrice(spot) {
+    const fee = Number(spot.buyer_fee_cents);
+    if (!Number.isFinite(fee) || fee <= 0) return spot.price;
+    return (Math.round(Number(spot.price) * 100) + fee) / 100;
+}
+
 // ─── Source / layer IDs ──────────────────────────────────────────────────────
 const MARKERS_SOURCE_ID       = 'qspot-markers-source';
 const MARKERS_LAYER_ID        = 'qspot-markers-layer';
@@ -613,7 +633,7 @@ function openSpiderfy(anchorCoords, spots) {
         pin.textContent = String(i + 1);
         pin.setAttribute(
             'aria-label',
-            `${spot.name || 'Spot'} — ${categoryLabel(spot.category)} — ${formatPrice(spot.price, spot.currency || 'CAD')}`
+            `${spot.name || 'Spot'} — ${categoryLabel(spot.category)} — ${formatPrice(buyerTotalPrice(spot), spot.currency || 'CAD')}`
         );
         pin.title = spot.name || 'Spot';
 
@@ -751,7 +771,14 @@ function buildSpotPopup(spot) {
 
     const price = document.createElement('div');
     price.className = 'spot-popup-price';
-    price.textContent = formatPrice(spot.price, spot.currency || 'CAD');
+    price.textContent = formatPrice(buyerTotalPrice(spot), spot.currency || 'CAD');
+    if (Number(spot.buyer_fee_cents) > 0) {
+        const feeNote = document.createElement('span');
+        feeNote.className = 'spot-popup-price-note';
+        feeNote.style.cssText = 'display:block;font-size:12px;font-weight:400;opacity:0.7;';
+        feeNote.textContent = 'Includes QSpot Processing Fee';
+        price.appendChild(feeNote);
+    }
     body.appendChild(price);
 
     if (spot.description && String(spot.description).trim()) {
@@ -942,6 +969,7 @@ function buildGallery(urls, spotName) {
 // they are the dead SPOT rating columns (Issue #110) and are always 0.
 const BASE_COLUMNS  = 'id,name,description,category,price,currency,latitude,longitude,image_url,images';
 const OWNER_COLUMNS = 'owner_rating,owner_review_count';
+const FEE_COLUMNS   = 'buyer_fee_cents';
 
 async function requestSpots(columns) {
     const url = `${QSPOT_CONFIG.SUPABASE_URL}/rest/v1/public_live_spots?select=${columns}`;
@@ -981,7 +1009,24 @@ async function fetchSpots({ refresh = false } = {}) {
 
     try {
         let data;
-        try {
+        // public_live_spots_buyer_fee.sql adds BOTH the owner and fee columns,
+        // so try everything first. On a 400 (missing column) drop the fee
+        // columns, then the owner columns, so that an unapplied migration only
+        // costs features, never the whole map.
+        if (buyerFeeAvailable) {
+            try {
+                data = await requestSpots(`${BASE_COLUMNS},${OWNER_COLUMNS},${FEE_COLUMNS}`);
+                ownerRatingAvailable = true;
+            } catch (e) {
+                if (e.status !== 400) throw e;
+                buyerFeeAvailable = false;
+                console.warn(
+                    'public_live_spots has no buyer_fee_cents column — showing pre-fee prices. ' +
+                    'Apply supabase/public_live_spots_buyer_fee.sql to show all-in prices.'
+                );
+            }
+        }
+        if (data === undefined) try {
             data = await requestSpots(
                 ownerRatingAvailable ? `${BASE_COLUMNS},${OWNER_COLUMNS}` : BASE_COLUMNS
             );
