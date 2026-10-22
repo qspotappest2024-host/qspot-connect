@@ -175,6 +175,9 @@ html[data-theme="dark"] .hero-home .snow { opacity: .28; }
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
 .hero-home .hero-buttons .btn-secondary { background: var(--glass-bg); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+/* Dark mode: --primary (#3F1842) text is unreadable on the dark glass, so use white. */
+html[data-theme="dark"] .hero-home .hero-buttons .btn-secondary { color: #fff; }
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .hero-home .hero-buttons .btn-secondary { color: #fff; } }
 
 /* ---------- One-for-one animated hero visual ---------- */
 :root {
