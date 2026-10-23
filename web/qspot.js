@@ -251,7 +251,7 @@ async function loadSubscriptionRow() {
     // F45: cancel_at_period_end is REQUIRED here. Without it account.html cannot tell a
     // cancelled membership from a renewing one and renders "Renews <date>" to a member
     // who has already cancelled — the exact opposite of the truth.
-    .select("subscription_status, subscription_interval, premium_until, scheduled_subscription_interval, cancel_at_period_end, display_name, marketing_emails_opt_out")
+    .select("subscription_status, subscription_interval, premium_until, scheduled_subscription_interval, cancel_at_period_end, display_name, marketing_emails_opt_out, stripe_subscription_id")
     .eq("id", session.user.id)
     .single();
   if (error) {

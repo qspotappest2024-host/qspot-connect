@@ -72,7 +72,7 @@
       <button class="secondary hidden" id="keep-plan-btn">Keep current plan</button>
     </div>
 
-    <div class="card">
+    <div class="card" id="payment-card">
       <h2 data-i18n="pm_h">Payment method</h2>
       <p data-i18n="pm_p">Update the card used for your membership.</p>
       <div id="card-form" class="hidden">
@@ -82,7 +82,7 @@
       <button class="secondary" id="update-card-btn" data-i18n="pm_update">Update payment method</button>
     </div>
 
-    <div class="card">
+    <div class="card" id="cancel-card">
       <h2 data-i18n="cx_h">Cancel</h2>
       <p id="cancel-desc" data-i18n="cx_p">Your membership will not renew. Benefits remain active until the end of the paid period.</p>
       <button class="secondary danger" id="cancel-btn" data-i18n="cx_btn">Cancel membership</button>
@@ -249,6 +249,16 @@
         desc_up: "Upgrades apply now — the prorated difference is charged to your saved card, and a new term starts today.",
         desc_next_quarter: "You can also choose one 3-month Quarterly term after your yearly term, instead of going straight to monthly.",
         desc_none: "No other plans are available right now.",
+        comp_note: "Complimentary membership — no payment is taken. Your benefits run until {date}.",
+        btn_renew: "Renew for another {plan} term",
+        desc_renew: "Your term ends on {date}. You can renew it for one more {plan} term at the same price; otherwise it continues month to month.",
+        confirm_renew: "Renew your {plan} plan for one more term starting {date}? {price} will be charged to your saved card on {date}. After that term it continues month to month.",
+        note_renewed: "You renewed for one more {plan} term from {date}; after it, your membership continues month to month {rate}.",
+        btn_cancel_renewal: "Cancel the renewal",
+        confirm_cancel_renewal: "Cancel the renewal? Your term then continues month to month after {date}.",
+        done_renewed: "Done — your {plan} plan renews for one more term on {date}.",
+        done_cancel_renewal: "Done — the renewal is cancelled; your term continues month to month after it ends.",
+        err_no_sub: "This membership isn't billed through Stripe, so it can't be changed here.",
         desc_cancelling: "Your membership is set to cancel. Renew it below to change plans.",
         confirm_trial: "Switch to the {plan} plan now? You're in your free trial, so nothing is charged until it ends.",
         confirm_up: "Upgrade to the {plan} plan now? The prorated difference is charged to your saved card. Your new {plan} term starts today and then continues month to month.",
@@ -340,6 +350,16 @@
         desc_up: "Un passage à un forfait plus long s'applique immédiatement — la différence au prorata est débitée de votre carte enregistrée, et une nouvelle durée commence aujourd'hui.",
         desc_next_quarter: "Vous pouvez aussi choisir une durée trimestrielle de 3 mois après votre durée annuelle, au lieu de passer directement au mensuel.",
         desc_none: "Aucun autre forfait n'est offert pour le moment.",
+        comp_note: "Abonnement gratuit — aucun paiement n'est perçu. Vos avantages se poursuivent jusqu'au {date}.",
+        btn_renew: "Renouveler pour une autre durée du forfait {plan}",
+        desc_renew: "Votre durée prend fin le {date}. Vous pouvez la renouveler pour une autre durée du forfait {plan} au même prix; sinon, elle se poursuit de mois en mois.",
+        confirm_renew: "Renouveler votre forfait {plan} pour une autre durée à compter du {date}? {price} sera débité de votre carte enregistrée le {date}. Après cette durée, il se poursuit de mois en mois.",
+        note_renewed: "Vous avez renouvelé pour une autre durée du forfait {plan} à compter du {date}; ensuite, votre abonnement se poursuit de mois en mois {rate}.",
+        btn_cancel_renewal: "Annuler le renouvellement",
+        confirm_cancel_renewal: "Annuler le renouvellement? Votre durée se poursuivra ensuite de mois en mois après le {date}.",
+        done_renewed: "C'est fait — votre forfait {plan} sera renouvelé pour une autre durée le {date}.",
+        done_cancel_renewal: "C'est fait — le renouvellement est annulé; votre durée se poursuivra de mois en mois après sa fin.",
+        err_no_sub: "Cet abonnement n'est pas facturé par Stripe; il ne peut donc pas être modifié ici.",
         desc_cancelling: "Votre abonnement est résilié. Renouvelez-le ci-dessous pour changer de forfait.",
         confirm_trial: "Passer au forfait {plan} maintenant? Vous êtes en période d'essai gratuit : rien n'est facturé avant la fin de l'essai.",
         confirm_up: "Passer au forfait {plan} maintenant? La différence au prorata sera débitée de votre carte enregistrée. Votre nouvelle durée commence aujourd'hui, puis se poursuit de mois en mois.",
@@ -448,6 +468,19 @@
       switchOpts.replaceChildren();
       hide(downgradeNote);
       hide(keepPlanBtn);
+
+      // Complimentary Premium (granted directly, e.g. review/test accounts): no
+      // Stripe subscription, so there is nothing to switch, bill or cancel.
+      const comp = !row.stripe_subscription_id;
+      ["change-plan-card", "payment-card", "cancel-card"].forEach((id) => {
+        const el = document.getElementById(id); if (el) { if (comp) hide(el); else show(el); }
+      });
+      if (comp) {
+        renewsLabel.textContent = t("access_until");
+        downgradeNote.textContent = t("comp_note", { date: formatDate(row.premium_until) });
+        show(downgradeNote);
+        return;
+      }
       const scheduled = row.scheduled_subscription_interval;
       const trialing  = row.subscription_status === "trialing";
       const fixed     = current === "quarter" || current === "year";
@@ -471,9 +504,16 @@
       } else if (fixed) {
         const monthly = planAmountCents(_p, "month");
         const rate = monthly != null ? t("rate_amount", { amount: formatMoney(monthly, _cur) }) : t("rate_unknown");
-        if (current === "year" && scheduled === "quarter") {
+        if (scheduled === current) {
+          // The member renewed for one more term of the same plan.
+          downgradeNote.textContent = t("note_renewed", { plan: planName(current), date: dateStr, rate });
+          keepPlanBtn.textContent = t("btn_cancel_renewal");
+          keepPlanBtn.dataset.mode = "renewal";
+          show(keepPlanBtn);
+        } else if (current === "year" && scheduled === "quarter") {
           downgradeNote.textContent = t("note_next_quarter", { date: dateStr, rate });
           keepPlanBtn.textContent = t("btn_cancel_next_quarter");
+          keepPlanBtn.dataset.mode = "next_quarter";
           show(keepPlanBtn);
         } else {
           downgradeNote.textContent = t("note_continues_monthly", { plan: planName(current), date: dateStr, rate });
@@ -487,7 +527,22 @@
       // A paid term can go to a LONGER plan now (new term, prorated), or — for a
       // yearly term only — choose one Quarterly term next. Monthly next is the
       // default for any fixed term, so it is never a button.
-      let hasUp = false, hasNextQuarter = false;
+      let hasUp = false, hasNextQuarter = false, hasRenew = false;
+
+      // RENEW for one more same-plan term: only in the last 90 days of a paid
+      // quarterly / yearly term (owner decision 2026-10-22; the member's express
+      // one-off choice — never automatic). Server enforces the same window.
+      const daysLeft = (Number(row.premium_until) - Date.now()) / 86400000;
+      if (fixed && !trialing && scheduled !== current && daysLeft > 0 && daysLeft <= 90) {
+        const amt = planAmountCents(_p, current);
+        const btn = document.createElement("button");
+        btn.className = "secondary";
+        btn.textContent = t("btn_renew", { plan: planName(current) }) +
+          (amt != null ? t("price_part", { price: `${formatMoney(amt, _cur)}${t("sfx_" + current)}` }) : "");
+        btn.onclick = () => switchPlan(current, "renew");
+        switchOpts.appendChild(btn);
+        hasRenew = true;
+      }
       for (const target of ["month", "quarter", "year"]) {
         if (target === current) continue;
         if (target === "quarter" && !(_p && _p.quarterly)) continue;
@@ -521,6 +576,7 @@
         switchDesc.textContent = t("desc_trial");
       } else {
         const parts = [];
+        if (hasRenew) parts.push(t("desc_renew", { plan: planName(current), date: dateStr }));
         if (hasUp) parts.push(t("desc_up"));
         if (hasNextQuarter) parts.push(t("desc_next_quarter"));
         // With the "skip the Quarterly term" button showing, the note above says
@@ -553,22 +609,28 @@
 
     async function switchPlan(target, mode) {
       const plan = planName(target);
+      const endStr = formatDate(row.premium_until);
+      const _p = pricingNow(), _cur = _p ? (_p.currency || "cad").toUpperCase() : null;
+      const amt = planAmountCents(_p, target);
       const msg = mode === "trial" ? t("confirm_trial", { plan })
                 : mode === "up"    ? t("confirm_up", { plan })
-                : t("confirm_next_quarter", { date: formatDate(row.premium_until) });
+                : mode === "renew" ? t("confirm_renew", { plan, date: endStr, price: amt != null ? formatMoney(amt, _cur) : "" })
+                : t("confirm_next_quarter", { date: endStr });
       if (!confirm(msg)) return;
       const buttons = document.querySelectorAll("#switch-options button");
       buttons.forEach((b) => { b.disabled = true; });
-      const { ok, data } = await callFn("switch-subscription-plan", { planType: PLANS[target].type });
+      const body = { planType: PLANS[target].type, ...(mode === "renew" ? { action: "renew_term" } : {}) };
+      const { ok, status, data } = await callFn("switch-subscription-plan", body);
       buttons.forEach((b) => { b.disabled = false; });
       if (ok) {
         setNotice(noticeEl, "success",
-          data.scheduled && data.scheduledSubscriptionInterval === "quarter"
+          data.renewal ? t("done_renewed", { plan, date: formatDate(data.effectiveDate) })
+          : data.scheduled && data.scheduledSubscriptionInterval === "quarter"
             ? t("done_scheduled", { plan, date: formatDate(data.effectiveDate) })
             : t("done_updated"));
         await refresh();
       } else {
-        setNotice(noticeEl, "error", (data && data.message) || t("change_failed"));
+        setNotice(noticeEl, "error", status === 402 ? t("err_no_sub") : t("change_failed"));
       }
     }
 
@@ -625,12 +687,14 @@
     // Shown only when a yearly member chose a Quarterly next term: this drops
     // that choice (the term then continues month to month, as the Terms say).
     document.getElementById("keep-plan-btn").onclick = async (e) => {
-      if (!confirm(t("confirm_cancel_next_quarter"))) return;
+      const renewal = e.target.dataset.mode === "renewal";
+      if (!confirm(renewal ? t("confirm_cancel_renewal", { date: formatDate(row.premium_until) })
+                           : t("confirm_cancel_next_quarter"))) return;
       e.target.disabled = true;
       const { ok } = await callFn("cancel-scheduled-downgrade", {});
       e.target.disabled = false;
       if (ok) {
-        setNotice(noticeEl, "success", t("done_cancel_next_quarter"));
+        setNotice(noticeEl, "success", renewal ? t("done_cancel_renewal") : t("done_cancel_next_quarter"));
         await refresh();
       } else {
         setNotice(noticeEl, "error", t("update_failed"));
