@@ -6,6 +6,95 @@ const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.QSPOT_CONFIG;
 // supabase-js v2 UMD exposes window.supabase.createClient
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ─── Page language (FR / EN) ─────────────────────────────────────────────────
+// Opt-in per page: <html data-i18n="on">. Pages without it stay English and
+// behave exactly as before. Charter of the French Language s. 52: the Premium
+// purchase and account pages carry pre-contract disclosures, so a French reader
+// gets them in French. ONE page per purpose — the French text lives beside the
+// English in the same file, so the two cannot drift into separate pages.
+//
+// Choice order: ?lang=fr|en (also saved) → saved choice → browser language.
+// Saved in localStorage as a per-viewer convenience only (guarded: it can throw).
+const QS_LANG_KEY = "qspot_lang";
+let _qsLang = null;
+function qsI18nEnabled() { return document.documentElement.dataset.i18n === "on"; }
+function qsLang() {
+  if (_qsLang) return _qsLang;
+  if (!qsI18nEnabled()) return (_qsLang = "en");
+  const ok = (v) => v === "fr" || v === "en";
+  let l = new URLSearchParams(location.search).get("lang");
+  if (ok(l)) { try { localStorage.setItem(QS_LANG_KEY, l); } catch (_e) { /* private mode */ } }
+  else {
+    try { l = localStorage.getItem(QS_LANG_KEY); } catch (_e) { l = null; }
+    if (!ok(l)) l = (navigator.language || "").toLowerCase().startsWith("fr") ? "fr" : "en";
+  }
+  return (_qsLang = l);
+}
+function qsLocale() { return qsLang() === "fr" ? "fr-CA" : "en-CA"; }
+
+/** dict = { en: {...}, fr: {...} }. Falls back to English, then to the key. */
+function qsT(dict, key, vars) {
+  const l = qsLang();
+  let s = (dict[l] && dict[l][key]) ?? (dict.en && dict.en[key]) ??
+          (QS_COMMON_I18N[l] && QS_COMMON_I18N[l][key]) ?? QS_COMMON_I18N.en[key] ?? key;
+  if (vars) for (const [k, v] of Object.entries(vars)) s = s.split(`{${k}}`).join(String(v));
+  return s;
+}
+
+/**
+ * French pass over the static markup. English stays in the HTML (it is what a
+ * reader sees with JS off); elements marked data-i18n="key" get dict.fr[key].
+ * innerHTML is used deliberately: the dictionary is this page's own constant
+ * text (some entries carry <strong>/<a>), never user or server data.
+ *   data-i18n-attr="placeholder:key;alt:key;href:key"  → attributes
+ *   [data-langbar]                                       → the FR | EN switcher
+ */
+function qsApplyI18n(dict) {
+  const l = qsLang();
+  document.documentElement.lang = l === "fr" ? "fr-CA" : "en";
+  if (l !== "en") {
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const v = dict[l] && dict[l][el.dataset.i18n];
+      if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+      el.dataset.i18nAttr.split(";").forEach((pair) => {
+        const [attr, key] = pair.split(":");
+        const v = dict[l] && dict[l][key];
+        if (attr && v != null) el.setAttribute(attr, v);
+      });
+    });
+    const title = dict[l] && dict[l]["doc_title"];
+    if (title) document.title = title;
+  }
+  document.querySelectorAll("[data-langbar]").forEach((bar) => {
+    const here = (code) => { const u = new URL(location.href); u.searchParams.set("lang", code); return u.pathname + u.search + u.hash; };
+    bar.innerHTML = l === "fr"
+      ? `<span class="cur">Français</span> &nbsp;|&nbsp; <a href="${here("en")}">English</a>`
+      : `<a href="${here("fr")}" lang="fr">Français</a> &nbsp;|&nbsp; <span class="cur">English</span>`;
+  });
+}
+
+// Strings shared by every opted-in page (the sign-in card).
+const QS_COMMON_I18N = {
+  en: {
+    login_title: "Sign in to continue",
+    login_sub: "Use the same account you use in the QSpot app.",
+    login_google: "Continue with Google",
+    login_apple: " Continue with Apple",
+    login_hme: 'Signed up in the app with Apple and "Hide My Email"? Use <strong>Continue with Apple</strong> here so your accounts match.',
+    login_patent: "U.S. Patent Pending",
+  },
+  fr: {
+    login_title: "Connectez-vous pour continuer",
+    login_sub: "Utilisez le même compte que dans l'application QSpot.",
+    login_google: "Continuer avec Google",
+    login_apple: " Continuer avec Apple",
+    login_hme: "Inscrit dans l'application avec Apple et « Masquer mon adresse courriel »? Utilisez <strong>Continuer avec Apple</strong> ici pour que vos comptes correspondent.",
+    login_patent: "Brevet américain en instance",
+  },
+};
+
 // ─── Pricing ─────────────────────────────────────────────────────────────────
 // 🔴 THE PRICE IS FETCHED, NEVER WRITTEN HERE. On 2026-09-07 the same figures
 //    were hand-written in 114 places across the app, the emails, three web
@@ -61,7 +150,7 @@ function pricingNow() { return _pricing; }
 function formatMoney(cents, currency) {
   const cur = (currency || "cad").toUpperCase();
   try {
-    return new Intl.NumberFormat(navigator.language || "en-CA", {
+    return new Intl.NumberFormat(qsI18nEnabled() ? qsLocale() : (navigator.language || "en-CA"), {
       style: "currency", currency: cur,
       minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     }).format(cents / 100);
@@ -74,7 +163,7 @@ function formatMoney(cents, currency) {
 function formatMoneyExact(cents, currency) {
   const cur = (currency || "cad").toUpperCase();
   try {
-    return new Intl.NumberFormat(navigator.language || "en-CA", {
+    return new Intl.NumberFormat(qsI18nEnabled() ? qsLocale() : (navigator.language || "en-CA"), {
       style: "currency", currency: cur,
       minimumFractionDigits: 2, maximumFractionDigits: 2,
     }).format(cents / 100);
@@ -181,25 +270,23 @@ function isPremiumStatus(status) {
 
 function formatDate(epochMs) {
   if (!epochMs || epochMs <= 0) return "—";
-  return new Date(epochMs).toLocaleDateString("en-CA", {
+  return new Date(epochMs).toLocaleDateString(qsLocale(), {
     year: "numeric", month: "long", day: "numeric",
   });
 }
 
 /** Standard login card markup — call inside a container element. */
 function renderLoginCard(container) {
+  const c = (k) => qsT({}, k);   // QS_COMMON_I18N in the page's language (English when not opted in)
   container.innerHTML = `
     <div class="card">
-      <h2>Sign in to continue</h2>
-      <p>Use the same account you use in the QSpot app.</p>
-      <button class="oauth" id="login-google">Continue with Google</button>
-      <button class="oauth apple" id="login-apple"> Continue with Apple</button>
-      <p style="margin-top:12px;font-size:0.8rem;">
-        Signed up in the app with Apple and "Hide My Email"? Use
-        <strong>Continue with Apple</strong> here so your accounts match.
-      </p>
+      <h2>${c("login_title")}</h2>
+      <p>${c("login_sub")}</p>
+      <button class="oauth" id="login-google">${c("login_google")}</button>
+      <button class="oauth apple" id="login-apple">${c("login_apple")}</button>
+      <p style="margin-top:12px;font-size:0.8rem;">${c("login_hme")}</p>
       <p style="margin-top:14px;font-size:0.75rem;text-align:center;">
-        <a href="/web/patents.html" style="text-decoration:underline;">U.S. Patent Pending</a>
+        <a href="/web/patents.html" style="text-decoration:underline;">${c("login_patent")}</a>
       </p>
     </div>`;
   container.querySelector("#login-google").onclick = () => signInWith("google");

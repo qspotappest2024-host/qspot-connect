@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n="on">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,18 +15,18 @@
 <body>
   <nav class="qnav">
     <div class="qnav-inner">
-      <a class="qnav-logo" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot</a>
+      <a class="qnav-logo" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="193" height="34"></a>
       <ul class="qnav-links">
-        <li class="hide-sm"><a href="/">Home</a></li>
-        <li class="hide-sm"><a href="/map.html">Live Map</a></li>
-        <li><a href="/web/premium.html">Premium</a></li>
-        <li><a href="/index.html#download" class="qnav-cta">Get the App</a></li>
+        <li class="hide-sm"><a href="/" data-i18n="nav_home">Home</a></li>
+        <li class="hide-sm"><a href="/map.html" data-i18n="nav_map">Live Map</a></li>
+        <li class="hide-xs"><a href="/web/premium.html">Premium</a></li>
+        <li><a href="/index.html#download" class="qnav-cta" data-i18n="nav_app">Get the App</a></li>
       </ul>
     </div>
   </nav>
 
   <header>
-    <h1>Welcome to QSpot <span class="gold">Premium</span> 🎉</h1>
+    <h1 data-i18n="h1">Welcome to QSpot <span class="gold">Premium</span> 🎉</h1>
   </header>
 
   <!-- ⚠️ DO NOT restore "Payment received" here (2026-08-28, T8.1).
@@ -40,7 +40,7 @@
        "Checkout complete" is true on both paths and needs no server round-trip
        to decide, which is why it is worded this way rather than branched on
        session_id. -->
-  <div class="notice success" style="text-align:center;">
+  <div class="notice success" style="text-align:center;" data-i18n="done">
     Checkout complete — your membership is being activated.
   </div>
 
@@ -48,7 +48,7 @@
     <!-- Heading followed the copy: there is no step any more, so it no longer
          claims one. A heading that promises an action the body does not give
          is the same defect in smaller type. -->
-    <h2>What happens next</h2>
+    <h2 data-i18n="next_h">What happens next</h2>
     <!-- ⚠️ The "reopen the app" instruction was REMOVED as the primary advice
          (2026-08-28, T8.1/T8.2). Measured on both platforms: the badge appears
          via Realtime in ~1.4 s without any interaction — iOS 1.33 s, Android
@@ -56,34 +56,72 @@
          users to work around a problem that does not exist, and it made the
          Realtime→UI leg of T8.1 unmeasurable for any tester who followed it.
          Kept only as a fallback, worded so it cannot be mistaken for a step. -->
-    <p style="font-size:1rem;color:var(--text);">
+    <p style="font-size:1rem;color:var(--text);" data-i18n="next_p1">
       Return to the QSpot app — your Premium benefits appear automatically,
       usually within a few seconds. There is nothing else to do.
     </p>
-    <p style="font-size:0.95rem;color:var(--muted);margin-top:10px;">
+    <p style="font-size:0.95rem;color:var(--muted);margin-top:10px;" data-i18n="next_p2">
       Still not showing after a minute? Close the app from your recent-apps view
       and tap its icon again.
     </p>
-    <p style="margin-top:12px;">
+    <p style="margin-top:12px;" data-i18n="next_p3">
       Your gold Premium badge, reduced QSpot Secure Listing Fee, and monthly offline-payment
       listing credit will then appear on your profile automatically.
     </p>
   </div>
 
-  <a class="primary" href="account.html">View my membership</a>
+  <a class="primary" href="account.html" data-i18n="view">View my membership</a>
 
   <footer class="qfooter">
     <div class="qfooter-inner">
-      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot</a>
+      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="228" height="40"></a>
       <ul class="qfooter-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/web/account.html">Manage membership</a></li>
-        <li><a href="/web/terms.html">Terms</a></li>
-        <li><a href="/web/privacy.html">Privacy</a></li>
-        <li><a href="mailto:admin@qspotmarketplace.com">Support</a></li>
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/web/account.html" data-i18n="manage">Manage membership</a></li>
+        <li><a href="/web/terms.html" data-i18n="ft_terms" data-i18n-attr="href:href_terms">Terms</a></li>
+        <li><a href="/web/privacy.html" data-i18n="ft_privacy" data-i18n-attr="href:href_privacy">Privacy</a></li>
+        <li><a href="mailto:admin@qspotmarketplace.com" data-i18n="ft_support">Support</a></li>
       </ul>
-      <div class="qfooter-copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
+      <div class="qfooter-copy" data-i18n="ft_copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
     </div>
   </footer>
+
+  <!-- French text (Charter of the French Language s. 52). This page loads no
+       qspot.js (no sign-in here), so the language choice is read the same way
+       qspot.js does: ?lang → the choice saved on premium.html → browser. -->
+  <script>
+    (function () {
+      var FR = {
+        nav_home: "Accueil", nav_map: "Carte en direct", nav_app: "Obtenir l'application",
+        h1: 'Bienvenue chez QSpot <span class="gold">Premium</span> 🎉',
+        done: "Paiement terminé — votre abonnement est en cours d'activation.",
+        next_h: "La suite",
+        next_p1: "Retournez dans l'application QSpot — vos avantages Premium s'affichent automatiquement, habituellement en quelques secondes. Vous n'avez rien d'autre à faire.",
+        next_p2: "Toujours rien après une minute? Fermez l'application à partir de la vue des applications récentes, puis touchez son icône de nouveau.",
+        next_p3: "Votre badge Premium doré, les frais d'annonce sécurisée QSpot réduits et votre crédit mensuel d'annonce à paiement hors ligne s'afficheront ensuite automatiquement dans votre profil.",
+        view: "Voir mon abonnement", manage: "Gérer mon abonnement",
+        ft_terms: "Conditions d'utilisation", ft_privacy: "Confidentialité", ft_support: "Assistance",
+        href_terms: "/web/conditions.html", href_privacy: "/web/confidentialite.html",
+        ft_copy: '© 2026 QSpot Technologies Inc. Tous droits réservés. · <a class="qfooter-patent" href="/web/patents.html">Brevet américain en instance</a>',
+        title: "Bienvenue chez QSpot Premium"
+      };
+      var l = new URLSearchParams(location.search).get("lang");
+      if (l !== "fr" && l !== "en") {
+        try { l = localStorage.getItem("qspot_lang"); } catch (e) { l = null; }
+        if (l !== "fr" && l !== "en") l = (navigator.language || "").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+      }
+      if (l !== "fr") return;
+      document.documentElement.lang = "fr-CA";
+      document.title = FR.title;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var v = FR[el.getAttribute("data-i18n")]; if (v != null) el.innerHTML = v;
+      });
+      document.querySelectorAll("[data-i18n-attr]").forEach(function (el) {
+        el.getAttribute("data-i18n-attr").split(";").forEach(function (pair) {
+          var kv = pair.split(":"); if (FR[kv[1]] != null) el.setAttribute(kv[0], FR[kv[1]]);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

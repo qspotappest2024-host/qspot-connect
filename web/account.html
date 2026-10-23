@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n="on">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,12 +17,12 @@
 <body>
   <nav class="qnav">
     <div class="qnav-inner">
-      <a class="qnav-logo" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot</a>
+      <a class="qnav-logo" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="193" height="34"></a>
       <ul class="qnav-links">
-        <li class="hide-sm"><a href="/">Home</a></li>
-        <li class="hide-sm"><a href="/map.html">Live Map</a></li>
-        <li><a href="/web/premium.html">Premium</a></li>
-        <li><a href="/index.html#download" class="qnav-cta">Get the App</a></li>
+        <li class="hide-sm"><a href="/" data-i18n="nav_home">Home</a></li>
+        <li class="hide-sm"><a href="/map.html" data-i18n="nav_map">Live Map</a></li>
+        <li class="hide-xs"><a href="/web/premium.html">Premium</a></li>
+        <li><a href="/index.html#download" class="qnav-cta" data-i18n="nav_app">Get the App</a></li>
       </ul>
     </div>
   </nav>
@@ -31,57 +31,63 @@
        Play requires the app or developer name as shown on the store listing:
        app "QSpot Marketplace", developer "QSpot Technologies Inc." Keep both names here. -->
   <header>
-    <h1>Your QSpot Marketplace <span class="gold">Account</span></h1>
-    <p>For the QSpot Marketplace app by QSpot Technologies Inc.</p>
-    <p style="font-size:0.9rem;"><a href="#delete-account" style="text-decoration:underline;">How to delete your account</a></p>
+    <h1 data-i18n="h1">Your QSpot Marketplace <span class="gold">Account</span></h1>
+    <p data-i18n="h_sub">For the QSpot Marketplace app by QSpot Technologies Inc.</p>
+    <p style="font-size:0.9rem;" data-i18n="h_delete"><a href="#delete-account" style="text-decoration:underline;">How to delete your account</a></p>
   </header>
 
+  <!-- FR / EN (Charter of the French Language s. 52). French text: I18N.fr below. -->
+  <div class="langbar" data-langbar></div>
+
   <div id="notice" class="notice hidden"></div>
-  <div id="loading" class="spinner">Loading…</div>
+  <div id="loading" class="spinner" data-i18n="loading">Loading…</div>
 
   <div id="login-container" class="hidden" style="width:100%;max-width:420px;"></div>
 
   <!-- No subscription -->
   <div id="no-sub" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>No active membership</h2>
-      <p>You don't have a QSpot Premium membership yet.</p>
+      <h2 data-i18n="nosub_h">No active membership</h2>
+      <p data-i18n="nosub_p">You don't have a QSpot Premium membership yet.</p>
     </div>
-    <a class="primary" href="premium.html">See plans</a>
+    <a class="primary" href="premium.html" data-i18n="nosub_cta">See plans</a>
   </div>
 
   <!-- Active subscription management -->
   <div id="manage" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Your membership</h2>
-      <div class="row"><span class="label">Status</span><span id="m-status"></span></div>
-      <div class="row"><span class="label">Plan</span><span id="m-plan"></span></div>
+      <h2 data-i18n="m_h">Your membership</h2>
+      <div class="row"><span class="label" data-i18n="m_status">Status</span><span id="m-status"></span></div>
+      <div class="row"><span class="label" data-i18n="m_plan">Plan</span><span id="m-plan"></span></div>
       <div class="row"><span class="label" id="m-renews-label">Renews</span><span id="m-renews"></span></div>
       <div id="m-cancel-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:#c1440e;"></div>
       <div id="m-downgrade-note" class="hidden" style="margin-top:10px;font-size:0.85rem;color:var(--gold-bright);"></div>
     </div>
 
-    <div class="card">
-      <h2>Change plan</h2>
+    <div class="card" id="change-plan-card">
+      <h2 data-i18n="cp_h">Change plan</h2>
       <p id="switch-desc"></p>
-      <button class="secondary" id="switch-btn"></button>
-      <button class="secondary hidden" id="keep-yearly-btn">Keep Yearly Plan</button>
+      <!-- One button per other plan, built in renderManage() from get-pricing. -->
+      <div id="switch-options"></div>
+      <button class="secondary hidden" id="keep-plan-btn">Keep current plan</button>
     </div>
 
     <div class="card">
-      <h2>Payment method</h2>
-      <p>Update the card used for your membership.</p>
+      <h2 data-i18n="pm_h">Payment method</h2>
+      <p data-i18n="pm_p">Update the card used for your membership.</p>
       <div id="card-form" class="hidden">
         <div id="card-element"></div>
-        <button class="secondary" id="save-card-btn">Save card</button>
+        <button class="secondary" id="save-card-btn" data-i18n="pm_save">Save card</button>
       </div>
-      <button class="secondary" id="update-card-btn">Update payment method</button>
+      <button class="secondary" id="update-card-btn" data-i18n="pm_update">Update payment method</button>
     </div>
 
     <div class="card">
-      <h2>Cancel</h2>
-      <p>Your membership will not renew. Benefits remain active until the end of the paid period.</p>
-      <button class="secondary danger" id="cancel-btn">Cancel membership</button>
+      <h2 data-i18n="cx_h">Cancel</h2>
+      <p id="cancel-desc" data-i18n="cx_p">Your membership will not renew. Benefits remain active until the end of the paid period.</p>
+      <button class="secondary danger" id="cancel-btn" data-i18n="cx_btn">Cancel membership</button>
+      <!-- Shown instead while a cancellation is pending (resume-subscription). -->
+      <button class="secondary hidden" id="renew-btn" data-i18n="cx_renew">Renew membership</button>
     </div>
   </div>
 
@@ -89,16 +95,16 @@
        This is the page the marketing email's "Email preferences" link targets. -->
   <div id="email-prefs" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Email preferences</h2>
-      <p>Choose whether QSpot may send you membership offers and other marketing
+      <h2 data-i18n="ep_h">Email preferences</h2>
+      <p data-i18n="ep_p">Choose whether QSpot may send you membership offers and other marketing
          emails. Service emails (receipts, booking and payout notices) are always
          sent — they're required to operate your account.</p>
       <label style="display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;">
         <input type="checkbox" id="marketing-toggle" style="width:18px;height:18px;accent-color:#FFD700;">
-        <span>Send me QSpot offers and marketing emails</span>
+        <span data-i18n="ep_label">Send me QSpot offers and marketing emails</span>
       </label>
     </div>
-    <button class="signout" onclick="signOut()">Sign out</button>
+    <button class="signout" onclick="signOut()" data-i18n="signout">Sign out</button>
   </div>
 
   <!-- Security (Issue #161) — remote sign-out for a lost or stolen device.
@@ -107,18 +113,18 @@
        exactly the case it exists for. -->
   <div id="security" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Security</h2>
-      <p>Lost a phone, or signed in somewhere you shouldn't have? This signs you
+      <h2 data-i18n="sec_h">Security</h2>
+      <p data-i18n="sec_p">Lost a phone, or signed in somewhere you shouldn't have? This signs you
          out of the QSpot app on every device and this browser, and requires a
          new security code the next time you sign in anywhere.</p>
       <div id="signout-all-confirm" class="hidden" style="margin-top:12px;">
-        <p style="font-size:0.9rem;">You'll need to sign in again on each device.
+        <p style="font-size:0.9rem;" data-i18n="sec_confirm_p">You'll need to sign in again on each device.
            Devices already open may take up to an hour to be signed out.</p>
         <button class="secondary danger" id="signout-all-confirm-btn"
-                style="margin-top:10px;">Yes, sign out everywhere</button>
-        <button class="signout" id="signout-all-cancel-btn">Cancel</button>
+                style="margin-top:10px;" data-i18n="sec_yes">Yes, sign out everywhere</button>
+        <button class="signout" id="signout-all-cancel-btn" data-i18n="sec_cancel">Cancel</button>
       </div>
-      <button class="secondary" id="signout-all-btn">Sign out of all devices…</button>
+      <button class="secondary" id="signout-all-btn" data-i18n="sec_btn">Sign out of all devices…</button>
     </div>
   </div>
 
@@ -128,11 +134,11 @@
        retention sentence verbatim with settings_delete_account_retention_note. -->
   <div id="delete-account" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Delete your QSpot Marketplace account</h2>
-      <p>You can ask QSpot Technologies Inc. to delete your QSpot Marketplace account
+      <h2 data-i18n="del_h">Delete your QSpot Marketplace account</h2>
+      <p data-i18n="del_p">You can ask QSpot Technologies Inc. to delete your QSpot Marketplace account
          and the data linked to it in any of these ways. You don't need to reinstall
          the app.</p>
-      <ol class="steps">
+      <ol class="steps" data-i18n="del_steps">
         <li><strong>In the app:</strong> Profile › Settings › Delete Account.</li>
         <li><strong>On this page:</strong> sign in with the same Google or Apple account
             you use in the app, then choose <strong>Delete my account</strong>.</li>
@@ -140,13 +146,13 @@
             <a href="mailto:admin@qspotmarketplace.com?subject=QSpot%20Marketplace%20account%20deletion%20request">admin@qspotmarketplace.com</a>
             from the email address on your account.</li>
       </ol>
-      <h3>What happens</h3>
-      <p>Your account is scheduled for deletion and is permanently deleted after
+      <h3 data-i18n="del_what_h">What happens</h3>
+      <p data-i18n="del_what_p">Your account is scheduled for deletion and is permanently deleted after
          7 days. Signing in to the app during those 7 days cancels it. Your account
          and all associated data — listings, messages, and reviews — are deleted,
          and any remaining Premium is forfeited. If a purchase, payout or dispute is
          still in progress, deletion waits until it is settled.</p>
-      <p>Records of completed payments are kept in a de-identified form for 7 years
+      <p data-i18n="retention">Records of completed payments are kept in a de-identified form for 7 years
          (10 in the EU) because tax law requires it. They contain no name, email or
          location.</p>
     </div>
@@ -157,8 +163,8 @@
        signed-in user, member or not. -->
   <div id="danger-zone" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2>Delete my account</h2>
-      <p>Schedules your QSpot account for deletion in 7 days. Sign in to the
+      <h2 data-i18n="dz_h">Delete my account</h2>
+      <p data-i18n="dz_p">Schedules your QSpot account for deletion in 7 days. Sign in to the
          QSpot app within 7 days to cancel. After that, your account and all
          associated data — listings, messages, and reviews —
          are permanently deleted and any remaining Premium is forfeited.</p>
@@ -168,26 +174,26 @@
            settings_delete_account_retention_note (LEGAL_REVIEW A4).
            ⚠️ "transaction history" was removed from the list above on 2026-08-05:
            it was an affirmative false statement. Do not reinstate it. -->
-      <p style="font-size:0.9rem;opacity:0.85;">Records of completed payments are
+      <p style="font-size:0.9rem;opacity:0.85;" data-i18n="retention">Records of completed payments are
          kept in a de-identified form for 7 years (10 in the EU) because tax law
          requires it. They contain no name, email or location.</p>
       <!-- Issue #284 / App Store 5.1.1(v), TN3194 fallback: QSpot holds no Apple
            refresh token, so it cannot revoke Sign in with Apple server-side.
            Kept consistent with the in-app string settings_delete_account_apple_note. -->
-      <p style="font-size:0.9rem;opacity:0.85;">Signed in with Apple? After deleting,
+      <p style="font-size:0.9rem;opacity:0.85;" data-i18n="apple_note">Signed in with Apple? After deleting,
          also remove QSpot from Sign in with Apple: on your iPhone open Settings ›
          your name › Sign-In &amp; Security › Sign in with Apple, or visit
          <a href="https://account.apple.com" target="_blank" rel="noopener">account.apple.com</a>.</p>
       <div id="delete-blockers" class="hidden" style="margin-top:10px;font-size:0.9rem;"></div>
       <div id="delete-confirm" class="hidden" style="margin-top:12px;">
-        <p style="font-size:0.9rem;"><strong>Type DELETE to confirm:</strong></p>
+        <p style="font-size:0.9rem;" data-i18n="dz_type"><strong>Type DELETE to confirm:</strong></p>
         <input id="delete-input" type="text" autocomplete="off" placeholder="DELETE"
                style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #888;background:transparent;color:inherit;">
         <button class="secondary danger" id="delete-confirm-btn" disabled
-                style="margin-top:10px;">Schedule account deletion</button>
+                style="margin-top:10px;" data-i18n="dz_confirm">Schedule account deletion</button>
       </div>
-      <button class="secondary danger" id="delete-start-btn">Delete my account…</button>
-      <p style="margin-top:10px;font-size:0.8rem;">
+      <button class="secondary danger" id="delete-start-btn" data-i18n="dz_start">Delete my account…</button>
+      <p style="margin-top:10px;font-size:0.8rem;" data-i18n="dz_cant">
         Can't sign in? Email
         <a href="mailto:admin@qspotmarketplace.com?subject=Account%20deletion%20request">admin@qspotmarketplace.com</a>
         from your account email to request deletion.
@@ -197,17 +203,17 @@
 
   <footer class="qfooter">
     <div class="qfooter-inner">
-      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot_logo.png" alt="QSpot" width="34" height="34">QSpot Marketplace</a>
+      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="228" height="40"></a>
       <ul class="qfooter-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/map.html">Live Map</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/web/premium.html">Plans</a></li>
-        <li><a href="/web/terms.html">Terms</a></li>
-        <li><a href="/web/privacy.html">Privacy</a></li>
-        <li><a href="mailto:admin@qspotmarketplace.com">Support</a></li>
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/map.html" data-i18n="nav_map">Live Map</a></li>
+        <li><a href="/about.html" data-i18n="ft_about">About</a></li>
+        <li><a href="/web/premium.html" data-i18n="ft_plans">Plans</a></li>
+        <li><a href="/web/terms.html" data-i18n="ft_terms" data-i18n-attr="href:href_terms">Terms</a></li>
+        <li><a href="/web/privacy.html" data-i18n="ft_privacy" data-i18n-attr="href:href_privacy">Privacy</a></li>
+        <li><a href="mailto:admin@qspotmarketplace.com" data-i18n="ft_support">Support</a></li>
       </ul>
-      <div class="qfooter-copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
+      <div class="qfooter-copy" data-i18n="ft_copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
     </div>
   </footer>
 
@@ -218,6 +224,164 @@
   <script src="config.js"></script>
   <script src="qspot.js"></script>
   <script>
+    // ── French / English ─────────────────────────────────────────────────────
+    // English is the markup itself; fr carries the same text for data-i18n
+    // elements, plus every string this script writes. Keep the two in step.
+    // The deletion, retention and Apple notes match the app's strings
+    // (settings_delete_account_*), in both languages.
+    const I18N = {
+      en: {
+        st_trial: "Free trial", st_past_due: "Payment issue", st_active: "Active",
+        past_due_notice: "Your last payment failed. Please update your payment method below to keep your membership.",
+        renews: "Renews", access_until: "Access until",
+        cancel_note: "Your membership is set to cancel and will not renew. Benefits stay active until this date.",
+        plan_month: "Monthly", plan_quarter: "Quarterly", plan_year: "Yearly",
+        plan_label: "{plan} Plan", sfx_month: "/mo", sfx_quarter: "/3 mo", sfx_year: "/yr",
+        rate_amount: "at {amount} per month", rate_unknown: "at the monthly rate in effect at that time",
+        note_continues_monthly: "Your {plan} term ends on {date}. It then continues month to month {rate}, until you cancel.",
+        note_next_quarter: "Your yearly term ends on {date}. It then continues with one 3-month Quarterly term, and after that month to month {rate}.",
+        note_trial_fixed: "Your first {plan} term starts when your free trial ends. After that term it continues month to month.",
+        btn_cancel_next_quarter: "Keep monthly after my yearly term",
+        btn_upgrade: "Upgrade to {plan}", btn_switch_now: "Switch to {plan}",
+        btn_next_quarter: "Make my next term Quarterly",
+        price_part: " — {price}", save_part: " (save {pct}%)",
+        desc_trial: "You're in your free trial, so a plan change applies now and nothing is charged until the trial ends.",
+        desc_up: "Upgrades apply now — the prorated difference is charged to your saved card, and a new term starts today.",
+        desc_next_quarter: "You can also choose one 3-month Quarterly term after your yearly term, instead of going straight to monthly.",
+        desc_none: "No other plans are available right now.",
+        desc_cancelling: "Your membership is set to cancel. Renew it below to change plans.",
+        confirm_trial: "Switch to the {plan} plan now? You're in your free trial, so nothing is charged until it ends.",
+        confirm_up: "Upgrade to the {plan} plan now? The prorated difference is charged to your saved card. Your new {plan} term starts today and then continues month to month.",
+        confirm_next_quarter: "At the end of your yearly term ({date}), continue with one 3-month Quarterly term, then month to month?",
+        done_scheduled: "Done — your plan switches to {plan} on {date}.",
+        done_updated: "Done — your plan has been updated.",
+        change_failed: "Could not change plan. Please try again.",
+        confirm_cancel_next_quarter: "Skip the Quarterly term? After your yearly term your membership continues month to month.",
+        done_cancel_next_quarter: "Done — after your yearly term your membership continues month to month.",
+        update_failed: "Could not update. Please try again.",
+        ep_save_failed: "Could not save your email preference. Please try again.",
+        ep_off: "You won't receive marketing emails.", ep_on: "Marketing emails are on.",
+        card_start_failed: "Could not start card update.",
+        card_saved: "Card saved. It can take a few seconds to become your default payment method.",
+        cancel_confirm: "Cancel your membership? Benefits stay active until the end of the paid period.",
+        cancel_done: "Your membership will not renew. Benefits remain active until the period ends.",
+        cancel_failed: "Could not cancel. Please try again.",
+        renew_confirm: "Renew your membership? Billing continues on your saved card at the end of the current period.",
+        renew_done: "Your membership will renew.",
+        renew_failed: "Could not renew. Please try again.",
+        blk_active_transactions: "You have an active transaction. Complete or cancel it first.",
+        blk_open_dispute: "A dispute on one of your transactions is under review.",
+        blk_pending_payout: "You have pending payouts. Claim them or wait for them to settle.",
+        blk_counterparty_payout_pending: "A payout to your transaction partner has not settled yet. Please try again once it completes.",
+        blk_dispute_window_open: "A recent transaction is still within its dispute window. Please try again shortly.",
+        blk_other: "Unsettled payment activity on your account.",
+        blk_pending_amount: "You have {amount} {cur} in pending payouts. Claim them or wait for them to settle.",
+        blk_head: "Your account can't be deleted yet:", blk_tail: "Please resolve the above and try again.",
+        so_busy: "Signing out…", so_yes: "Yes, sign out everywhere",
+        so_done: "Signed out of all devices. Devices with an app already open may take up to an hour to be signed out.",
+        too_many: "Too many attempts. Please wait a few minutes and try again.",
+        so_failed: "Could not sign out of all devices. Please try again, or contact admin@qspotmarketplace.com.",
+        check_failed: "Could not check your account. Please try again.",
+        del_confirm: "This schedules your QSpot account for deletion in 7 days. You can cancel by signing into the app within 7 days. Continue?",
+        del_deleted: "Your account has been permanently deleted. We're sorry to see you go.",
+        del_scheduled: "Your account is scheduled for deletion in 7 days. Sign into the QSpot app within 7 days to cancel.",
+        del_failed: "Account deletion failed. Please try again or contact admin@qspotmarketplace.com.",
+      },
+      fr: {
+        doc_title: "QSpot Marketplace — Compte, abonnement et suppression du compte",
+        nav_home: "Accueil", nav_map: "Carte en direct", nav_app: "Obtenir l'application",
+        h1: 'Votre <span class="gold">compte</span> QSpot Marketplace',
+        h_sub: "Pour l'application QSpot Marketplace de QSpot Technologies Inc.",
+        h_delete: '<a href="#delete-account" style="text-decoration:underline;">Comment supprimer votre compte</a>',
+        loading: "Chargement…",
+        nosub_h: "Aucun abonnement actif", nosub_p: "Vous n'avez pas encore d'abonnement QSpot Premium.", nosub_cta: "Voir les forfaits",
+        m_h: "Votre abonnement", m_status: "Statut", m_plan: "Forfait",
+        cp_h: "Changer de forfait",
+        pm_h: "Mode de paiement", pm_p: "Mettez à jour la carte utilisée pour votre abonnement.", pm_save: "Enregistrer la carte", pm_update: "Mettre à jour le mode de paiement",
+        cx_h: "Résilier", cx_p: "Votre abonnement ne sera pas renouvelé. Vos avantages restent actifs jusqu'à la fin de la période payée.", cx_btn: "Résilier l'abonnement", cx_renew: "Renouveler l'abonnement",
+        ep_h: "Préférences de courriel",
+        ep_p: "Choisissez si QSpot peut vous envoyer des offres d'abonnement et d'autres courriels de marketing. Les courriels de service (reçus, avis de réservation et de versement) sont toujours envoyés — ils sont nécessaires au fonctionnement de votre compte.",
+        ep_label: "M'envoyer les offres et les courriels de marketing de QSpot",
+        signout: "Se déconnecter",
+        sec_h: "Sécurité",
+        sec_p: "Vous avez perdu un téléphone ou vous êtes connecté à un endroit où vous n'auriez pas dû? Cette action vous déconnecte de l'application QSpot sur tous les appareils et dans ce navigateur, et exige un nouveau code de sécurité à votre prochaine connexion, où que ce soit.",
+        sec_confirm_p: "Vous devrez vous reconnecter sur chaque appareil. Les appareils déjà ouverts peuvent prendre jusqu'à une heure pour être déconnectés.",
+        sec_yes: "Oui, me déconnecter partout", sec_cancel: "Annuler", sec_btn: "Se déconnecter de tous les appareils…",
+        del_h: "Supprimer votre compte QSpot Marketplace",
+        del_p: "Vous pouvez demander à QSpot Technologies Inc. de supprimer votre compte QSpot Marketplace et les données qui y sont liées de l'une de ces façons. Vous n'avez pas besoin de réinstaller l'application.",
+        del_steps: '<li><strong>Dans l\'application :</strong> Profil › Paramètres › Supprimer le compte.</li><li><strong>Sur cette page :</strong> connectez-vous avec le même compte Google ou Apple que dans l\'application, puis choisissez <strong>Supprimer mon compte</strong>.</li><li><strong>Par courriel :</strong> écrivez à <a href="mailto:admin@qspotmarketplace.com?subject=Demande%20de%20suppression%20de%20compte%20QSpot%20Marketplace">admin@qspotmarketplace.com</a> à partir de l\'adresse courriel de votre compte.</li>',
+        del_what_h: "Ce qui se passe",
+        del_what_p: "La suppression de votre compte est programmée, puis il est définitivement supprimé après 7 jours. Vous connecter à l'application pendant ces 7 jours l'annule. Votre compte et toutes les données associées — annonces, messages et avis — sont supprimés, et le temps Premium restant est perdu. Si un achat, un versement ou un litige est en cours, la suppression attend son règlement.",
+        retention: "Les enregistrements des paiements effectués sont conservés sous une forme dépersonnalisée pendant 7 ans (10 dans l'UE), comme l'exige la loi fiscale. Ils ne contiennent ni nom, ni e-mail, ni localisation.",
+        dz_h: "Supprimer mon compte",
+        dz_p: "Cela programme la suppression de votre compte dans 7 jours. Reconnectez-vous sous 7 jours pour annuler. Ensuite, votre compte et vos données — annonces, messages et avis — sont définitivement supprimés et le temps Premium restant est perdu.",
+        apple_note: 'Connecté avec Apple ? Après la suppression, retirez aussi QSpot de « Se connecter avec Apple » : sur votre iPhone, ouvrez Réglages › votre nom › Connexion et sécurité › Se connecter avec Apple, ou rendez-vous sur <a href="https://account.apple.com" target="_blank" rel="noopener">account.apple.com</a>.',
+        dz_type: "<strong>Saisissez DELETE pour confirmer :</strong>",
+        dz_confirm: "Programmer la suppression du compte", dz_start: "Supprimer mon compte…",
+        dz_cant: 'Impossible de vous connecter? Écrivez à <a href="mailto:admin@qspotmarketplace.com?subject=Demande%20de%20suppression%20de%20compte">admin@qspotmarketplace.com</a> à partir de l\'adresse courriel de votre compte pour demander la suppression.',
+        ft_about: "À propos", ft_plans: "Forfaits", ft_terms: "Conditions d'utilisation", ft_privacy: "Confidentialité", ft_support: "Assistance",
+        href_terms: "/web/conditions.html", href_privacy: "/web/confidentialite.html",
+        ft_copy: '© 2026 QSpot Technologies Inc. Tous droits réservés. · <a class="qfooter-patent" href="/web/patents.html">Brevet américain en instance</a>',
+        st_trial: "Essai gratuit", st_past_due: "Problème de paiement", st_active: "Actif",
+        past_due_notice: "Votre dernier paiement a échoué. Veuillez mettre à jour votre mode de paiement ci-dessous pour conserver votre abonnement.",
+        renews: "Renouvellement", access_until: "Accès jusqu'au",
+        cancel_note: "Votre abonnement est résilié et ne sera pas renouvelé. Vos avantages restent actifs jusqu'à cette date.",
+        plan_month: "mensuel", plan_quarter: "trimestriel", plan_year: "annuel",
+        plan_label: "Forfait {plan}", sfx_month: "/mois", sfx_quarter: "/3 mois", sfx_year: "/an",
+        rate_amount: "à {amount} par mois", rate_unknown: "au tarif mensuel alors en vigueur",
+        note_continues_monthly: "La durée de votre forfait {plan} prend fin le {date}. Il se poursuit ensuite de mois en mois {rate}, jusqu'à ce que vous le résiliiez.",
+        note_next_quarter: "La durée de votre forfait annuel prend fin le {date}. Il se poursuit ensuite pour une durée trimestrielle de 3 mois, puis de mois en mois {rate}.",
+        note_trial_fixed: "La première durée de votre forfait {plan} commence à la fin de votre essai gratuit. Ensuite, il se poursuit de mois en mois.",
+        btn_cancel_next_quarter: "Passer au mensuel après ma durée annuelle",
+        btn_upgrade: "Passer au forfait {plan}", btn_switch_now: "Passer au forfait {plan}",
+        btn_next_quarter: "Faire de ma prochaine durée une durée trimestrielle",
+        price_part: " — {price}", save_part: " (économisez {pct} %)",
+        desc_trial: "Vous êtes en période d'essai gratuit : un changement de forfait s'applique immédiatement et rien n'est facturé avant la fin de l'essai.",
+        desc_up: "Un passage à un forfait plus long s'applique immédiatement — la différence au prorata est débitée de votre carte enregistrée, et une nouvelle durée commence aujourd'hui.",
+        desc_next_quarter: "Vous pouvez aussi choisir une durée trimestrielle de 3 mois après votre durée annuelle, au lieu de passer directement au mensuel.",
+        desc_none: "Aucun autre forfait n'est offert pour le moment.",
+        desc_cancelling: "Votre abonnement est résilié. Renouvelez-le ci-dessous pour changer de forfait.",
+        confirm_trial: "Passer au forfait {plan} maintenant? Vous êtes en période d'essai gratuit : rien n'est facturé avant la fin de l'essai.",
+        confirm_up: "Passer au forfait {plan} maintenant? La différence au prorata sera débitée de votre carte enregistrée. Votre nouvelle durée commence aujourd'hui, puis se poursuit de mois en mois.",
+        confirm_next_quarter: "À la fin de votre durée annuelle ({date}), poursuivre avec une durée trimestrielle de 3 mois, puis de mois en mois?",
+        done_scheduled: "C'est fait — votre forfait passe au forfait {plan} le {date}.",
+        done_updated: "C'est fait — votre forfait a été mis à jour.",
+        change_failed: "Impossible de changer de forfait. Veuillez réessayer.",
+        confirm_cancel_next_quarter: "Renoncer à la durée trimestrielle? Après votre durée annuelle, votre abonnement se poursuivra de mois en mois.",
+        done_cancel_next_quarter: "C'est fait — après votre durée annuelle, votre abonnement se poursuivra de mois en mois.",
+        update_failed: "Mise à jour impossible. Veuillez réessayer.",
+        ep_save_failed: "Impossible d'enregistrer votre préférence de courriel. Veuillez réessayer.",
+        ep_off: "Vous ne recevrez pas de courriels de marketing.", ep_on: "Les courriels de marketing sont activés.",
+        card_start_failed: "Impossible de démarrer la mise à jour de la carte.",
+        card_saved: "Carte enregistrée. Il peut falloir quelques secondes pour qu'elle devienne votre mode de paiement par défaut.",
+        cancel_confirm: "Résilier votre abonnement? Vos avantages restent actifs jusqu'à la fin de la période payée.",
+        cancel_done: "Votre abonnement ne sera pas renouvelé. Vos avantages restent actifs jusqu'à la fin de la période.",
+        cancel_failed: "Résiliation impossible. Veuillez réessayer.",
+        renew_confirm: "Renouveler votre abonnement? La facturation se poursuivra sur votre carte enregistrée à la fin de la période en cours.",
+        renew_done: "Votre abonnement sera renouvelé.",
+        renew_failed: "Renouvellement impossible. Veuillez réessayer.",
+        blk_active_transactions: "Vous avez une transaction en cours. Terminez-la ou annulez-la d'abord.",
+        blk_open_dispute: "Un litige portant sur l'une de vos transactions est en cours d'examen.",
+        blk_pending_payout: "Vous avez des versements en attente. Réclamez-les ou attendez qu'ils soient réglés.",
+        blk_counterparty_payout_pending: "Un versement à votre partenaire de transaction n'est pas encore réglé. Veuillez réessayer une fois qu'il sera terminé.",
+        blk_dispute_window_open: "Une transaction récente est encore dans son délai de contestation. Veuillez réessayer sous peu.",
+        blk_other: "Activité de paiement non réglée dans votre compte.",
+        blk_pending_amount: "Vous avez {amount} {cur} en versements en attente. Réclamez-les ou attendez qu'ils soient réglés.",
+        blk_head: "Votre compte ne peut pas encore être supprimé :", blk_tail: "Veuillez régler les points ci-dessus et réessayer.",
+        so_busy: "Déconnexion…", so_yes: "Oui, me déconnecter partout",
+        so_done: "Déconnecté de tous les appareils. Les appareils où l'application est déjà ouverte peuvent prendre jusqu'à une heure pour être déconnectés.",
+        too_many: "Trop de tentatives. Veuillez patienter quelques minutes et réessayer.",
+        so_failed: "Impossible de se déconnecter de tous les appareils. Veuillez réessayer, ou écrivez à admin@qspotmarketplace.com.",
+        check_failed: "Impossible de vérifier votre compte. Veuillez réessayer.",
+        del_confirm: "Cela programme la suppression de votre compte QSpot dans 7 jours. Vous pouvez l'annuler en vous connectant à l'application dans les 7 jours. Continuer?",
+        del_deleted: "Votre compte a été définitivement supprimé. Nous sommes désolés de vous voir partir.",
+        del_scheduled: "La suppression de votre compte est programmée dans 7 jours. Connectez-vous à l'application QSpot dans les 7 jours pour l'annuler.",
+        del_failed: "La suppression du compte a échoué. Veuillez réessayer ou écrire à admin@qspotmarketplace.com.",
+      },
+    };
+    const t = (k, v) => qsT(I18N, k, v);
+    qsApplyI18n(I18N);
+
     const noticeEl  = document.getElementById("notice");
     const loadingEl = document.getElementById("loading");
     let row = null;
@@ -227,30 +391,28 @@
     function renderManage() {
       const statusEl = document.getElementById("m-status");
       if (row.subscription_status === "trialing") {
-        statusEl.textContent = "Free trial";
+        statusEl.textContent = t("st_trial");
         statusEl.className = "status-trialing";
       } else if (row.subscription_status === "past_due") {
-        statusEl.textContent = "Payment issue";
+        statusEl.textContent = t("st_past_due");
         statusEl.className = "status-other";
-        setNotice(noticeEl, "error",
-          "Your last payment failed. Please update your payment method below to keep your membership.");
+        setNotice(noticeEl, "error", t("past_due_notice"));
       } else {
-        statusEl.textContent = "Active";
+        statusEl.textContent = t("st_active");
         statusEl.className = "status-active";
       }
 
-      const yearly = row.subscription_interval === "year";
+      const current = PLANS[row.subscription_interval] ? row.subscription_interval : "month";
       // 🔴 The plan label used to read "Yearly Plan ($90 CAD/yr)" with the amount
       //    typed in. It is a member's own billing summary — the one place a
       //    wrong figure is most likely to be believed — so it now names the plan
       //    only, and states an amount solely when get-pricing has supplied one.
       const _p   = pricingNow();
       const _cur = _p ? (_p.currency || "cad").toUpperCase() : null;
-      const _amt = _p ? (yearly ? (_p.yearly && _p.yearly.amountCents) : _p.monthly.amountCents) : null;
-      const _sfx = yearly ? "/yr" : "/mo";
+      const _amt = planAmountCents(_p, current);
       document.getElementById("m-plan").textContent =
-        (yearly ? "Yearly Plan" : "Monthly Plan") +
-        (_amt != null ? ` (${formatMoney(_amt, _cur)} ${_cur}${_sfx})` : "");
+        t("plan_label", { plan: planName(current) }) +
+        (_amt != null ? ` (${formatMoney(_amt, _cur)} ${_cur}${t("sfx_" + current)})` : "");
       document.getElementById("m-renews").textContent = formatDate(row.premium_until);
 
       // ── F45 (2026-08-21) ────────────────────────────────────────────────
@@ -262,50 +424,151 @@
       const cancelPending = row.cancel_at_period_end === true;
       const renewsLabel   = document.getElementById("m-renews-label");
       const cancelNote    = document.getElementById("m-cancel-note");
-      renewsLabel.textContent = cancelPending ? "Access until" : "Renews";
+      renewsLabel.textContent = cancelPending ? t("access_until") : t("renews");
       if (cancelPending) {
-        cancelNote.textContent =
-          "Your membership is set to cancel and will not renew. Benefits stay active until this date.";
+        cancelNote.textContent = t("cancel_note");
         show(cancelNote);
       } else {
         hide(cancelNote);
       }
 
       const downgradeNote = document.getElementById("m-downgrade-note");
-      const keepYearlyBtn = document.getElementById("keep-yearly-btn");
-      const switchBtn     = document.getElementById("switch-btn");
+      const keepPlanBtn   = document.getElementById("keep-plan-btn");
+      const switchOpts    = document.getElementById("switch-options");
       const switchDesc    = document.getElementById("switch-desc");
 
       // A membership already set to cancel cannot be cancelled again — hide the
       // control rather than leaving a button whose only outcome is an error.
       const cancelBtn = document.getElementById("cancel-btn");
+      const renewBtn  = document.getElementById("renew-btn");
       if (cancelBtn) { if (cancelPending) hide(cancelBtn); else show(cancelBtn); }
+      // Pending cancellation → offer Renew (resume-subscription: not a purchase).
+      if (renewBtn) { if (cancelPending) show(renewBtn); else hide(renewBtn); }
 
-      if (yearly && row.scheduled_subscription_interval === "month") {
-        downgradeNote.textContent = `Switches to Monthly on ${formatDate(row.premium_until)}.`;
+      switchOpts.replaceChildren();
+      hide(downgradeNote);
+      hide(keepPlanBtn);
+      const scheduled = row.scheduled_subscription_interval;
+      const trialing  = row.subscription_status === "trialing";
+      const fixed     = current === "quarter" || current === "year";
+      const dateStr   = formatDate(row.premium_until);
+
+      // Nothing continues after a cancellation, so there is no next term to
+      // shape; renew first (cancel card) to change plans.
+      if (cancelPending) {
+        switchDesc.textContent = t("desc_cancelling");
+        return;
+      }
+
+      // ── What follows this term (Terms §11, CPA s. 214.3) ──────────────────
+      // A quarterly or yearly term never renews for another fixed term: it
+      // continues month to month. That is a rule, not an option, so it is
+      // stated whether or not the server has written the schedule yet, and
+      // there is no "keep" button for it.
+      if (fixed && trialing) {
+        downgradeNote.textContent = t("note_trial_fixed", { plan: planName(current) });
         show(downgradeNote);
-        show(keepYearlyBtn);
-        hide(switchBtn);
-        switchDesc.textContent = "A switch to the Monthly plan is already scheduled.";
-      } else if (yearly) {
-        switchDesc.textContent = "Switch to Monthly at the end of your current year — no mid-period charge or refund.";
-        switchBtn.textContent = "Switch to Monthly (at period end)";
-        switchBtn.dataset.plan = "monthly";
+      } else if (fixed) {
+        const monthly = planAmountCents(_p, "month");
+        const rate = monthly != null ? t("rate_amount", { amount: formatMoney(monthly, _cur) }) : t("rate_unknown");
+        if (current === "year" && scheduled === "quarter") {
+          downgradeNote.textContent = t("note_next_quarter", { date: dateStr, rate });
+          keepPlanBtn.textContent = t("btn_cancel_next_quarter");
+          show(keepPlanBtn);
+        } else {
+          downgradeNote.textContent = t("note_continues_monthly", { plan: planName(current), date: dateStr, rate });
+        }
+        show(downgradeNote);
+      }
+
+      // ── Options ───────────────────────────────────────────────────────────
+      // Every figure comes from get-pricing; savings are floored server-side.
+      // Quarterly only when get-pricing returns it (unset secret = not for sale).
+      // A paid term can go to a LONGER plan now (new term, prorated), or — for a
+      // yearly term only — choose one Quarterly term next. Monthly next is the
+      // default for any fixed term, so it is never a button.
+      let hasUp = false, hasNextQuarter = false;
+      for (const target of ["month", "quarter", "year"]) {
+        if (target === current) continue;
+        if (target === "quarter" && !(_p && _p.quarterly)) continue;
+        if (target === "year" && _p && !_p.yearly) continue;
+        const up = PLANS[target].rank > PLANS[current].rank;
+        let mode;
+        if (trialing)       mode = up ? "up" : "trial";
+        else if (up)        mode = "up";
+        else if (current === "year" && target === "quarter" && scheduled !== "quarter") mode = "next_quarter";
+        else continue;
+        const amt  = planAmountCents(_p, target);
+        const save = planSavePercent(_p, target);
+        const priceTxt = amt != null ? t("price_part", { price: `${formatMoney(amt, _cur)}${t("sfx_" + target)}` }) : "";
+        const btn  = document.createElement("button");
+        btn.className = "secondary";
+        btn.dataset.plan = PLANS[target].type;
+        if (mode === "up") {
+          hasUp = true;
+          btn.textContent = t("btn_upgrade", { plan: planName(target) }) + priceTxt + (save ? t("save_part", { pct: save }) : "");
+        } else if (mode === "trial") {
+          btn.textContent = t("btn_switch_now", { plan: planName(target) }) + priceTxt;
+        } else {
+          hasNextQuarter = true;
+          btn.textContent = t("btn_next_quarter") + priceTxt;
+        }
+        btn.onclick = () => switchPlan(target, mode);
+        switchOpts.appendChild(btn);
+      }
+
+      if (trialing) {
+        switchDesc.textContent = t("desc_trial");
       } else {
-        // Both strings derive from the same fetch. savePercent is floored
-        // server-side, so this can never overstate the saving; when pricing is
-        // unavailable the sentence simply omits the claim rather than guessing.
-        const _up   = pricingNow();
-        const _upc  = _up ? (_up.currency || "cad").toUpperCase() : null;
-        const _save = _up && _up.savePercent && _up.savePercent > 0 ? _up.savePercent : null;
-        const _yr   = _up && _up.yearly ? _up.yearly.amountCents : null;
-        switchDesc.textContent = _save
-          ? `Upgrade to Yearly and save ${_save}%. The difference is prorated immediately.`
-          : "Upgrade to Yearly. The difference is prorated immediately.";
-        switchBtn.textContent = _yr != null
-          ? `Upgrade to Yearly — ${formatMoney(_yr, _upc)}/yr`
-          : "Upgrade to Yearly";
-        switchBtn.dataset.plan = "yearly";
+        const parts = [];
+        if (hasUp) parts.push(t("desc_up"));
+        if (hasNextQuarter) parts.push(t("desc_next_quarter"));
+        // With the "skip the Quarterly term" button showing, the note above says
+        // it all — "no other plans" would read as if nothing can be changed.
+        const choiceShown = !keepPlanBtn.classList.contains("hidden");
+        switchDesc.textContent = parts.length ? parts.join(" ") : (choiceShown ? "" : t("desc_none"));
+      }
+    }
+
+    // ── Plans (month < quarter < year) ─────────────────────────────────────
+    // Mirrors PLAN_RANK in supabase/functions/_shared/pricing.ts. A longer plan
+    // is an upgrade (immediate, prorated); a shorter one is scheduled for period
+    // end by switch-subscription-plan. subscription_interval is the DB value.
+    const PLANS = {
+      month:   { type: "monthly",   rank: 1 },
+      quarter: { type: "quarterly", rank: 2 },
+      year:    { type: "yearly",    rank: 3 },
+    };
+    const planName = (interval) => t("plan_" + interval);
+    function planAmountCents(p, interval) {
+      if (!p) return null;
+      const o = interval === "year" ? p.yearly : interval === "quarter" ? p.quarterly : p.monthly;
+      return o && typeof o.amountCents === "number" ? o.amountCents : null;
+    }
+    function planSavePercent(p, interval) {
+      if (!p) return null;
+      const s = interval === "year" ? p.savePercent : interval === "quarter" ? p.quarterlySavePercent : null;
+      return s && s > 0 ? s : null;
+    }
+
+    async function switchPlan(target, mode) {
+      const plan = planName(target);
+      const msg = mode === "trial" ? t("confirm_trial", { plan })
+                : mode === "up"    ? t("confirm_up", { plan })
+                : t("confirm_next_quarter", { date: formatDate(row.premium_until) });
+      if (!confirm(msg)) return;
+      const buttons = document.querySelectorAll("#switch-options button");
+      buttons.forEach((b) => { b.disabled = true; });
+      const { ok, data } = await callFn("switch-subscription-plan", { planType: PLANS[target].type });
+      buttons.forEach((b) => { b.disabled = false; });
+      if (ok) {
+        setNotice(noticeEl, "success",
+          data.scheduled && data.scheduledSubscriptionInterval === "quarter"
+            ? t("done_scheduled", { plan, date: formatDate(data.effectiveDate) })
+            : t("done_updated"));
+        await refresh();
+      } else {
+        setNotice(noticeEl, "error", (data && data.message) || t("change_failed"));
       }
     }
 
@@ -351,44 +614,26 @@
       e.target.disabled = false;
       if (error) {
         e.target.checked = !e.target.checked; // revert
-        setNotice(noticeEl, "error", "Could not save your email preference. Please try again.");
+        setNotice(noticeEl, "error", t("ep_save_failed"));
       } else {
         if (row) row.marketing_emails_opt_out = optOut;
         setNotice(noticeEl, "success",
-          optOut ? "You won't receive marketing emails." : "Marketing emails are on.");
+          optOut ? t("ep_off") : t("ep_on"));
       }
     };
 
-    document.getElementById("switch-btn").onclick = async (e) => {
-      const plan = e.target.dataset.plan;
-      const msg = plan === "yearly"
-        ? "Upgrade to the Yearly plan now? The prorated difference is charged to your saved card."
-        : "Switch to Monthly at the end of your current yearly period?";
-      if (!confirm(msg)) return;
+    // Shown only when a yearly member chose a Quarterly next term: this drops
+    // that choice (the term then continues month to month, as the Terms say).
+    document.getElementById("keep-plan-btn").onclick = async (e) => {
+      if (!confirm(t("confirm_cancel_next_quarter"))) return;
       e.target.disabled = true;
-      const { ok, data } = await callFn("switch-subscription-plan", { planType: plan });
+      const { ok } = await callFn("cancel-scheduled-downgrade", {});
       e.target.disabled = false;
       if (ok) {
-        setNotice(noticeEl, "success",
-          data.scheduled
-            ? `Done — your plan switches to Monthly on ${formatDate(data.effectiveDate)}.`
-            : "Done — your plan has been updated.");
+        setNotice(noticeEl, "success", t("done_cancel_next_quarter"));
         await refresh();
       } else {
-        setNotice(noticeEl, "error", data.error || "Could not change plan. Please try again.");
-      }
-    };
-
-    document.getElementById("keep-yearly-btn").onclick = async (e) => {
-      if (!confirm("Cancel the scheduled switch and stay on the Yearly plan?")) return;
-      e.target.disabled = true;
-      const { ok, data } = await callFn("cancel-scheduled-downgrade", {});
-      e.target.disabled = false;
-      if (ok) {
-        setNotice(noticeEl, "success", "You're staying on the Yearly plan.");
-        await refresh();
-      } else {
-        setNotice(noticeEl, "error", data.error || "Could not update. Please try again.");
+        setNotice(noticeEl, "error", t("update_failed"));
       }
     };
 
@@ -396,7 +641,7 @@
       e.target.disabled = true;
       const { ok, data } = await callFn("create-setup-intent", {});
       if (!ok || !data.clientSecret) {
-        setNotice(noticeEl, "error", data.error || "Could not start card update.");
+        setNotice(noticeEl, "error", data.error || t("card_start_failed"));
         e.target.disabled = false;
         return;
       }
@@ -437,8 +682,7 @@
           // say otherwise. The copy now claims only what is known to be true, and
           // the page re-reads its own state instead of predicting it, as every
           // other action on this page already does.
-          setNotice(noticeEl, "success",
-            "Card saved. It can take a few seconds to become your default payment method.");
+          setNotice(noticeEl, "success", t("card_saved"));
           hide(document.getElementById("card-form"));
           if (cardElement) {
             try { cardElement.destroy(); } catch (_e) { /* already unmounted */ }
@@ -452,44 +696,54 @@
     };
 
     document.getElementById("cancel-btn").onclick = async (e) => {
-      if (!confirm("Cancel your membership? Benefits stay active until the end of the paid period.")) return;
+      if (!confirm(t("cancel_confirm"))) return;
       e.target.disabled = true;
-      const { ok, data } = await callFn("cancel-subscription", {});
+      const { ok } = await callFn("cancel-subscription", {});
       e.target.disabled = false;
       if (ok) {
-        setNotice(noticeEl, "success", "Your membership will not renew. Benefits remain active until the period ends.");
+        setNotice(noticeEl, "success", t("cancel_done"));
         await refresh();
       } else {
-        setNotice(noticeEl, "error", data.error || "Could not cancel. Please try again.");
+        setNotice(noticeEl, "error", t("cancel_failed"));
+      }
+    };
+
+    // Renew = undo a pending cancellation (resume-subscription). Not a purchase:
+    // same subscription, same saved card; a lapsed subscription is refused (409).
+    document.getElementById("renew-btn").onclick = async (e) => {
+      if (!confirm(t("renew_confirm"))) return;
+      e.target.disabled = true;
+      const { ok } = await callFn("resume-subscription", {});
+      e.target.disabled = false;
+      if (ok) {
+        setNotice(noticeEl, "success", t("renew_done"));
+        await refresh();
+      } else {
+        setNotice(noticeEl, "error", t("renew_failed"));
       }
     };
 
     // ── Account deletion (Issue #145) ─────────────────────────────────────
     // Mirrors the in-app Settings flow: checkOnly pre-flight → blockers OR
     // typed-DELETE confirmation → real deletion → local sign-out.
-    const DELETE_BLOCKER_MESSAGES = {
-      active_transactions: "You have an active transaction. Complete or cancel it first.",
-      open_dispute: "A dispute on one of your transactions is under review.",
-      pending_payout: "You have pending payouts. Claim them or wait for them to settle.",
-      counterparty_payout_pending: "A payout to your transaction partner has not settled yet. Please try again once it completes.",
-      dispute_window_open: "A recent transaction is still within its dispute window. Please try again shortly.",
-    };
+    const DELETE_BLOCKER_TYPES = new Set([
+      "active_transactions", "open_dispute", "pending_payout",
+      "counterparty_payout_pending", "dispute_window_open",
+    ]);
 
     function renderDeleteBlockers(blockers) {
       const el = document.getElementById("delete-blockers");
       const items = (blockers || []).map((b) => {
-        let msg = DELETE_BLOCKER_MESSAGES[b.type] ||
-          "Unsettled payment activity on your account.";
+        let msg = DELETE_BLOCKER_TYPES.has(b.type) ? t("blk_" + b.type) : t("blk_other");
         if (b.type === "pending_payout" && b.amountCents) {
-          msg = `You have ${(b.amountCents / 100).toFixed(2)} ${b.currency || "CAD"} ` +
-                "in pending payouts. Claim them or wait for them to settle.";
+          msg = t("blk_pending_amount", { amount: (b.amountCents / 100).toFixed(2), cur: b.currency || "CAD" });
         }
         return `<li>${msg}</li>`;
       });
       el.innerHTML =
-        `<strong>Your account can't be deleted yet:</strong>` +
+        `<strong>${t("blk_head")}</strong>` +
         `<ul>${items.join("")}</ul>` +
-        `<span>Please resolve the above and try again.</span>`;
+        `<span>${t("blk_tail")}</span>`;
       show(el);
     }
 
@@ -509,25 +763,22 @@
 
     document.getElementById("signout-all-confirm-btn").onclick = async (e) => {
       e.target.disabled = true;
-      e.target.textContent = "Signing out…";
+      e.target.textContent = t("so_busy");
       const { ok, status } = await signOutAllDevices();
       if (ok) {
         // The session is gone — hide every signed-in panel rather than reloading,
         // so the confirmation stays readable.
         ["manage", "no-sub", "email-prefs", "security", "danger-zone"].forEach(
           (id) => hide(document.getElementById(id)));
-        setNotice(noticeEl, "success",
-          "Signed out of all devices. Devices with an app already open may take up to an hour to be signed out.");
+        setNotice(noticeEl, "success", t("so_done"));
       } else if (status === 429) {
-        setNotice(noticeEl, "error",
-          "Too many attempts. Please wait a few minutes and try again.");
+        setNotice(noticeEl, "error", t("too_many"));
         e.target.disabled = false;
-        e.target.textContent = "Yes, sign out everywhere";
+        e.target.textContent = t("so_yes");
       } else {
-        setNotice(noticeEl, "error",
-          "Could not sign out of all devices. Please try again, or contact admin@qspotmarketplace.com.");
+        setNotice(noticeEl, "error", t("so_failed"));
         e.target.disabled = false;
-        e.target.textContent = "Yes, sign out everywhere";
+        e.target.textContent = t("so_yes");
       }
     };
 
@@ -542,7 +793,7 @@
       } else if (status === 409) {
         renderDeleteBlockers(data.blockers);
       } else {
-        setNotice(noticeEl, "error", "Could not check your account. Please try again.");
+        setNotice(noticeEl, "error", t("check_failed"));
       }
     };
 
@@ -552,7 +803,7 @@
     };
 
     document.getElementById("delete-confirm-btn").onclick = async (e) => {
-      if (!confirm("This schedules your QSpot account for deletion in 7 days. You can cancel by signing into the app within 7 days. Continue?")) return;
+      if (!confirm(t("del_confirm"))) return;
       e.target.disabled = true;
       const { ok, status, data } = await callFn("delete-account", {});
       if (ok && (data.scheduled || data.deleted)) {
@@ -561,9 +812,7 @@
         try { await sb.auth.signOut(); } catch (_e) { /* session already invalid */ }
         ["manage", "no-sub", "email-prefs", "danger-zone"].forEach(
           (id) => hide(document.getElementById(id)));
-        setNotice(noticeEl, "success", data.deleted
-          ? "Your account has been permanently deleted. We're sorry to see you go."
-          : "Your account is scheduled for deletion in 7 days. Sign into the QSpot app within 7 days to cancel.");
+        setNotice(noticeEl, "success", data.deleted ? t("del_deleted") : t("del_scheduled"));
       } else if (status === 409) {
         // Race: something became blocking between pre-flight and confirm.
         hide(document.getElementById("delete-confirm"));
@@ -571,8 +820,7 @@
         renderDeleteBlockers(data.blockers);
         e.target.disabled = false;
       } else {
-        setNotice(noticeEl, "error",
-          "Account deletion failed. Please try again or contact admin@qspotmarketplace.com.");
+        setNotice(noticeEl, "error", t("del_failed"));
         e.target.disabled = false;
       }
     };
