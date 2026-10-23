@@ -633,7 +633,7 @@ function openSpiderfy(anchorCoords, spots) {
         pin.textContent = String(i + 1);
         pin.setAttribute(
             'aria-label',
-            `${spot.name || 'Spot'} — ${categoryLabel(spot.category)} — ${formatPrice(buyerTotalPrice(spot), spot.currency || 'CAD')}`
+            `${spot.name || 'Spot'}, ${categoryLabel(spot.category)}, ${formatPrice(buyerTotalPrice(spot), spot.currency || 'CAD')}`
         );
         pin.title = spot.name || 'Spot';
 
@@ -674,7 +674,7 @@ function updateSpiderfyHint(count) {
     const el = document.getElementById('map-hint');
     if (!el) return;
     if (count > 1) {
-        el.textContent = `${count} spots share this location — pick one`;
+        el.textContent = `${count} spots share this location. Pick one.`;
         el.hidden = false;
     } else {
         el.hidden = true;
@@ -879,7 +879,7 @@ function buildGallery(urls, spotName) {
         img.hidden = false;
         img.src = urls[index];
         img.alt = urls.length > 1
-            ? `${spotName} — photo ${index + 1} of ${urls.length}`
+            ? `${spotName}, photo ${index + 1} of ${urls.length}`
             : spotName;
         counter.textContent = `${index + 1} / ${urls.length}`;
         dotEls.forEach((d, i) => {

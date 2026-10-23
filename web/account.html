@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com https://*.js.stripe.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://lrvrmcmuhkdqhtxoumij.supabase.co wss://lrvrmcmuhkdqhtxoumij.supabase.co https://api.stripe.com https://maps.googleapis.com; frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com; img-src 'self' data: https:; font-src 'self' data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
-  <title>QSpot Marketplace — Account, Membership &amp; Account Deletion</title>
+  <title>QSpot Marketplace | Account, Membership &amp; Account Deletion</title>
   <meta name="description" content="Manage your QSpot Marketplace account (by QSpot Technologies Inc.): delete your account, change email preferences, sign out of all devices, or manage your QSpot Premium membership.">
   <link rel="canonical" href="https://www.qspotmarketplace.com/web/account.html">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
@@ -98,7 +98,7 @@
       <h2 data-i18n="ep_h">Email preferences</h2>
       <p data-i18n="ep_p">Choose whether QSpot may send you membership offers and other marketing
          emails. Service emails (receipts, booking and payout notices) are always
-         sent — they're required to operate your account.</p>
+         sent, because they're required to operate your account.</p>
       <label style="display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;">
         <input type="checkbox" id="marketing-toggle" style="width:18px;height:18px;accent-color:#FFD700;">
         <span data-i18n="ep_label">Send me QSpot offers and marketing emails</span>
@@ -149,7 +149,7 @@
       <h3 data-i18n="del_what_h">What happens</h3>
       <p data-i18n="del_what_p">Your account is scheduled for deletion and is permanently deleted after
          7 days. Signing in to the app during those 7 days cancels it. Your account
-         and all associated data — listings, messages, and reviews — are deleted,
+         and all associated data (listings, messages, and reviews) are deleted,
          and any remaining Premium is forfeited. If a purchase, payout or dispute is
          still in progress, deletion waits until it is settled.</p>
       <p data-i18n="retention">Records of completed payments are kept in a de-identified form for 7 years
@@ -166,7 +166,7 @@
       <h2 data-i18n="dz_h">Delete my account</h2>
       <p data-i18n="dz_p">Schedules your QSpot account for deletion in 7 days. Sign in to the
          QSpot app within 7 days to cancel. After that, your account and all
-         associated data — listings, messages, and reviews —
+         associated data (listings, messages, and reviews)
          are permanently deleted and any remaining Premium is forfeited.</p>
       <!-- GDPR Art. 12(4)/13: erasure is partially refused for completed-payment
            records, retained under Art. 17(3)(b). Must be stated at the point of
@@ -244,30 +244,30 @@
         btn_cancel_next_quarter: "Keep monthly after my yearly term",
         btn_upgrade: "Upgrade to {plan}", btn_switch_now: "Switch to {plan}",
         btn_next_quarter: "Make my next term Quarterly",
-        price_part: " — {price}", save_part: " (save {pct}%)",
+        price_part: ": {price}", save_part: " (save {pct}%)",
         desc_trial: "You're in your free trial, so a plan change applies now and nothing is charged until the trial ends.",
-        desc_up: "Upgrades apply now — the prorated difference is charged to your saved card, and a new term starts today.",
+        desc_up: "Upgrades apply now. The prorated difference is charged to your saved card, and a new term starts today.",
         desc_next_quarter: "You can also choose one 3-month Quarterly term after your yearly term, instead of going straight to monthly.",
         desc_none: "No other plans are available right now.",
-        comp_note: "Complimentary membership — no payment is taken. Your benefits run until {date}.",
+        comp_note: "Complimentary membership. No payment is taken. Your benefits run until {date}.",
         btn_renew: "Renew for another {plan} term",
         desc_renew: "Your term ends on {date}. You can renew it for one more {plan} term at the same price; otherwise it continues month to month.",
         confirm_renew: "Renew your {plan} plan for one more term starting {date}? {price} will be charged to your saved card on {date}. After that term it continues month to month.",
         note_renewed: "You renewed for one more {plan} term from {date}; after it, your membership continues month to month {rate}.",
         btn_cancel_renewal: "Cancel the renewal",
         confirm_cancel_renewal: "Cancel the renewal? Your term then continues month to month after {date}.",
-        done_renewed: "Done — your {plan} plan renews for one more term on {date}.",
-        done_cancel_renewal: "Done — the renewal is cancelled; your term continues month to month after it ends.",
+        done_renewed: "Done. Your {plan} plan renews for one more term on {date}.",
+        done_cancel_renewal: "Done. The renewal is cancelled; your term continues month to month after it ends.",
         err_no_sub: "This membership isn't billed through Stripe, so it can't be changed here.",
         desc_cancelling: "Your membership is set to cancel. Renew it below to change plans.",
         confirm_trial: "Switch to the {plan} plan now? You're in your free trial, so nothing is charged until it ends.",
         confirm_up: "Upgrade to the {plan} plan now? The prorated difference is charged to your saved card. Your new {plan} term starts today and then continues month to month.",
         confirm_next_quarter: "At the end of your yearly term ({date}), continue with one 3-month Quarterly term, then month to month?",
-        done_scheduled: "Done — your plan switches to {plan} on {date}.",
-        done_updated: "Done — your plan has been updated.",
+        done_scheduled: "Done. Your plan switches to {plan} on {date}.",
+        done_updated: "Done. Your plan has been updated.",
         change_failed: "Could not change plan. Please try again.",
         confirm_cancel_next_quarter: "Skip the Quarterly term? After your yearly term your membership continues month to month.",
-        done_cancel_next_quarter: "Done — after your yearly term your membership continues month to month.",
+        done_cancel_next_quarter: "Done. After your yearly term your membership continues month to month.",
         update_failed: "Could not update. Please try again.",
         ep_save_failed: "Could not save your email preference. Please try again.",
         ep_off: "You won't receive marketing emails.", ep_on: "Marketing emails are on.",
@@ -298,7 +298,7 @@
         del_failed: "Account deletion failed. Please try again or contact admin@qspotmarketplace.com.",
       },
       fr: {
-        doc_title: "QSpot Marketplace — Compte, abonnement et suppression du compte",
+        doc_title: "QSpot Marketplace | Compte, abonnement et suppression du compte",
         nav_home: "Accueil", nav_map: "Carte en direct", nav_app: "Obtenir l'application",
         h1: 'Votre <span class="gold">compte</span> QSpot Marketplace',
         h_sub: "Pour l'application QSpot Marketplace de QSpot Technologies Inc.",
@@ -310,7 +310,7 @@
         pm_h: "Mode de paiement", pm_p: "Mettez à jour la carte utilisée pour votre abonnement.", pm_save: "Enregistrer la carte", pm_update: "Mettre à jour le mode de paiement",
         cx_h: "Résilier", cx_p: "Votre abonnement ne sera pas renouvelé. Vos avantages restent actifs jusqu'à la fin de la période payée.", cx_btn: "Résilier l'abonnement", cx_renew: "Renouveler l'abonnement",
         ep_h: "Préférences de courriel",
-        ep_p: "Choisissez si QSpot peut vous envoyer des offres d'abonnement et d'autres courriels de marketing. Les courriels de service (reçus, avis de réservation et de versement) sont toujours envoyés — ils sont nécessaires au fonctionnement de votre compte.",
+        ep_p: "Choisissez si QSpot peut vous envoyer des offres d'abonnement et d'autres courriels de marketing. Les courriels de service (reçus, avis de réservation et de versement) sont toujours envoyés, car ils sont nécessaires au fonctionnement de votre compte.",
         ep_label: "M'envoyer les offres et les courriels de marketing de QSpot",
         signout: "Se déconnecter",
         sec_h: "Sécurité",
@@ -321,10 +321,10 @@
         del_p: "Vous pouvez demander à QSpot Technologies Inc. de supprimer votre compte QSpot Marketplace et les données qui y sont liées de l'une de ces façons. Vous n'avez pas besoin de réinstaller l'application.",
         del_steps: '<li><strong>Dans l\'application :</strong> Profil › Paramètres › Supprimer le compte.</li><li><strong>Sur cette page :</strong> connectez-vous avec le même compte Google ou Apple que dans l\'application, puis choisissez <strong>Supprimer mon compte</strong>.</li><li><strong>Par courriel :</strong> écrivez à <a href="mailto:admin@qspotmarketplace.com?subject=Demande%20de%20suppression%20de%20compte%20QSpot%20Marketplace">admin@qspotmarketplace.com</a> à partir de l\'adresse courriel de votre compte.</li>',
         del_what_h: "Ce qui se passe",
-        del_what_p: "La suppression de votre compte est programmée, puis il est définitivement supprimé après 7 jours. Vous connecter à l'application pendant ces 7 jours l'annule. Votre compte et toutes les données associées — annonces, messages et avis — sont supprimés, et le temps Premium restant est perdu. Si un achat, un versement ou un litige est en cours, la suppression attend son règlement.",
+        del_what_p: "La suppression de votre compte est programmée, puis il est définitivement supprimé après 7 jours. Vous connecter à l'application pendant ces 7 jours l'annule. Votre compte et toutes les données associées (annonces, messages et avis) sont supprimés, et le temps Premium restant est perdu. Si un achat, un versement ou un litige est en cours, la suppression attend son règlement.",
         retention: "Les enregistrements des paiements effectués sont conservés sous une forme dépersonnalisée pendant 7 ans (10 dans l'UE), comme l'exige la loi fiscale. Ils ne contiennent ni nom, ni e-mail, ni localisation.",
         dz_h: "Supprimer mon compte",
-        dz_p: "Cela programme la suppression de votre compte dans 7 jours. Reconnectez-vous sous 7 jours pour annuler. Ensuite, votre compte et vos données — annonces, messages et avis — sont définitivement supprimés et le temps Premium restant est perdu.",
+        dz_p: "Cela programme la suppression de votre compte dans 7 jours. Reconnectez-vous sous 7 jours pour annuler. Ensuite, votre compte et vos données (annonces, messages et avis) sont définitivement supprimés et le temps Premium restant est perdu.",
         apple_note: 'Connecté avec Apple ? Après la suppression, retirez aussi QSpot de « Se connecter avec Apple » : sur votre iPhone, ouvrez Réglages › votre nom › Connexion et sécurité › Se connecter avec Apple, ou rendez-vous sur <a href="https://account.apple.com" target="_blank" rel="noopener">account.apple.com</a>.',
         dz_type: "<strong>Saisissez DELETE pour confirmer :</strong>",
         dz_confirm: "Programmer la suppression du compte", dz_start: "Supprimer mon compte…",
@@ -345,30 +345,30 @@
         btn_cancel_next_quarter: "Passer au mensuel après ma durée annuelle",
         btn_upgrade: "Passer au forfait {plan}", btn_switch_now: "Passer au forfait {plan}",
         btn_next_quarter: "Faire de ma prochaine durée une durée trimestrielle",
-        price_part: " — {price}", save_part: " (économisez {pct} %)",
+        price_part: " : {price}", save_part: " (économisez {pct} %)",
         desc_trial: "Vous êtes en période d'essai gratuit : un changement de forfait s'applique immédiatement et rien n'est facturé avant la fin de l'essai.",
-        desc_up: "Un passage à un forfait plus long s'applique immédiatement — la différence au prorata est débitée de votre carte enregistrée, et une nouvelle durée commence aujourd'hui.",
+        desc_up: "Un passage à un forfait plus long s'applique immédiatement. La différence au prorata est débitée de votre carte enregistrée, et une nouvelle durée commence aujourd'hui.",
         desc_next_quarter: "Vous pouvez aussi choisir une durée trimestrielle de 3 mois après votre durée annuelle, au lieu de passer directement au mensuel.",
         desc_none: "Aucun autre forfait n'est offert pour le moment.",
-        comp_note: "Abonnement gratuit — aucun paiement n'est perçu. Vos avantages se poursuivent jusqu'au {date}.",
+        comp_note: "Abonnement gratuit. Aucun paiement n'est perçu. Vos avantages se poursuivent jusqu'au {date}.",
         btn_renew: "Renouveler pour une autre durée du forfait {plan}",
         desc_renew: "Votre durée prend fin le {date}. Vous pouvez la renouveler pour une autre durée du forfait {plan} au même prix; sinon, elle se poursuit de mois en mois.",
         confirm_renew: "Renouveler votre forfait {plan} pour une autre durée à compter du {date}? {price} sera débité de votre carte enregistrée le {date}. Après cette durée, il se poursuit de mois en mois.",
         note_renewed: "Vous avez renouvelé pour une autre durée du forfait {plan} à compter du {date}; ensuite, votre abonnement se poursuit de mois en mois {rate}.",
         btn_cancel_renewal: "Annuler le renouvellement",
         confirm_cancel_renewal: "Annuler le renouvellement? Votre durée se poursuivra ensuite de mois en mois après le {date}.",
-        done_renewed: "C'est fait — votre forfait {plan} sera renouvelé pour une autre durée le {date}.",
-        done_cancel_renewal: "C'est fait — le renouvellement est annulé; votre durée se poursuivra de mois en mois après sa fin.",
+        done_renewed: "C'est fait. Votre forfait {plan} sera renouvelé pour une autre durée le {date}.",
+        done_cancel_renewal: "C'est fait. Le renouvellement est annulé; votre durée se poursuivra de mois en mois après sa fin.",
         err_no_sub: "Cet abonnement n'est pas facturé par Stripe; il ne peut donc pas être modifié ici.",
         desc_cancelling: "Votre abonnement est résilié. Renouvelez-le ci-dessous pour changer de forfait.",
         confirm_trial: "Passer au forfait {plan} maintenant? Vous êtes en période d'essai gratuit : rien n'est facturé avant la fin de l'essai.",
         confirm_up: "Passer au forfait {plan} maintenant? La différence au prorata sera débitée de votre carte enregistrée. Votre nouvelle durée commence aujourd'hui, puis se poursuit de mois en mois.",
         confirm_next_quarter: "À la fin de votre durée annuelle ({date}), poursuivre avec une durée trimestrielle de 3 mois, puis de mois en mois?",
-        done_scheduled: "C'est fait — votre forfait passe au forfait {plan} le {date}.",
-        done_updated: "C'est fait — votre forfait a été mis à jour.",
+        done_scheduled: "C'est fait. Votre forfait passe au forfait {plan} le {date}.",
+        done_updated: "C'est fait. Votre forfait a été mis à jour.",
         change_failed: "Impossible de changer de forfait. Veuillez réessayer.",
         confirm_cancel_next_quarter: "Renoncer à la durée trimestrielle? Après votre durée annuelle, votre abonnement se poursuivra de mois en mois.",
-        done_cancel_next_quarter: "C'est fait — après votre durée annuelle, votre abonnement se poursuivra de mois en mois.",
+        done_cancel_next_quarter: "C'est fait. Après votre durée annuelle, votre abonnement se poursuivra de mois en mois.",
         update_failed: "Mise à jour impossible. Veuillez réessayer.",
         ep_save_failed: "Impossible d'enregistrer votre préférence de courriel. Veuillez réessayer.",
         ep_off: "Vous ne recevrez pas de courriels de marketing.", ep_on: "Les courriels de marketing sont activés.",

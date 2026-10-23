@@ -269,7 +269,7 @@ function isPremiumStatus(status) {
 }
 
 function formatDate(epochMs) {
-  if (!epochMs || epochMs <= 0) return "—";
+  if (!epochMs || epochMs <= 0) return "-";
   return new Date(epochMs).toLocaleDateString(qsLocale(), {
     year: "numeric", month: "long", day: "numeric",
   });

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://lrvrmcmuhkdqhtxoumij.supabase.co wss://lrvrmcmuhkdqhtxoumij.supabase.co; frame-src 'none'; img-src 'self' data: https:; font-src 'self' data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
   <title>QSpot Premium</title>
-  <meta name="description" content="Save on every transaction with QSpot Premium — reduced fees, a free monthly offline-payment listing credit, and a free trial.">
+  <meta name="description" content="Save on every transaction with QSpot Premium: reduced fees, a free monthly offline-payment listing credit, and a free trial.">
   <link rel="canonical" href="https://www.qspotmarketplace.com/web/premium.html">
   <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
@@ -61,7 +61,7 @@
            words "charged only when the trial ends". -->
       <div class="plan" id="plan-monthly" data-plan="monthly">
         <div class="name" data-i18n="plan_month">Monthly</div>
-        <div class="price" id="px-monthly">—</div>
+        <div class="price" id="px-monthly">…</div>
         <div class="per"   id="px-monthly-per">&nbsp;</div>
       </div>
       <!-- Quarterly: one 3-month term (Stripe price month × 3), then month to month
@@ -69,7 +69,7 @@
            unset secret simply hides it. -->
       <div class="plan hidden" id="plan-quarterly" data-plan="quarterly">
         <div class="name" data-i18n="plan_quarter">Quarterly</div>
-        <div class="price" id="px-quarterly">—</div>
+        <div class="price" id="px-quarterly">…</div>
         <div class="per"   id="px-quarterly-per">&nbsp;</div>
         <div class="note"  id="px-quarterly-permonth"></div>
         <div class="save"  id="px-quarterly-save"></div>
@@ -77,7 +77,7 @@
       <div class="plan selected" id="plan-yearly" data-plan="yearly">
         <div class="badge" id="px-badge" data-i18n="badge">BEST VALUE</div>
         <div class="name" data-i18n="plan_year">Yearly</div>
-        <div class="price" id="px-yearly">—</div>
+        <div class="price" id="px-yearly">…</div>
         <div class="per"   id="px-yearly-per">&nbsp;</div>
         <div class="note"  id="px-yearly-permonth"></div>
         <div class="save"  id="px-yearly-save"></div>
@@ -86,7 +86,7 @@
 
     <button class="primary" id="subscribe-btn" data-i18n="cta">Start membership</button>
     <p style="max-width:420px;margin-top:12px;font-size:0.8rem;color:var(--text-dim);text-align:center;" data-i18n="smallprint">
-      Secure payment by Stripe. Cancel anytime — benefits continue to the end of
+      Secure payment by Stripe. Cancel anytime. Benefits continue to the end of
       the paid period. The quarterly and yearly plans run for their first 3 months
       or year, then continue month to month at the monthly rate unless you choose,
       in a term's last 90 days, to renew it for one more term
@@ -137,13 +137,13 @@
     // elements, plus every string this script writes. Keep the two in step.
     const I18N = {
       en: {
-        price_error: "We couldn't load current pricing. Please refresh — we won't show a price we can't confirm.",
+        price_error: "We couldn't load current pricing. Please refresh. We won't show a price we can't confirm.",
         per_month: "{cur} / month", per_quarter: "{cur} for 3 months", per_year: "{cur} for 1 year",
         per_month_note: "{sign} {amount}/month", save: "Save {pct}%",
         trial_len: "{n}-day ", trial_benefit: "{n}-day free",
         redirecting: "Redirecting to secure checkout…", cta: "Start membership",
         checkout_error: "Could not start checkout. Please try again.",
-        cancelled: "Checkout was cancelled — no charge was made.",
+        cancelled: "Checkout was cancelled. No charge was made.",
         signout_all_confirm: "Sign out of QSpot on every device, including this browser?\n\nYou'll need to sign in again on each device, and a new security code will be required. Devices with the app already open may take up to an hour to be signed out.",
         too_many: "Too many attempts. Please wait a few minutes and try again.",
         signout_all_failed: "Could not sign out of all devices. Please try again from the account page.",
@@ -160,7 +160,7 @@
         plan_month: "Mensuel", plan_quarter: "Trimestriel", plan_year: "Annuel",
         badge: "MEILLEUR CHOIX",
         cta: "Devenir membre",
-        smallprint: 'Paiement sécurisé par Stripe. Résiliable en tout temps — les avantages se poursuivent jusqu\'à la fin de la période payée. Les forfaits trimestriel et annuel durent leurs 3 premiers mois ou leur première année, puis se poursuivent de mois en mois au tarif mensuel, à moins que vous ne choisissiez, pendant les 90 derniers jours d\'une durée, de la renouveler une fois de plus (<a href="conditions.html" style="text-decoration:underline;">Conditions</a>, article 11). Les nouveaux membres profitent d\'un essai gratuit<span id="px-trial"></span> (carte requise, débitée seulement à la fin de l\'essai).',
+        smallprint: 'Paiement sécurisé par Stripe. Résiliable en tout temps. Les avantages se poursuivent jusqu\'à la fin de la période payée. Les forfaits trimestriel et annuel durent leurs 3 premiers mois ou leur première année, puis se poursuivent de mois en mois au tarif mensuel, à moins que vous ne choisissiez, pendant les 90 derniers jours d\'une durée, de la renouveler une fois de plus (<a href="conditions.html" style="text-decoration:underline;">Conditions</a>, article 11). Les nouveaux membres profitent d\'un essai gratuit<span id="px-trial"></span> (carte requise, débitée seulement à la fin de l\'essai).',
         signout: "Se déconnecter", signout_all: "Se déconnecter de tous les appareils",
         already_h: "Vous êtes membre Premium 🎉",
         already_p: "Votre abonnement est actif. Gérez votre forfait, votre mode de paiement ou votre résiliation à la page de votre compte.",
@@ -168,13 +168,13 @@
         ft_about: "À propos", ft_terms: "Conditions d'utilisation", ft_privacy: "Confidentialité", ft_support: "Assistance",
         href_terms: "/web/conditions.html", href_privacy: "/web/confidentialite.html",
         ft_copy: '© 2026 QSpot Technologies Inc. Tous droits réservés. · <a class="qfooter-patent" href="/web/patents.html">Brevet américain en instance</a>',
-        price_error: "Nous n'avons pas pu charger les prix actuels. Veuillez actualiser — nous n'affichons jamais un prix que nous ne pouvons pas confirmer.",
+        price_error: "Nous n'avons pas pu charger les prix actuels. Veuillez actualiser. Nous n'affichons jamais un prix que nous ne pouvons pas confirmer.",
         per_month: "{cur} / mois", per_quarter: "{cur} pour 3 mois", per_year: "{cur} pour 1 an",
         per_month_note: "{sign} {amount}/mois", save: "Économisez {pct} %",
         trial_len: " de {n} jours", trial_benefit: "gratuit de {n} jours",
         redirecting: "Redirection vers le paiement sécurisé…",
         checkout_error: "Impossible de démarrer le paiement. Veuillez réessayer.",
-        cancelled: "Le paiement a été annulé — aucun montant n'a été débité.",
+        cancelled: "Le paiement a été annulé. Aucun montant n'a été débité.",
         signout_all_confirm: "Se déconnecter de QSpot sur tous les appareils, y compris ce navigateur?\n\nVous devrez vous reconnecter sur chaque appareil, et un nouveau code de sécurité sera requis. Les appareils où l'application est déjà ouverte peuvent prendre jusqu'à une heure pour être déconnectés.",
         too_many: "Trop de tentatives. Veuillez patienter quelques minutes et réessayer.",
         signout_all_failed: "Impossible de se déconnecter de tous les appareils. Veuillez réessayer à partir de la page de votre compte.",
