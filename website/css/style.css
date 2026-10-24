@@ -421,6 +421,16 @@ html[data-theme="dark"] .nav-links a.active::after { background: #F4A6D8; }
 
 .hero-premium-link:hover { color: var(--gold); }
 
+/* QSpot Premium logo as the hero's Premium link (brand/premium-logo, horizontal lockup). */
+.btn-premium-logo {
+    display: inline-block; line-height: 0; border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(240, 180, 41, 0.28);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-premium-logo img { display: block; height: 48px; width: auto; border-radius: 12px; }
+.btn-premium-logo:hover { transform: translateY(-2px); box-shadow: 0 0 0 2px var(--gold), 0 8px 22px rgba(240, 180, 41, 0.30); }
+.btn-premium-logo:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
 @media (max-width: 480px) {
     .hero-premium { align-items: center; width: 100%; }
     .hero-premium .btn { width: 100%; max-width: 300px; justify-content: center; }

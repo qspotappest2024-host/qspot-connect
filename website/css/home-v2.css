@@ -206,6 +206,9 @@ html[data-theme="dark"] .hv-how { background: linear-gradient(135deg, #1a1426 0%
     background: var(--gold); color: #1a1a1a;
 }
 .hv-premium-ic svg { width: 26px; height: 26px; }
+/* QSpot Premium stacked logo: replaces the crown box + "QSpot Premium" heading. */
+.hv-premium-logo { flex: none; margin: 0; line-height: 0; }
+.hv-premium-logo img { display: block; height: 72px; width: auto; border-radius: 14px; box-shadow: 0 4px 14px rgba(58, 25, 64, 0.25); }
 .hv-premium-copy { flex: 1; }
 .hv-premium-copy h2 { font-size: 1.3rem; margin-bottom: 4px; }
 .hv-premium-copy h2 span { color: var(--gold-text); }
