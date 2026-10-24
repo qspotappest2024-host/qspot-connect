@@ -123,6 +123,10 @@ html[data-theme="dark"] .qnav { background: rgba(18, 16, 24, 0.95); }
 .qnav-links a:hover, .qnav-links a.active { color: var(--primary-light); }
 .qnav-cta { background: var(--gold-bright); color: #1a1a1a !important; padding: 7px 16px; border-radius: 9px; font-weight: 700; }
 .qnav-cta:hover { filter: brightness(0.96); }
+/* "Premium" link as the QSpot Premium wordmark (brand/premium-logo/wordmark). */
+.qnav-links a.qnav-premium { display: inline-block; line-height: 0; border-radius: 6px; transition: box-shadow 0.2s; }
+.qnav-links a.qnav-premium img { display: block; height: 23px; width: auto; border-radius: 6px; }
+.qnav-links a.qnav-premium:hover, .qnav-links a.qnav-premium.active { box-shadow: 0 0 0 2px var(--gold-bright); }
 /* Dark mode: current page and hovered link in the same pink as the marketing site's nav. */
 html[data-theme="dark"] .qnav-links a:not(.qnav-cta):hover,
 html[data-theme="dark"] .qnav-links a.active { color: #F4A6D8; }

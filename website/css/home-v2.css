@@ -260,6 +260,7 @@ html[data-theme="dark"] .hv-how { background: linear-gradient(135deg, #1a1426 0%
     .hv-premium-wrap { padding-bottom: 48px; }
     .hv-premium { flex-direction: column; align-items: flex-start; gap: 14px; padding: 22px; }
     .hv-premium .btn { width: 100%; justify-content: center; }
+    .hv-premium-logo { align-self: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {

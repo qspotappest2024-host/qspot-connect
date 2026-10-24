@@ -426,3 +426,23 @@ html[data-theme="dark"] .stripe-word { color: #FFFFFF; }
 .mobile-download-bar-btns a.mb-premium { background: var(--gold); color: #1a1a1a; }
 .mobile-download-bar-btns a.mb-premium:hover,
 .mobile-download-bar-btns a.mb-premium:active { background: var(--gold); filter: brightness(0.95); }
+
+/* ---------- QSpot Premium wordmark (brand/premium-logo/wordmark) ---------- */
+/* Top menu: the "Premium" link is the gold-on-aubergine wordmark (desktop + phone menu). */
+.nav-links a.nav-premium { display: inline-block; vertical-align: middle; line-height: 0; border-radius: 7px; transition: transform .2s, box-shadow .2s; }
+.nav-links a.nav-premium img { display: block; height: 26px; width: auto; border-radius: 7px; }
+.nav-links a.nav-premium:hover { transform: translateY(-1px); box-shadow: 0 0 0 2px var(--gold); }
+.nav-links a.nav-premium:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.nav-links a.nav-premium.active::after { bottom: -6px; background: var(--gold); }
+@media (max-width: 768px) { .nav-links a.nav-premium img { height: 32px; } }
+
+/* Mobile quick-links bar: Premium wordmark as the button. */
+.mobile-download-bar-btns { align-items: center; }
+/* Same aubergine button as "Live Map"; the gold wordmark (transparent version) is the label. */
+.mobile-download-bar-btns a.mb-premium-logo {
+    display: flex; align-items: center; line-height: 0;
+    background: var(--primary); padding: 8px 10px;
+}
+.mobile-download-bar-btns a.mb-premium-logo img { display: block; height: 20px; width: auto; }
+.mobile-download-bar-btns a.mb-premium-logo:hover,
+.mobile-download-bar-btns a.mb-premium-logo:active { background: var(--primary-dark); }
