@@ -251,6 +251,16 @@ p {
     background: var(--primary);
     border-radius: 1px;
 }
+/* Dark mode: --primary (#3F1842) is near-invisible on the dark navbar, so the
+   current page and hovered link turn the same pink as the home caption (#F4A6D8). */
+html[data-theme="dark"] .nav-links a:not(.nav-cta):hover,
+html[data-theme="dark"] .nav-links a.active { color: #F4A6D8; }
+html[data-theme="dark"] .nav-links a.active::after { background: #F4A6D8; }
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .nav-links a:not(.nav-cta):hover,
+    html:not([data-theme="light"]) .nav-links a.active { color: #F4A6D8; }
+    html:not([data-theme="light"]) .nav-links a.active::after { background: #F4A6D8; }
+}
 
 .nav-cta {
     background: var(--primary);
