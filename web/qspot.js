@@ -84,6 +84,7 @@ const QS_COMMON_I18N = {
     login_apple: " Continue with Apple",
     login_hme: 'Signed up in the app with Apple and "Hide My Email"? Use <strong>Continue with Apple</strong> here so your accounts match.',
     login_patent: "U.S. Patent Pending",
+    login_failed: "Sign-in didn't finish. Please try again.",
   },
   fr: {
     login_title: "Connectez-vous pour continuer",
@@ -92,6 +93,7 @@ const QS_COMMON_I18N = {
     login_apple: " Continuer avec Apple",
     login_hme: "Inscrit dans l'application avec Apple et « Masquer mon adresse courriel »? Utilisez <strong>Continuer avec Apple</strong> ici pour que vos comptes correspondent.",
     login_patent: "Brevet américain en instance",
+    login_failed: "La connexion n'a pas abouti. Veuillez réessayer.",
   },
 };
 
@@ -190,6 +192,144 @@ async function signInWith(provider) {
   });
 }
 
+// ─── Sign in with an ID token (Google / Apple) ───────────────────────────────
+// Google's sign-in screen names whoever receives the result. signInWithOAuth
+// sends the user through Supabase, so Google said "continue to
+// lrvrmcmuhkdqhtxoumij.supabase.co". Here the browser gets an ID token straight
+// from Google / Apple for OUR client IDs and hands it to Supabase
+// (signInWithIdToken), so the screen names QSpot Marketplace. Same accounts as
+// the apps (which already sign in this way): Supabase matches provider + subject.
+//
+// Nonce: Supabase hashes the raw nonce (SHA-256, hex) and compares that with
+// the token's nonce claim — so Google and Apple get the HASH, Supabase the RAW.
+//
+// Each path falls back to signInWith() (the OAuth redirect) when its ID is not
+// in config.js or its script fails to load, so a page never loses sign-in.
+const QS_GOOGLE_ID = window.QSPOT_CONFIG.GOOGLE_WEB_CLIENT_ID || "";
+const QS_APPLE_ID  = window.QSPOT_CONFIG.APPLE_SERVICES_ID || "";
+const QS_GIS_SRC   = "https://accounts.google.com/gsi/client";
+const QS_APPLE_SRC = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
+
+const _qsScripts = {};
+function qsScript(src) {
+  if (!_qsScripts[src]) {
+    _qsScripts[src] = new Promise((resolve, reject) => {
+      const el = document.createElement("script");
+      el.src = src;
+      el.async = true;
+      el.onload = () => resolve();
+      el.onerror = () => { delete _qsScripts[src]; reject(new Error(`could not load ${src}`)); };
+      document.head.appendChild(el);
+    });
+  }
+  return _qsScripts[src];
+}
+
+function qsHex(bytes) {
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** { raw, hashed }: raw goes to Supabase, hashed (SHA-256 hex) to Google/Apple. */
+async function qsNonce() {
+  const raw = qsHex(crypto.getRandomValues(new Uint8Array(32)));
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+  return { raw, hashed: qsHex(new Uint8Array(digest)) };
+}
+
+function qsCanUseIdTokens() {
+  return !!(window.crypto && crypto.subtle && crypto.getRandomValues && window.TextEncoder);
+}
+
+/** Exchanges a provider ID token for a Supabase session, then reloads the page signed in. */
+async function qsFinishIdToken(provider, token, rawNonce, fullName) {
+  const { data, error } = await sb.auth.signInWithIdToken({ provider, token, nonce: rawNonce });
+  if (error) throw error;
+  // Apple sends the name once, on the first sign-in, and never inside the
+  // token. The OAuth flow stored it as full_name; keep doing that.
+  if (fullName && !(data && data.user && data.user.user_metadata && data.user.user_metadata.full_name)) {
+    try { await sb.auth.updateUser({ data: { full_name: fullName } }); } catch (_e) { /* name is optional */ }
+  }
+  // Same landing as the OAuth redirect: this page, without its query string
+  // (?cancelled=1 and the like), keeping any #anchor.
+  if (window.location.search) history.replaceState(null, "", window.location.pathname + window.location.hash);
+  window.location.reload();
+}
+
+function qsLoginFailed(noticeEl, err) {
+  console.warn("Sign-in failed:", err);
+  setNotice(noticeEl, "error", qsT({}, "login_failed"));
+}
+
+/** Replaces the plain Google button with Google's own (Google Identity Services). */
+async function qsMountGoogle(card) {
+  if (!QS_GOOGLE_ID || !qsCanUseIdTokens()) return;
+  try { await qsScript(QS_GIS_SRC); } catch (_e) { return; }
+  const gid = window.google && google.accounts && google.accounts.id;
+  if (!gid) return;
+  const slot = card.querySelector("#login-google-gis");
+  const plain = card.querySelector("#login-google");
+  const notice = card.querySelector("#login-notice");
+  const nonce = await qsNonce();
+  gid.initialize({
+    client_id: QS_GOOGLE_ID,
+    nonce: nonce.hashed,
+    ux_mode: "popup",
+    auto_select: false,
+    itp_support: true,
+    callback: async (resp) => {
+      hide(notice);
+      try { await qsFinishIdToken("google", resp.credential, nonce.raw); }
+      catch (e) { qsLoginFailed(notice, e); }
+    },
+  });
+  show(slot);
+  const width = Math.max(200, Math.min(400, Math.floor(slot.clientWidth || 320)));
+  gid.renderButton(slot, {
+    type: "standard", theme: "outline", size: "large", shape: "rectangular",
+    text: "continue_with", logo_alignment: "center", width,
+    locale: qsLang() === "fr" ? "fr_CA" : "en",
+  });
+  hide(plain);
+}
+
+/** Points the Apple button at Sign in with Apple JS (popup) instead of the redirect. */
+async function qsMountApple(card) {
+  if (!QS_APPLE_ID || !qsCanUseIdTokens()) return;
+  try { await qsScript(QS_APPLE_SRC); } catch (_e) { return; }
+  if (!(window.AppleID && AppleID.auth)) return;
+  const btn = card.querySelector("#login-apple");
+  const notice = card.querySelector("#login-notice");
+  let nonce = await qsNonce();
+  const init = () => AppleID.auth.init({
+    clientId: QS_APPLE_ID,
+    scope: "name email",
+    // Must be listed under the Services ID's Return URLs, even for the popup.
+    redirectURI: window.location.origin + window.location.pathname,
+    usePopup: true,
+    nonce: nonce.hashed,
+  });
+  init();
+  btn.onclick = async () => {
+    hide(notice);
+    btn.disabled = true;
+    try {
+      // signIn() must be the first thing awaited: popup blockers only allow
+      // a window opened directly from the click.
+      const res = await AppleID.auth.signIn();
+      const n = res.user && res.user.name;
+      const fullName = n ? [n.firstName, n.lastName].filter(Boolean).join(" ") : "";
+      await qsFinishIdToken("apple", res.authorization.id_token, nonce.raw, fullName);
+    } catch (e) {
+      btn.disabled = false;
+      nonce = await qsNonce();
+      init();
+      const code = e && e.error;
+      if (["popup_closed_by_user", "user_cancelled_authorize", "user_trigger_new_signin_flow"].includes(code)) return;
+      qsLoginFailed(notice, e);
+    }
+  };
+}
+
 async function signOut() {
   await sb.auth.signOut();
   window.location.reload();
@@ -282,6 +422,8 @@ function renderLoginCard(container) {
     <div class="card">
       <h2>${c("login_title")}</h2>
       <p>${c("login_sub")}</p>
+      <div id="login-notice" class="notice hidden" role="alert"></div>
+      <div id="login-google-gis" class="gis-slot hidden"></div>
       <button class="oauth" id="login-google">${c("login_google")}</button>
       <button class="oauth apple" id="login-apple">${c("login_apple")}</button>
       <p style="margin-top:12px;font-size:0.8rem;">${c("login_hme")}</p>
@@ -291,6 +433,10 @@ function renderLoginCard(container) {
     </div>`;
   container.querySelector("#login-google").onclick = () => signInWith("google");
   container.querySelector("#login-apple").onclick  = () => signInWith("apple");
+  // Upgrade both buttons to the ID-token flow once their scripts load; until
+  // then (or if they never do) the OAuth redirect above still works.
+  qsMountGoogle(container);
+  qsMountApple(container);
 }
 
 function show(el)   { el.classList.remove("hidden"); }

@@ -193,6 +193,9 @@ button.oauth {
   padding: 12px; margin-top: 10px; cursor: pointer;
 }
 button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
+/* Google's own button (rendered by Google Identity Services in an iframe). */
+.gis-slot { display: flex; justify-content: center; margin-top: 10px; min-height: 44px; }
+#login-notice { margin: 10px 0 0; }
 
 .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.95rem; }
 .row .label { color: var(--text-dim); }
