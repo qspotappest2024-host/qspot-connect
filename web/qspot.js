@@ -284,11 +284,19 @@ async function qsMountGoogle(card) {
   });
   show(slot);
   const width = Math.max(200, Math.min(400, Math.floor(slot.clientWidth || 320)));
-  gid.renderButton(slot, {
-    type: "standard", theme: "outline", size: "large", shape: "rectangular",
-    text: "continue_with", logo_alignment: "center", width,
-    locale: qsLang() === "fr" ? "fr_CA" : "en",
-  });
+  // Google's dark button in dark mode (theme.js sets window.qsIsDark and fires
+  // "qspot-theme" when the sun/moon toggle or the device setting changes).
+  const render = () => {
+    const dark = typeof window.qsIsDark === "function" && window.qsIsDark();
+    slot.innerHTML = "";
+    gid.renderButton(slot, {
+      type: "standard", theme: dark ? "filled_black" : "outline", size: "large", shape: "rectangular",
+      text: "continue_with", logo_alignment: "center", width,
+      locale: qsLang() === "fr" ? "fr_CA" : "en",
+    });
+  };
+  render();
+  window.addEventListener("qspot-theme", render);
   hide(plain);
 }
 
