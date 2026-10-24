@@ -216,6 +216,15 @@ button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
 .hidden { display: none !important; }
 .spinner { text-align: center; color: var(--text-dim); padding: 24px; }
 #card-element { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 12px; margin: 12px 0; }
+/* Sign-out buttons at the foot of a page: full width, pushed down to sit just
+   above the footer (margin-top:auto in the column flex body). The footer's own
+   auto margin is cancelled so the free space goes above this block only. */
+.session-actions {
+  width: 100%; max-width: 420px;
+  margin-top: auto; padding-top: 32px; margin-bottom: 32px;
+}
+.session-actions button.secondary { font-size: 1rem; font-weight: 600; padding: 14px; }
+.session-actions + .qfooter { margin-top: 0; }
 .signout { background: none; border: none; color: var(--text-dim); font-size: 0.85rem; cursor: pointer; text-decoration: underline; margin-top: 8px; }
 
 /* ---- Legal pages ---- */

@@ -38,10 +38,9 @@
   <div id="notice" class="notice hidden"></div>
   <div id="loading" class="spinner" data-i18n="loading">Loading…</div>
 
-  <!-- Shown when not signed in -->
-  <div id="login-container" class="hidden" style="width:100%;max-width:420px;"></div>
-
-  <!-- Shown when signed in and NOT premium -->
+  <!-- Shown to everyone who is not already Premium: signed-out visitors see the
+       benefits, plans and terms, then the sign-in step; signed-in members see
+       the same block with the checkout button instead. -->
   <div id="purchase" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
       <h2 data-i18n="benefits_h">Membership benefits</h2>
@@ -84,7 +83,22 @@
       </div>
     </div>
 
-    <button class="primary" id="subscribe-btn" data-i18n="cta">Start membership</button>
+    <!-- Signed out: how to join, then the sign-in card. The OAuth return lands
+         back on this page, which restores the plan picked above. -->
+    <div id="signin-step" class="hidden">
+      <div class="card" style="margin-top:16px;">
+        <h2 data-i18n="join_h">How to join</h2>
+        <ol class="steps">
+          <li data-i18n="join_1">Choose a plan above.</li>
+          <li data-i18n="join_2">Sign in below with the Google or Apple account you use in the QSpot app.</li>
+          <li data-i18n="join_3">Review your plan and pay securely with Stripe.</li>
+        </ol>
+      </div>
+      <div id="login-container"></div>
+    </div>
+
+    <!-- Signed in -->
+    <button class="primary hidden" id="subscribe-btn" data-i18n="cta">Start membership</button>
     <p style="max-width:420px;margin-top:12px;font-size:0.8rem;color:var(--text-dim);text-align:center;" data-i18n="smallprint">
       Secure payment by Stripe. Cancel anytime. Benefits continue to the end of
       the paid period. The quarterly and yearly plans run for their first 3 months
@@ -94,8 +108,6 @@
       First-time members get a <span id="px-trial"></span>
       free trial (card required, charged only when the trial ends).
     </p>
-    <button class="signout" onclick="signOut()" data-i18n="signout">Sign out</button>
-    <button class="signout" onclick="signOutEverywhere()" data-i18n="signout_all">Sign out of all devices</button>
   </div>
 
   <!-- Shown when signed in and already premium -->
@@ -105,8 +117,13 @@
       <p data-i18n="already_p">Your membership is active. Manage your plan, payment method, or cancellation on the account page.</p>
     </div>
     <a class="primary" href="account.html" data-i18n="manage">Manage membership</a>
-    <button class="signout" onclick="signOut()" data-i18n="signout">Sign out</button>
-    <button class="signout" onclick="signOutEverywhere()" data-i18n="signout_all">Sign out of all devices</button>
+  </div>
+
+  <!-- Shown to anyone signed in (member or not), at the foot of the page just
+       above the footer. -->
+  <div id="account-actions" class="session-actions hidden">
+    <button class="secondary" onclick="signOut()" data-i18n="signout">Sign out</button>
+    <button class="secondary" onclick="signOutEverywhere()" data-i18n="signout_all">Sign out of all devices</button>
   </div>
 
   <footer class="qfooter">
@@ -159,6 +176,10 @@
         benefit_trial: 'Essai <span id="px-trial-benefit">gratuit</span> pour les nouveaux membres',
         plan_month: "Mensuel", plan_quarter: "Trimestriel", plan_year: "Annuel",
         badge: "MEILLEUR CHOIX",
+        join_h: "Comment devenir membre",
+        join_1: "Choisissez un forfait ci-dessus.",
+        join_2: "Connectez-vous ci-dessous avec le compte Google ou Apple que vous utilisez dans l'application QSpot.",
+        join_3: "Vérifiez votre forfait et payez en toute sécurité avec Stripe.",
         cta: "Devenir membre",
         smallprint: 'Paiement sécurisé par Stripe. Résiliable en tout temps. Les avantages se poursuivent jusqu\'à la fin de la période payée. Les forfaits trimestriel et annuel durent leurs 3 premiers mois ou leur première année, puis se poursuivent de mois en mois au tarif mensuel, à moins que vous ne choisissiez, pendant les 90 derniers jours d\'une durée, de la renouveler une fois de plus (<a href="conditions.html" style="text-decoration:underline;">Conditions</a>, article 11). Les nouveaux membres profitent d\'un essai gratuit<span id="px-trial"></span> (carte requise, débitée seulement à la fin de l\'essai).',
         signout: "Se déconnecter", signout_all: "Se déconnecter de tous les appareils",
@@ -246,15 +267,27 @@
         document.getElementById("px-trial").textContent = t("trial_len", { n: p.trialDays });
         document.getElementById("px-trial-benefit").textContent = t("trial_benefit", { n: p.trialDays });
       }
+      if (!p.yearly) selectPlan("monthly");
+      try { const saved = sessionStorage.getItem(PLAN_KEY); if (saved) selectPlan(saved); } catch (e) {}
       subscribeBtn.disabled = false;
     }
     fillPricing();
 
+    // The plan picked before signing in survives the OAuth round trip
+    // (sessionStorage; best-effort — a blocked store just falls back to yearly).
+    const PLAN_KEY = "qs_premium_plan";
+    function selectPlan(name) {
+      const el = document.getElementById("plan-" + name);
+      if (!el || el.classList.contains("hidden")) return false;
+      document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
+      el.classList.add("selected");
+      selectedPlan = name;
+      return true;
+    }
     document.querySelectorAll(".plan").forEach((el) => {
       el.onclick = () => {
-        document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
-        el.classList.add("selected");
-        selectedPlan = el.dataset.plan;
+        selectPlan(el.dataset.plan);
+        try { sessionStorage.setItem(PLAN_KEY, selectedPlan); } catch (e) {}
       };
     });
 
@@ -301,15 +334,17 @@
       const session = await getSession();
       hide(loadingEl);
       if (!session) {
-        const c = document.getElementById("login-container");
-        renderLoginCard(c);
-        show(c);
+        renderLoginCard(document.getElementById("login-container"));
+        show(document.getElementById("signin-step"));
+        show(document.getElementById("purchase"));
         return;
       }
       const row = await loadSubscriptionRow();
+      show(document.getElementById("account-actions"));
       if (row && isPremiumStatus(row.subscription_status)) {
         show(document.getElementById("already"));
       } else {
+        show(subscribeBtn);
         show(document.getElementById("purchase"));
       }
     })();
