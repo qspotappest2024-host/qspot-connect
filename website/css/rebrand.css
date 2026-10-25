@@ -260,6 +260,10 @@ html[data-theme="dark"] .hero-home .hero-buttons .btn-secondary { color: #fff; }
 /* Dark mode: --primary (#3F1842) is near-invisible on the dark card, so "steps out" / "steps in" turn pink. */
 html[data-theme="dark"] .ofo-caption b { color: #F4A6D8; }
 @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .ofo-caption b { color: #F4A6D8; } }
+/* About › Contact us email: brand purple in light mode, the same pink in dark mode. */
+.contact-email { color: var(--primary); font-weight: 500; }
+html[data-theme="dark"] .contact-email { color: #F4A6D8; }
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .contact-email { color: #F4A6D8; } }
 .ofo-caption-text { min-height: 1.3em; }
 .ofo-badge {
     margin-left: auto; font-size: .72rem; font-weight: 800; letter-spacing: .04em;
