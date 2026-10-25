@@ -108,6 +108,18 @@ const CATEGORY_LABELS = {
     general:        'Other Venue',
 };
 
+/** French display names (same wording as the app's French event types). */
+const CATEGORY_LABELS_FR = {
+    ski_resort:     'Station de ski',
+    shopping:       'Magasinage',
+    concert:        'Salle de concert',
+    museum_gallery: 'Musée/Galerie',
+    amusement_park: "Parc d'attractions",
+    sporting_event: 'Événement sportif',
+    restaurant:     'Restaurant',
+    general:        'Autre lieu',
+};
+
 // ─── Clustering / camera tuning ──────────────────────────────────────────────
 const CLUSTER_MAX_ZOOM = 13;   // clusters dissolve at 14+ (matches the app)
 const CLUSTER_RADIUS   = 60;   // px
@@ -183,7 +195,10 @@ function initMap() {
             attributionControl: true,
         });
     } catch (e) {
-        showMapError('Map failed to initialize', 'Check your tile configuration and try refreshing the page.');
+        showMapError(
+            qsPick('Map failed to initialize', 'Échec de l\u2019initialisation de la carte'),
+            qsPick('Check your tile configuration and try refreshing the page.', 'Vérifiez la configuration des tuiles et actualisez la page.')
+        );
         return;
     }
 
@@ -205,7 +220,7 @@ function initMap() {
         console.error('Map error:', e);
         if (e.error && (e.error.status === 401 || e.error.status === 403)) {
             showMapError(
-                'Map tiles unavailable (auth error)',
+                qsPick('Map tiles unavailable (auth error)', 'Tuiles de carte indisponibles (erreur d\u2019authentification)'),
                 QSPOT_CONFIG.USE_FREE_TILES
                     ? 'OpenFreeMap returned an auth error &mdash; this is unusual. Try refreshing, or switch to MapTiler.'
                     : 'The MapTiler API key is not authorized for this domain. Check the allowed origins in your MapTiler dashboard.'
@@ -224,8 +239,8 @@ function initMap() {
     const loadTimeout = setTimeout(() => {
         if (!map.isStyleLoaded()) {
             showMapError(
-                'Map failed to load',
-                'The map timed out loading. Please check your MapTiler API key configuration and try refreshing.'
+                qsPick('Map failed to load', 'Échec du chargement de la carte'),
+                qsPick('The map timed out loading. Please check your MapTiler API key configuration and try refreshing.', 'Le chargement de la carte a expiré. Actualisez la page et réessayez.')
             );
         }
     }, 10000);
@@ -250,7 +265,7 @@ function categoryColor(category) {
 function categoryLabel(category) {
     const key = categoryKey(category);
     if (Object.prototype.hasOwnProperty.call(CATEGORY_LABELS, key)) {
-        return CATEGORY_LABELS[key];
+        return qsPick(CATEGORY_LABELS[key], CATEGORY_LABELS_FR[key]);
     }
     if (!key) return 'Spot';
     // Unknown key added to the app after this file shipped — Title Case it.
@@ -674,7 +689,7 @@ function updateSpiderfyHint(count) {
     const el = document.getElementById('map-hint');
     if (!el) return;
     if (count > 1) {
-        el.textContent = `${count} spots share this location. Pick one.`;
+        el.textContent = qsPick(`${count} spots share this location. Pick one.`, `${count} spots partagent cet emplacement. Choisissez-en un.`);
         el.hidden = false;
     } else {
         el.hidden = true;
@@ -760,7 +775,7 @@ function buildSpotPopup(spot) {
     body.className = 'spot-popup-body';
 
     const title = document.createElement('h3');
-    title.textContent = spot.name || 'Untitled spot';
+    title.textContent = spot.name || qsPick('Untitled spot', 'Spot sans titre');
     body.appendChild(title);
 
     const cat = document.createElement('span');
@@ -776,7 +791,7 @@ function buildSpotPopup(spot) {
         const feeNote = document.createElement('span');
         feeNote.className = 'spot-popup-price-note';
         feeNote.style.cssText = 'display:block;font-size:12px;font-weight:400;opacity:0.7;';
-        feeNote.textContent = 'Includes QSpot Processing Fee';
+        feeNote.textContent = qsPick('Includes QSpot Processing Fee', 'Comprend les frais de traitement QSpot');
         price.appendChild(feeNote);
     }
     body.appendChild(price);
@@ -810,7 +825,7 @@ function buildSpotPopup(spot) {
 
         const meta = document.createElement('span');
         meta.className = 'spot-popup-seller-meta';
-        meta.textContent = ` seller rating (${reviews} review${reviews !== 1 ? 's' : ''})`;
+        meta.textContent = qsPick(` seller rating (${reviews} review${reviews !== 1 ? 's' : ''})`, ` note du vendeur (${reviews} avis)`);
         seller.appendChild(meta);
 
         body.appendChild(seller);
@@ -819,7 +834,7 @@ function buildSpotPopup(spot) {
     const cta = document.createElement('a');
     cta.className = 'spot-popup-cta';
     cta.href = 'index.html#download';
-    cta.textContent = 'Get the app to book';
+    cta.textContent = qsPick('Get the app to book', 'Obtenez l\u2019application pour r\u00e9server');
     body.appendChild(cta);
 
     root.appendChild(body);
@@ -838,7 +853,7 @@ function buildGallery(urls, spotName) {
         wrap.classList.add('is-empty');
         const empty = document.createElement('div');
         empty.className = 'spot-gallery-empty';
-        empty.textContent = 'No photos yet';
+        empty.textContent = qsPick('No photos yet', 'Aucune photo pour l\u2019instant');
         wrap.appendChild(empty);
         return wrap;
     }
@@ -855,7 +870,7 @@ function buildGallery(urls, spotName) {
     // slide rather than leaving a broken-image icon in the popup.
     const failed = document.createElement('div');
     failed.className = 'spot-gallery-empty';
-    failed.textContent = 'Photo unavailable';
+    failed.textContent = qsPick('Photo unavailable', 'Photo non disponible');
     failed.hidden = true;
     frame.appendChild(failed);
 
@@ -879,7 +894,7 @@ function buildGallery(urls, spotName) {
         img.hidden = false;
         img.src = urls[index];
         img.alt = urls.length > 1
-            ? `${spotName}, photo ${index + 1} of ${urls.length}`
+            ? qsPick(`${spotName}, photo ${index + 1} of ${urls.length}`, `${spotName}, photo ${index + 1} sur ${urls.length}`)
             : spotName;
         counter.textContent = `${index + 1} / ${urls.length}`;
         dotEls.forEach((d, i) => {
@@ -902,14 +917,14 @@ function buildGallery(urls, spotName) {
         const prev = document.createElement('button');
         prev.type = 'button';
         prev.className = 'spot-gallery-nav is-prev';
-        prev.setAttribute('aria-label', 'Previous photo');
+        prev.setAttribute('aria-label', qsPick('Previous photo', 'Photo pr\u00e9c\u00e9dente'));
         prev.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
         prev.addEventListener('click', (e) => { e.stopPropagation(); show(index - 1); });
 
         const next = document.createElement('button');
         next.type = 'button';
         next.className = 'spot-gallery-nav is-next';
-        next.setAttribute('aria-label', 'Next photo');
+        next.setAttribute('aria-label', qsPick('Next photo', 'Photo suivante'));
         next.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
         next.addEventListener('click', (e) => { e.stopPropagation(); show(index + 1); });
 
@@ -1067,8 +1082,8 @@ async function fetchSpots({ refresh = false } = {}) {
     } catch (error) {
         console.error('Failed to fetch spots:', error);
         showMapError(
-            'Unable to load spots',
-            'There was a problem connecting to the server. Please check your internet connection and try again.'
+            qsPick('Unable to load spots', 'Impossible de charger les spots'),
+            qsPick('There was a problem connecting to the server. Please check your internet connection and try again.', 'Un problème est survenu lors de la connexion au serveur. Vérifiez votre connexion Internet et réessayez.')
         );
     } finally {
         spotsRequestInFlight = false;
@@ -1090,8 +1105,8 @@ function setRefreshBusy(busy) {
 function markRefreshed() {
     const btn = document.getElementById('map-refresh');
     if (!btn) return;
-    const time = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    btn.title = `Refresh live spots (last updated ${time})`;
+    const time = new Date().toLocaleTimeString(qsPick([], 'fr-CA'), { hour: 'numeric', minute: '2-digit' });
+    btn.title = qsPick(`Refresh live spots (last updated ${time})`, `Actualiser les spots en direct (derni\u00e8re mise \u00e0 jour\u00a0: ${time})`);
 }
 
 /** Normalise the images column, which may arrive as an array, a Postgres
@@ -1143,7 +1158,7 @@ function fitMapToSpots(spots) {
 function updateSpotCount(count) {
     const el = document.getElementById('spot-count');
     if (el) {
-        el.textContent = `${count} live spot${count !== 1 ? 's' : ''}`;
+        el.textContent = qsPick(`${count} live spot${count !== 1 ? 's' : ''}`, `${count} spot${count > 1 ? 's' : ''} en direct`);
     }
 }
 
@@ -1170,10 +1185,10 @@ function showEmptyState() {
     icon.textContent = '📍';
 
     const title = document.createElement('h3');
-    title.textContent = 'No Spots Yet';
+    title.textContent = qsPick('No Spots Yet', 'Aucun spot pour l\u2019instant');
 
     const body = document.createElement('p');
-    body.textContent = 'There are no live spots available right now. Download the app to be the first to create one!';
+    body.textContent = qsPick('There are no live spots available right now. Download the app to be the first to create one!', 'Il n\u2019y a aucun spot en direct pour le moment. T\u00e9l\u00e9chargez l\u2019application pour \u00eatre le premier \u00e0 en cr\u00e9er un\u00a0!');
 
     overlay.appendChild(icon);
     overlay.appendChild(title);
@@ -1211,7 +1226,7 @@ function showMapError(title, detail) {
     if (map) {
         const retryBtn = document.createElement('button');
         retryBtn.className = 'btn-retry';
-        retryBtn.textContent = 'Try Again';
+        retryBtn.textContent = qsPick('Try Again', 'R\u00e9essayer');
         retryBtn.addEventListener('click', () => {
             clearOverlays();
             fetchSpots({ refresh: spotsData.length > 0 });

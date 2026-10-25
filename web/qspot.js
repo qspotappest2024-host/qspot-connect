@@ -67,6 +67,15 @@ function qsApplyI18n(dict) {
     const title = dict[l] && dict[l]["doc_title"];
     if (title) document.title = title;
   }
+  // French readers get the "QSpot Marché" lockup wherever the Marketplace logo shows.
+  if (l === "fr") {
+    document.querySelectorAll('img[src*="qspot-marketplace-horizontal.svg"]').forEach((img) => {
+      img.src = img.getAttribute("src").replace("qspot-marketplace-horizontal.svg", "qspot-marche-fr-horizontal.svg");
+      img.alt = "QSpot Marché";
+      const w = parseFloat(img.getAttribute("width"));
+      if (w) img.setAttribute("width", String(Math.round(w * 1320 / 1710)));
+    });
+  }
   document.querySelectorAll("[data-langbar]").forEach((bar) => {
     const here = (code) => { const u = new URL(location.href); u.searchParams.set("lang", code); return u.pathname + u.search + u.hash; };
     bar.innerHTML = l === "fr"

@@ -15,6 +15,11 @@
     // If nothing stored, CSS @media prefers-color-scheme handles it automatically
 })();
 
+/* --- Page language (French / English) ---
+   js/qspot-lang.js defines window.QSLang; fall back to English if it is absent. */
+const qsFr = () => !!(window.QSLang && window.QSLang.isFr);
+const qsPick = (en, fr) => (qsFr() ? fr : en);
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initMobileMenu();
@@ -127,11 +132,11 @@ function initDarkModeToggle() {
         if (isDark) {
             html.setAttribute('data-theme', 'light');
             localStorage.setItem('qspot-theme', 'light');
-            btn.setAttribute('aria-label', 'Switch to dark mode');
+            btn.setAttribute('aria-label', qsPick('Switch to dark mode', 'Passer en mode sombre'));
         } else {
             html.setAttribute('data-theme', 'dark');
             localStorage.setItem('qspot-theme', 'dark');
-            btn.setAttribute('aria-label', 'Switch to light mode');
+            btn.setAttribute('aria-label', qsPick('Switch to light mode', 'Passer en mode clair'));
         }
     });
 
@@ -139,7 +144,9 @@ function initDarkModeToggle() {
     const osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const stored = localStorage.getItem('qspot-theme');
     const isDark = stored === 'dark' || (stored !== 'light' && osDark);
-    btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    btn.setAttribute('aria-label', isDark
+        ? qsPick('Switch to light mode', 'Passer en mode clair')
+        : qsPick('Switch to dark mode', 'Passer en mode sombre'));
 }
 
 /* --- Scroll reveal on view (progressive enhancement) --- */
@@ -182,9 +189,13 @@ function initSwapDemo() {
     const T_RESET = 4200;  // invisible loop reset (after every transition has landed)
     const T_NEXT = 4500;   // next count starts
 
-    const captionFor = (n) => n === 1
-        ? 'Seller <b>steps out</b> \u00b7 buyer <b>steps in</b>'
-        : n + ' sellers <b>step out</b> \u00b7 ' + n + ' buyers <b>step in</b>';
+    const captionFor = (n) => qsFr()
+        ? (n === 1
+            ? 'Le vendeur <b>sort</b> \u00b7 l\u2019acheteur <b>entre</b>'
+            : n + ' vendeurs <b>sortent</b> \u00b7 ' + n + ' acheteurs <b>entrent</b>')
+        : (n === 1
+            ? 'Seller <b>steps out</b> \u00b7 buyer <b>steps in</b>'
+            : n + ' sellers <b>step out</b> \u00b7 ' + n + ' buyers <b>step in</b>');
 
     let timers = [];
     let count = 1;
@@ -206,7 +217,7 @@ function initSwapDemo() {
     }
 
     function label(n) {
-        badge.textContent = n + '-for-' + n;
+        badge.textContent = qsFr() ? n + ' pour ' + n : n + '-for-' + n;
         caption.innerHTML = captionFor(n);
     }
 
@@ -287,7 +298,7 @@ function initSwapDemo() {
 function formatPrice(amount, currency = 'USD') {
     if (amount == null || isNaN(amount)) return '$0';
     try {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat(qsFr() ? 'fr-CA' : 'en-US', {
             style: 'currency',
             currency: currency,
             minimumFractionDigits: 0,
@@ -312,6 +323,18 @@ function renderStars(rating) {
 /* --- Utility: Time ago --- */
 function timeAgo(epochMs) {
     const seconds = Math.floor((Date.now() - epochMs) / 1000);
+    if (qsFr()) {
+        if (seconds < 60) return '\u00e0 l\u2019instant';
+        const fr = [
+            ['an', 'ans', 31536000], ['mois', 'mois', 2592000], ['semaine', 'semaines', 604800],
+            ['jour', 'jours', 86400], ['heure', 'heures', 3600], ['minute', 'minutes', 60],
+        ];
+        for (const [one, many, s] of fr) {
+            const count = Math.floor(seconds / s);
+            if (count >= 1) return `il y a ${count} ${count > 1 ? many : one}`;
+        }
+        return '\u00e0 l\u2019instant';
+    }
     if (seconds < 0) return 'Just now';
     const intervals = [
         { label: 'year', seconds: 31536000 },

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | QSpot</title>
-    <meta name="description" content="QSpot Marketplace is a peer-to-peer marketplace for buying and selling your place in line in a fair, one-for-one swap. Learn why we're building it for any line, anywhere in Canada.">
+    <meta name="description" data-i18n-attr="content:meta_desc" content="QSpot Marketplace is a peer-to-peer marketplace for buying and selling your place in line in a fair, one-for-one swap. Learn why we're building it for any line, anywhere in Canada.">
     <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1c1c2a" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark">
@@ -13,7 +13,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="About | QSpot">
-    <meta property="og:description" content="Why we're building QSpot Marketplace, the fair, one-for-one way to buy and sell your place in line. Built for any line, anywhere in Canada.">
+    <meta property="og:description" data-i18n-attr="content:og_desc" content="Why we're building QSpot Marketplace, the fair, one-for-one way to buy and sell your place in line. Built for any line, anywhere in Canada.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="QSpot">
     <meta property="og:url" content="https://www.qspotmarketplace.com/about.html">
@@ -38,7 +38,7 @@
 <body>
 
     <!-- Skip to content for keyboard users -->
-    <a href="#main" class="skip-to-content">Skip to content</a>
+    <a href="#main" class="skip-to-content" data-i18n="skip">Skip to content</a>
 
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
@@ -47,18 +47,19 @@
                 <img src="assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="205" height="36">
             </a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#how">How it works</a></li>
-                <li><a href="map.html">Live Map</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                <li><a href="index.html#how" data-i18n="nav_how">How it works</a></li>
+                <li><a href="map.html" data-i18n="nav_map">Live Map</a></li>
+                <li><a href="about.html" data-i18n="nav_about">About</a></li>
                 <li><a href="web/premium.html" class="nav-premium"><img src="assets/images/qspot-premium-wordmark.svg" alt="Premium" width="90" height="26"></a></li>
-                <li><a href="index.html#download" class="nav-cta">Get the App</a></li>
+                <li><a href="index.html#download" class="nav-cta" data-i18n="nav_app">Get the App</a></li>
+                <li class="nav-lang"><span data-langbar></span></li>
             </ul>
-            <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Switch to dark mode" title="Toggle dark mode">
+            <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Switch to dark mode" title="Toggle dark mode" data-i18n-attr="title:toggle_dark">
                 <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </button>
-            <div class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
+            <div class="nav-toggle" aria-label="Toggle menu" data-i18n-attr="aria-label:toggle_menu" aria-expanded="false" role="button" tabindex="0">
                 <span></span><span></span><span></span>
             </div>
         </div>
@@ -68,9 +69,9 @@
         <!-- About Hero -->
         <section class="about-hero hero-home">
             <div class="container">
-                <span class="eyebrow"><span class="dot"></span> Our story</span>
-                <h1>The fair way to trade your <span>place in line</span></h1>
-                <p>QSpot Marketplace turns time spent waiting into something you can trade openly, safely, and one-for-one.</p>
+                <span class="eyebrow"><span class="dot"></span> <span data-i18n="eyebrow">Our story</span></span>
+                <h1 data-i18n="h1">The fair way to trade your <span>place in line</span></h1>
+                <p data-i18n="hero_p">QSpot Marketplace turns time spent waiting into something you can trade openly, safely, and one-for-one.</p>
             </div>
         </section>
 
@@ -79,49 +80,74 @@
             <div class="container">
                 <div class="about-content">
                     <div>
-                        <h3>Our mission</h3>
-                        <p>QSpot Marketplace started with a simple observation: waiting in line has real value, but there's never been a fair way to trade it. So we built one.</p>
-                        <p>On QSpot Marketplace, someone who's already in line can sell their spot to someone who'd rather not wait. The catch that makes it fair, and the whole point, is that it's strictly <strong>one-for-one</strong>. When a buyer takes a spot, the seller steps out. The line stays the exact same length, and nobody behind moves back a single place. It's a swap, not a cut.</p>
-                        <p>It works anywhere people line up. The person who shows up early can earn from the time they're spending anyway; the person who'd rather not wait can pay for it, and no one loses their place. A line is a line: lift lines, product drops, restaurants, box offices, amusement parks, sporting events, and anywhere else people wait.</p>
+                        <h3 data-i18n="mission_h">Our mission</h3>
+                        <p data-i18n="mission_p1">QSpot Marketplace started with a simple observation: waiting in line has real value, but there's never been a fair way to trade it. So we built one.</p>
+                        <p data-i18n="mission_p2">On QSpot Marketplace, someone who's already in line can sell their spot to someone who'd rather not wait. The catch that makes it fair, and the whole point, is that it's strictly <strong>one-for-one</strong>. When a buyer takes a spot, the seller steps out. The line stays the exact same length, and nobody behind moves back a single place. It's a swap, not a cut.</p>
+                        <p data-i18n="mission_p3">It works anywhere people line up. The person who shows up early can earn from the time they're spending anyway; the person who'd rather not wait can pay for it, and no one loses their place. A line is a line: lift lines, product drops, restaurants, box offices, amusement parks, sporting events, and anywhere else people wait.</p>
                     </div>
                     <div>
-                        <h3>What we value</h3>
+                        <h3 data-i18n="values_h">What we value</h3>
                         <ul class="values-list">
                             <li>
-                                <div class="icon" aria-hidden="true">&#9878;&#65039;</div>
+                                <div class="icon art" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                                        <path d="M24 10v28" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+                                        <path d="M15 41h18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+                                        <path d="M9 14.5h30" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+                                        <path d="M9 14.5 4.6 27M9 14.5 13.4 27M39 14.5 34.6 27M39 14.5 43.4 27" stroke="#fff" stroke-opacity=".78" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M3.2 27h11.6a5.8 5.8 0 0 1-11.6 0z" fill="#7FB6E6"/>
+                                        <path d="M33.2 27h11.6a5.8 5.8 0 0 1-11.6 0z" fill="#7FB6E6"/>
+                                        <circle cx="24" cy="9" r="3.4" fill="#F0B429"/>
+                                    </svg></div>
                                 <div>
-                                    <strong>Fair by design</strong><br>
-                                    <span style="color:var(--text-secondary);font-size:0.9rem;">Every trade is one-for-one. The line never grows and no one behind loses their place.</span>
+                                    <strong data-i18n="v1_h">Fair by design</strong><br>
+                                    <span style="color:var(--text-secondary);font-size:0.9rem;" data-i18n="v1_p">Every trade is one-for-one. The line never grows and no one behind loses their place.</span>
                                 </div>
                             </li>
                             <li>
-                                <div class="icon" aria-hidden="true">&#128737;&#65039;</div>
+                                <div class="icon art" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                                        <path d="M24 5.5 39 11v11c0 9.6-6.4 16.4-15 20.5C15.4 38.4 9 31.6 9 22V11z" fill="#7FB6E6" fill-opacity=".38" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
+                                        <path d="M24 5.5V42.5" stroke="#fff" stroke-opacity=".35" stroke-width="1.4"/>
+                                        <path d="m16.5 24 5.6 5.6L32.5 18.5" stroke="#F0B429" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg></div>
                                 <div>
-                                    <strong>Trust &amp; safety</strong><br>
-                                    <span style="color:var(--text-secondary);font-size:0.9rem;">Identity verification, ratings, and payments processed and held by Stripe until a GPS-confirmed handoff mean you can trade with strangers confidently.</span>
+                                    <strong data-i18n="v2_h">Trust &amp; safety</strong><br>
+                                    <span style="color:var(--text-secondary);font-size:0.9rem;" data-i18n="v2_p">Identity verification, ratings, and payments processed and held by Stripe until a GPS-confirmed handoff mean you can trade with strangers confidently.</span>
                                 </div>
                             </li>
                             <li>
-                                <div class="icon" aria-hidden="true">&#127968;</div>
+                                <div class="icon art" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                                        <path d="M10 22v17a2.5 2.5 0 0 0 2.5 2.5h23A2.5 2.5 0 0 0 38 39V22L24 11z" fill="#fff" fill-opacity=".94"/>
+                                        <path d="M5.5 24 24 8.5 42.5 24" stroke="#7FB6E6" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M35 9.5v6.2" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                                        <path d="M24 37.2c-5-3.3-7.7-6-7.7-8.9a4 4 0 0 1 7.7-1.6 4 4 0 0 1 7.7 1.6c0 2.9-2.7 5.6-7.7 8.9z" fill="#E0457B"/>
+                                    </svg></div>
                                 <div>
-                                    <strong>Locals first</strong><br>
-                                    <span style="color:var(--text-secondary);font-size:0.9rem;">The people who know the lines best should earn from them. QSpot Marketplace puts money in the pockets of people who are already there.</span>
+                                    <strong data-i18n="v3_h">Locals first</strong><br>
+                                    <span style="color:var(--text-secondary);font-size:0.9rem;" data-i18n="v3_p">The people who know the lines best should earn from them. QSpot Marketplace puts money in the pockets of people who are already there.</span>
                                 </div>
                             </li>
                             <li>
-                                <div class="icon" aria-hidden="true">&#128640;</div>
+                                <div class="icon art" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                                        <g transform="rotate(45 24 24)">
+                                            <path d="M16.2 25 9.5 33.4l7.7-1.8zM31.8 25l6.7 8.4-7.7-1.8z" fill="#F4A6D8"/>
+                                            <path d="M24 3.6c6.2 5 8.2 12.2 8.2 20.4l-3.2 9.2H19L15.8 24C15.8 15.8 17.8 8.6 24 3.6z" fill="#fff"/>
+                                            <circle cx="24" cy="16.6" r="3.7" fill="#7FB6E6" stroke="#3F1842" stroke-width="1.5"/>
+                                            <path d="M20.4 36h7.2L24 45z" fill="#F0B429"/>
+                                        </g>
+                                        <circle cx="9" cy="9" r="1.3" fill="#fff" fill-opacity=".7"/><circle cx="40" cy="39" r="1.1" fill="#fff" fill-opacity=".55"/>
+                                    </svg></div>
                                 <div>
-                                    <strong>Simple &amp; universal</strong><br>
-                                    <span style="color:var(--text-secondary);font-size:0.9rem;">List a spot in a couple of taps. If people wait for it, QSpot Marketplace works for it.</span>
+                                    <strong data-i18n="v4_h">Simple &amp; universal</strong><br>
+                                    <span style="color:var(--text-secondary);font-size:0.9rem;" data-i18n="v4_p">List a spot in a couple of taps. If people wait for it, QSpot Marketplace works for it.</span>
                                 </div>
                             </li>
                         </ul>
                         <div style="margin-top:26px;">
-                            <a href="https://stripe.com" class="stripe-badge" target="_blank" rel="noopener" aria-label="Powered by Stripe (opens stripe.com)">
+                            <a href="https://stripe.com" class="stripe-badge" target="_blank" rel="noopener" aria-label="Powered by Stripe (opens stripe.com)" data-i18n-attr="aria-label:stripe_aria">
                                 <span class="lock" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-                                Powered by <span class="stripe-word">Stripe</span>
+                                <span data-i18n="stripe_powered">Powered by</span> <span class="stripe-word">Stripe</span>
                             </a>
-                            <p class="pay-note" style="text-align:left;margin:12px 0 0;">Payments, pre-authorizations, and payouts are handled by Stripe. Stripe is a trademark of Stripe, Inc.</p>
+                            <p class="pay-note" style="text-align:left;margin:12px 0 0;" data-i18n="pay_note">Payments, pre-authorizations, and payouts are handled by Stripe. Stripe is a trademark of Stripe, Inc.</p>
                         </div>
                     </div>
                 </div>
@@ -132,24 +158,24 @@
         <section class="section contact-section" id="contact">
             <div class="container">
                 <div class="section-header">
-                    <h2>Get in Touch</h2>
-                    <p>Questions, feedback, partnership ideas, or press? We'd love to hear from you.</p>
+                    <h2 data-i18n="c_h2">Get in Touch</h2>
+                    <p data-i18n="c_sub">Questions, feedback, partnership ideas, or press? We'd love to hear from you.</p>
                 </div>
                 <div class="contact-grid" style="grid-template-columns:1fr;max-width:600px;margin:0 auto;">
                     <div class="contact-info">
-                        <h3>Contact us</h3>
-                        <p>Whether you're a potential partner, a curious user, or a journalist covering the launch, reach out.</p>
+                        <h3 data-i18n="c_h3">Contact us</h3>
+                        <p data-i18n="c_p">Whether you're a potential partner, a curious user, or a journalist covering the launch, reach out.</p>
                         <div class="contact-detail">
-                            <span class="icon" aria-hidden="true">&#9993;</span>
+                            <span class="icon art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
                             <a href="mailto:admin@qspotmarketplace.com" class="contact-email">admin@qspotmarketplace.com</a>
                         </div>
                         <div class="contact-detail">
-                            <span class="icon" aria-hidden="true">&#128205;</span>
-                            <span>Built for any line, anywhere in Canada</span>
+                            <span class="icon art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3" fill="#F0B429" stroke="#F0B429"/></svg></span>
+                            <span data-i18n="c_loc">Built for any line, anywhere in Canada</span>
                         </div>
                         <div class="contact-detail">
-                            <span class="icon" aria-hidden="true">&#128241;</span>
-                            <span>Coming soon on iOS &amp; Android</span>
+                            <span class="icon art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg></span>
+                            <span data-i18n="soon_note">Coming soon on iOS &amp; Android</span>
                         </div>
                     </div>
                 </div>
@@ -159,30 +185,30 @@
         <!-- CTA Banner -->
         <section class="cta-banner">
             <div class="container">
-                <h2>Never wait in line again</h2>
-                <p>QSpot Marketplace is coming to iOS and Android. Trade your place in line fairly, safely, and one-for-one.</p>
+                <h2 data-i18n="cta_h2">Never wait in line again</h2>
+                <p data-i18n="cta_p">QSpot Marketplace is coming to iOS and Android. Trade your place in line fairly, safely, and one-for-one.</p>
                 <div class="badge-soon-wrap">
-                    <img src="assets/images/app-icon-1024.png" alt="QSpot app icon" class="app-tile" width="88" height="88">
-                    <span class="soon-note">&#128241; Coming soon to iOS &amp; Android</span>
+                    <img src="assets/images/app-icon-1024.png" alt="QSpot app icon" data-i18n-attr="alt:app_icon_alt" class="app-tile" width="88" height="88">
+                    <span class="soon-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg><span data-i18n="soon_note">Coming soon to iOS &amp; Android</span></span>
                     <div class="hero-buttons" style="justify-content:center;flex-wrap:wrap;">
-                        <a href="#" class="btn-appbadge is-soon" id="app-store-link" aria-label="QSpot on the App Store (coming soon)">
-                            <span class="soon-tag">Soon</span>
+                        <a href="#" class="btn-appbadge is-soon" id="app-store-link" aria-label="QSpot on the App Store (coming soon)" data-i18n-attr="aria-label:app_store_aria">
+                            <span class="soon-tag" data-i18n="soon_tag">Soon</span>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                             <span class="badge-text">
-                                <span class="badge-label">Download on the</span>
+                                <span class="badge-label" data-i18n="badge_appstore_l">Download on the</span>
                                 <span class="badge-store">App Store</span>
                             </span>
                         </a>
-                        <a href="#" class="btn-appbadge is-soon" id="play-store-link" aria-label="QSpot on Google Play (coming soon)">
-                            <span class="soon-tag">Soon</span>
+                        <a href="#" class="btn-appbadge is-soon" id="play-store-link" aria-label="QSpot on Google Play (coming soon)" data-i18n-attr="aria-label:play_store_aria">
+                            <span class="soon-tag" data-i18n="soon_tag">Soon</span>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm.91-.91L19.59 12 17.72 10.79l-2.14 2.14 2.14 2.28zM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
                             <span class="badge-text">
-                                <span class="badge-label">Get it on</span>
+                                <span class="badge-label" data-i18n="badge_play_l">Get it on</span>
                                 <span class="badge-store">Google Play</span>
                             </span>
                         </a>
                     </div>
-                    <a href="map.html" style="color:rgba(255,255,255,0.92);text-decoration:underline;text-underline-offset:3px;font-weight:600;">Explore the live map &rarr;</a>
+                    <a href="map.html" style="color:rgba(255,255,255,0.92);text-decoration:underline;text-underline-offset:3px;font-weight:600;" data-i18n="cta_map">Explore the live map &rarr;</a>
                 </div>
             </div>
         </section>
@@ -196,36 +222,47 @@
                     <div class="nav-logo">
                         <img src="assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup logo-lockup--footer" width="228" height="40">
                     </div>
-                    <p>Buy and sell your place in line with a fair, one-for-one swap. Coming soon to iOS &amp; Android.</p>
+                    <p data-i18n="ft_tag">Buy and sell your place in line with a fair, one-for-one swap. Coming soon to iOS &amp; Android.</p>
+                    <div class="footer-social" role="group" aria-label="Follow us" data-i18n-attr="aria-label:ft_follow">
+                        <a href="https://www.instagram.com/QSpotMarketplace" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Marketplace on Instagram" data-i18n-attr="aria-label:ft_ig">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="0.6" fill="currentColor"/></svg>
+                        </a>
+                        <a href="https://x.com/QSpotMarketplace" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Marketplace on X" data-i18n-attr="aria-label:ft_x">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@QSpotTechnologies" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Technologies on YouTube" data-i18n-attr="aria-label:ft_yt">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="currentColor"/></svg>
+                        </a>
+                    </div>
                 </div>
                 <div>
-                    <h4>Product</h4>
+                    <h4 data-i18n="ft_product">Product</h4>
                     <ul class="footer-links">
-                        <li><a href="map.html">Live Map</a></li>
-                        <li><a href="index.html#how">How it works</a></li>
-                        <li><a href="index.html#features">Why QSpot Marketplace</a></li>
-                        <li><a href="index.html#payments">Payments &amp; security</a></li>
+                        <li><a href="map.html" data-i18n="nav_map">Live Map</a></li>
+                        <li><a href="index.html#how" data-i18n="nav_how">How it works</a></li>
+                        <li><a href="index.html#features" data-i18n="ft_why">Why QSpot Marketplace</a></li>
+                        <li><a href="index.html#payments" data-i18n="ft_pay">Payments &amp; security</a></li>
                         <li><a href="web/premium.html">Premium</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Company</h4>
+                    <h4 data-i18n="ft_company">Company</h4>
                     <ul class="footer-links">
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="about.html" data-i18n="nav_about">About</a></li>
+                        <li><a href="#contact" data-i18n="ft_contact">Contact</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Legal</h4>
+                    <h4 data-i18n="ft_legal">Legal</h4>
                     <ul class="footer-links">
-                        <li><a href="web/privacy.html">Privacy Policy</a></li>
-                        <li><a href="web/terms.html">Terms of Service</a></li>
-                        <li><a href="web/account.html#delete-account">Delete Your Account</a></li>
-                        <li><a href="web/patents.html">Patents</a></li>
+                        <li><a href="web/privacy.html" data-i18n="ft_privacy" data-i18n-attr="href:href_privacy">Privacy Policy</a></li>
+                        <li><a href="web/terms.html" data-i18n="ft_terms" data-i18n-attr="href:href_terms">Terms of Service</a></li>
+                        <li><a href="web/account.html#delete-account" data-i18n="ft_delete">Delete Your Account</a></li>
+                        <li><a href="web/patents.html" data-i18n="ft_patents">Patents</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
+            <div class="footer-bottom" data-i18n="ft_copy">
                 &copy; 2026 QSpot Technologies Inc. All rights reserved. &middot;
                 <a class="footer-patent" href="web/patents.html">U.S. Patent Pending</a>
             </div>
@@ -233,20 +270,53 @@
     </footer>
 
     <!-- Mobile sticky bar -->
-    <div class="mobile-download-bar" id="mobile-download-bar" role="complementary" aria-label="QSpot quick links">
+    <div class="mobile-download-bar" id="mobile-download-bar" role="complementary" aria-label="QSpot quick links" data-i18n-attr="aria-label:mb_label">
         <div class="mobile-download-bar-text">
             <img class="mb-logo" src="assets/images/qspot_logo.png" alt="" width="22" height="22"> QSpot
-            <span>Buy &amp; sell your spot in line</span>
+            <span data-i18n="mb_text">Buy &amp; sell your spot in line</span>
         </div>
         <div class="mobile-download-bar-btns">
-            <a href="map.html">Live Map</a>
+            <a href="map.html" data-i18n="nav_map">Live Map</a>
             <a href="web/premium.html" class="mb-premium-logo"><img src="assets/images/qspot-premium-wordmark-transparent.svg" alt="Premium" width="69" height="20"></a>
         </div>
-        <button class="mobile-download-bar-close" id="mobile-bar-close" aria-label="Dismiss banner">&times;</button>
+        <button class="mobile-download-bar-close" id="mobile-bar-close" aria-label="Dismiss banner" data-i18n-attr="aria-label:mb_close">&times;</button>
     </div>
 
     <script src="js/config.js"></script>
+    <script src="js/qspot-lang.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        QSLang.apply({
+            doc_title: "À propos | QSpot",
+            meta_desc: "QSpot Marché est un marché entre particuliers où l'on achète et vend sa place dans la file par un échange équitable, un pour un. Découvrez pourquoi nous le créons pour toutes les files, partout au Canada.",
+            og_desc: "Pourquoi nous créons QSpot Marché, la façon équitable, un pour un, d'acheter et de vendre sa place dans la file. Conçu pour toutes les files, partout au Canada.",
+            eyebrow: "Notre histoire",
+            h1: "La façon équitable d'échanger votre <span>place dans la file</span>",
+            hero_p: "QSpot Marché transforme le temps passé à attendre en quelque chose que l'on peut échanger ouvertement, en toute sécurité et un pour un.",
+            mission_h: "Notre mission",
+            mission_p1: "QSpot Marché est né d'un constat simple&nbsp;: attendre en file a une vraie valeur, mais il n'a jamais existé de façon équitable de l'échanger. Nous en avons donc créé une.",
+            mission_p2: "Sur QSpot Marché, une personne déjà dans la file peut vendre sa place à quelqu'un qui préfère ne pas attendre. Ce qui rend l'échange équitable, et c'est tout l'intérêt, c'est qu'il est strictement <strong>un pour un</strong>. Quand un acheteur prend une place, le vendeur sort de la file. La file garde exactement la même longueur, et personne derrière ne recule d'un seul rang. C'est un échange, pas un passe-droit.",
+            mission_p3: "Cela fonctionne partout où l'on fait la file. La personne qui arrive tôt peut tirer un revenu du temps qu'elle passe de toute façon à attendre; celle qui préfère ne pas attendre peut payer pour l'éviter, et personne ne perd sa place. Une file est une file&nbsp;: remontées mécaniques, lancements de produits, restaurants, guichets, parcs d'attractions, événements sportifs et partout ailleurs où l'on attend.",
+            values_h: "Nos valeurs",
+            v1_h: "Équitable par conception",
+            v1_p: "Chaque échange est un pour un. La file ne s'allonge jamais et personne derrière ne perd sa place.",
+            v2_h: "Confiance et sécurité",
+            v2_p: "La vérification d'identité, les évaluations et les paiements traités et retenus par Stripe jusqu'à une remise confirmée par GPS vous permettent d'échanger avec des inconnus en toute confiance.",
+            v3_h: "Les gens d'ici d'abord",
+            v3_p: "Ceux qui connaissent le mieux les files devraient pouvoir en tirer un revenu. QSpot Marché met de l'argent dans les poches des gens qui sont déjà sur place.",
+            v4_h: "Simple et universel",
+            v4_p: "Publiez un spot en quelques touches. Si des gens attendent pour quelque chose, QSpot Marché fonctionne.",
+            pay_note: "Les paiements, les préautorisations et les versements sont gérés par Stripe. Stripe est une marque de commerce de Stripe, Inc.",
+            c_h2: "Nous joindre",
+            c_sub: "Des questions, des commentaires, des idées de partenariat ou une demande de presse? Nous serions ravis de vous lire.",
+            c_h3: "Écrivez-nous",
+            c_p: "Que vous soyez un partenaire potentiel, un utilisateur curieux ou un journaliste qui couvre le lancement, n'hésitez pas à nous écrire.",
+            c_loc: "Conçu pour toutes les files, partout au Canada",
+            cta_h2: "Plus jamais d'attente en file",
+            cta_p: "QSpot Marché arrive sur iOS et Android. Échangez votre place dans la file de façon équitable, sécuritaire et un pour un.",
+            cta_map: "Explorer la carte en direct &rarr;"
+        });
+    </script>
     <script>
         // Mobile bar: dismiss + persist
         (function () {
