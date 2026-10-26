@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QSpot | Buy &amp; Sell Your Spot in Line</title>
+    <meta name="description" content="QSpot Marketplace is a peer-to-peer marketplace to buy and sell your place in line. It's a fair, one-for-one swap where the seller steps out as you step in. Works for any line, anywhere in Canada.">
+    <!-- Theme color: tells Google & browsers this site supports light + dark -->
+    <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1c1c2a" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light dark">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.qspotmarketplace.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="QSpot | Buy &amp; Sell Your Spot in Line">
+    <meta property="og:description" content="Buy and sell your place in line in a fair, one-for-one swap. The seller steps out the moment you step in. Works for any line, anywhere in Canada.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="QSpot">
+    <meta property="og:url" content="https://www.qspotmarketplace.com/">
+    <meta property="og:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="QSpot: buy and sell your spot in line, a fair one-for-one swap">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="QSpot | Buy &amp; Sell Your Spot in Line">
+    <meta name="twitter:description" content="A fair, one-for-one swap for your place in line. The seller steps out the moment you step in. Anywhere in Canada.">
+    <meta name="twitter:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <!-- Structured Data: SoftwareApplication + Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SoftwareApplication",
+                "name": "QSpot",
+                "description": "QSpot Marketplace is a peer-to-peer marketplace to buy and sell your place in line. It's a fair, one-for-one swap where the seller steps out the moment the buyer steps in.",
+                "applicationCategory": "LifestyleApplication",
+                "operatingSystem": "iOS, Android",
+                "url": "https://www.qspotmarketplace.com",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CAD"
+                }
+            },
+            {
+                "@type": "Organization",
+                "name": "QSpot Technologies Inc.",
+                "url": "https://www.qspotmarketplace.com",
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "admin@qspotmarketplace.com",
+                    "contactType": "customer support"
+                }
+            }
+        ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rebrand.css">
+    <link rel="stylesheet" href="css/home-v2.css">
+
+</head>
+<body>
+
+    <!-- Skip to content for keyboard users -->
+    <a href="#main" class="skip-to-content">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="205" height="36">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#how">How it works</a></li>
+                <li><a href="map.html">Live Map</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="web/premium.html" class="nav-premium"><img src="assets/images/qspot-premium-wordmark.svg" alt="Premium" width="90" height="26"></a></li>
+                <li><a href="#download" class="nav-cta">Get the App</a></li>
+            </ul>
+            <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Switch to dark mode" title="Toggle dark mode">
+                <!-- Moon: shown in light mode -->
+                <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <!-- Sun: shown in dark mode -->
+                <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <div class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <!-- Hero -->
+        <section class="hero hero-home">
+            <div class="snow" aria-hidden="true"></div>
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <span class="eyebrow"><span class="dot"></span> A fair, one-for-one swap · anywhere in Canada</span>
+                        <h1>Buy &amp; sell your <span>spot in line</span></h1>
+                        <p>Waiting has value. QSpot Marketplace lets you trade your place in line in a fair, one-for-one swap: the seller steps out the moment the buyer steps in.</p>
+                        <div class="hero-buttons">
+                            <a href="map.html" class="btn btn-primary">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 0 0-8-8z"/></svg>
+                                Explore the Live Map
+                            </a>
+                            <a href="#how" class="btn btn-secondary">See how it works</a>
+                        </div>
+                        <div class="hero-premium">
+                            <a href="web/premium.html" class="btn-premium-logo">
+                                <img src="assets/images/qspot-premium-horizontal.svg" alt="QSpot Premium" width="230" height="48">
+                            </a>
+                            <a href="web/premium.html" class="hero-premium-link">Lower fees + a free listing each month →</a>
+                        </div>
+                        <p class="hero-trust-line">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            No one loses their place. It's a one-for-one swap.
+                        </p>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="ofo-demo" aria-hidden="true">
+                            <div class="ofo-demo-title">Your place in line</div>
+                            <div class="ofo-line">
+                                <span class="ofo-person"></span>
+                                <span class="ofo-person"></span>
+                                <span class="ofo-slot"><span class="ofo-seller"></span><span class="ofo-buyer"></span></span>
+                                <span class="ofo-slot"><span class="ofo-seller"></span><span class="ofo-buyer"></span></span>
+                                <span class="ofo-slot"><span class="ofo-seller"></span><span class="ofo-buyer"></span></span>
+                                <span class="ofo-person"></span>
+                                <span class="ofo-person"></span>
+                            </div>
+                            <div class="ofo-caption">
+                                <span class="ofo-caption-text">Seller <b>steps out</b> · buyer <b>steps in</b></span>
+                                <span class="ofo-badge">1-for-1</span>
+                            </div>
+                            <p class="ofo-note">Every swap is even, so the line never gets longer.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ HOME v2 — middle section (replaces trust-strip … premium) ============ -->
+
+        <!-- Icon sprite: one stroke style, currentColor, replaces every emoji below.
+             Paths adapted from Lucide (ISC licence). Loaded once, referenced with <use>. -->
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+            <defs>
+                <symbol id="i-badge" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></symbol>
+                <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+                <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+                <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+                <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1.2"/></symbol>
+                <symbol id="i-usercheck" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
+                <symbol id="i-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
+                <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+                <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+                <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+                <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+                <symbol id="i-mountain" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></symbol>
+                <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></symbol>
+                <symbol id="i-fork" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></symbol>
+                <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></symbol>
+                <symbol id="i-ferris" viewBox="0 0 24 24"><circle cx="12" cy="10" r="7"/><circle cx="12" cy="10" r="1"/><path d="M12 3v14M5 10h14M7.05 5.05l9.9 9.9M16.95 5.05l-9.9 9.9"/><path d="m8.5 22 3.5-11 3.5 11M6 22h12"/></symbol>
+                <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+                <symbol id="i-tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
+                <symbol id="i-game" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></symbol>
+                <symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.3l4.27-3.67a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.67a1 1 0 0 0 1.52-.3z"/><path d="M5 21h14"/></symbol>
+                <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+            </defs>
+        </svg>
+
+        <!-- 1 · Trust strip — same four promises, consistent icons, 2×2 on phones -->
+        <section class="trust-strip hv-trust" aria-label="How QSpot Marketplace keeps trades safe">
+            <div class="container">
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-badge"/></svg> Verified seller badges</div>
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-lock"/></svg> Payment held until handoff</div>
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-star"/></svg> Ratings &amp; reviews</div>
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-pin"/></svg> GPS-confirmed swap</div>
+            </div>
+        </section>
+
+        <!-- 2 · How a swap works — merges "The fair part" + "Two sides" + "How It Works" -->
+        <section class="section hv-how" id="how">
+            <span id="fair" class="hv-anchor" aria-hidden="true"></span>
+            <span id="who" class="hv-anchor" aria-hidden="true"></span>
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">How it works</span>
+                    <h2>One steps out. One steps in. <span class="grad">Nobody loses their place.</span></h2>
+                    <p>It's a one-for-one swap, not a cut, so the line never gets longer.</p>
+                </div>
+
+                <div class="hv-roles" data-roles>
+                    <div class="hv-seg" role="tablist" aria-label="Show steps for">
+                        <button class="hv-seg-btn" role="tab" id="tab-sell" aria-controls="panel-sell" aria-selected="true">I'm selling my spot</button>
+                        <button class="hv-seg-btn" role="tab" id="tab-buy" aria-controls="panel-buy" aria-selected="false" tabindex="-1">I'm buying a spot</button>
+                    </div>
+
+                    <ol class="hv-steps" role="tabpanel" id="panel-sell" aria-labelledby="tab-sell">
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-tag"/></svg></span>
+                            <div><h3>List your spot</h3><p>Drop a pin on the line you're in and set your price. Post photos and a description to create demand.</p></div>
+                        </li>
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-usercheck"/></svg></span>
+                            <div><h3>A buyer books it</h3><p>Someone nearby claims your exact place. On Secure spots their payment is held.</p></div>
+                        </li>
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-swap"/></svg></span>
+                            <div><h3>Swap &amp; get paid</h3><p>They step in as you step out. The handoff is confirmed and your payout releases.</p></div>
+                        </li>
+                    </ol>
+
+                    <ol class="hv-steps" role="tabpanel" id="panel-buy" aria-labelledby="tab-buy">
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+                            <div><h3>Find a spot nearby</h3><p>Browse live spots on the map and check the seller's ratings before you commit.</p></div>
+                        </li>
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span>
+                            <div><h3>Book it</h3><p>Secure spots place a hold on your card. You're only charged at the handoff.</p></div>
+                        </li>
+                        <li class="hv-step">
+                            <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-swap"/></svg></span>
+                            <div><h3>Step in</h3><p>Meet the seller at the line, swap places, and you're on your way.</p></div>
+                        </li>
+                    </ol>
+                </div>
+
+                <p class="hv-how-cta reveal">
+                    <a href="map.html" class="hv-link">See live spots near you <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </p>
+            </div>
+        </section>
+
+        <!-- 3 · Any line — 8 emoji cards become one compact row of icon chips -->
+        <section class="section hv-lines" id="usecases">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">Any line, anywhere in Canada</span>
+                    <h2>A line is a line.</h2>
+                    <p>Wherever people wait, there's a spot worth trading.</p>
+                </div>
+                <ul class="hv-chips reveal" aria-label="Places QSpot Marketplace works">
+                    <li><svg aria-hidden="true"><use href="#i-mountain"/></svg>Ski lifts</li>
+                    <li><svg aria-hidden="true"><use href="#i-box"/></svg>Product drops</li>
+                    <li><svg aria-hidden="true"><use href="#i-fork"/></svg>Restaurants</li>
+                    <li><svg aria-hidden="true"><use href="#i-ticket"/></svg>Concerts</li>
+                    <li><svg aria-hidden="true"><use href="#i-ferris"/></svg>Amusement parks</li>
+                    <li><svg aria-hidden="true"><use href="#i-trophy"/></svg>Sporting events</li>
+                    <li><svg aria-hidden="true"><use href="#i-tent"/></svg>Festivals</li>
+                    <li><svg aria-hidden="true"><use href="#i-game"/></svg>Launch days</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4 · Every trade, protected — merges "Why QSpot" + "Payments & security" into one bento -->
+        <section class="section hv-safe" id="features">
+            <span id="payments" class="hv-anchor" aria-hidden="true"></span>
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">Payments &amp; safety</span>
+                    <h2>Every trade, <span class="grad">protected</span></h2>
+                    <p>Money only moves when the swap is real.</p>
+                </div>
+
+                <div class="hv-bento">
+                    <article class="hv-tile hv-tile-hero reveal">
+                        <h3>Your money waits for the handoff</h3>
+                        <p>Book a QSpot Secure spot and Stripe places a temporary hold (a pre-authorization) on your card. You're only charged once the handoff is confirmed on location. If the trade is cancelled, the hold is released.</p>
+                        <ol class="hv-flow" aria-label="How a Secure payment moves">
+                            <li><span class="hv-flow-ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span><b>Hold placed</b><small>when you book</small></li>
+                            <li><span class="hv-flow-ic"><svg aria-hidden="true"><use href="#i-pin"/></svg></span><b>Handoff</b><small>confirmed by GPS</small></li>
+                            <li><span class="hv-flow-ic"><svg aria-hidden="true"><use href="#i-cash"/></svg></span><b>Paid out</b><small>to the seller</small></li>
+                        </ol>
+                    </article>
+
+                    <article class="hv-tile reveal">
+                        <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-badge"/></svg></span>
+                        <div><h3>Know who you're meeting</h3><p>Ratings and reviews are up front, and sellers earn a verified badge by completing a paid listing or payout.</p></div>
+                    </article>
+                    <article class="hv-tile reveal">
+                        <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>
+                        <div><h3>Your card stays private</h3><p>Payments run on Stripe, a PCI-certified provider. QSpot Marketplace never sees or stores your card number.</p></div>
+                    </article>
+                    <article class="hv-tile reveal">
+                        <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-cash"/></svg></span>
+                        <div><h3>Protected payouts</h3><p>Sellers are paid through Stripe, straight to their own account, when the trade completes. Buyers get a short window to report a problem.</p></div>
+                    </article>
+                    <article class="hv-tile reveal">
+                        <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-users"/></svg></span>
+                        <div><h3>Rather settle in person?</h3><p>Post a self-managed spot for a small listing fee and arrange payment with your buyer directly.</p></div>
+                    </article>
+                </div>
+
+                <div class="hv-stripe">
+                    <a href="https://stripe.com" class="stripe-badge" target="_blank" rel="noopener" aria-label="Powered by Stripe (opens stripe.com)">
+                        <span class="lock" aria-hidden="true"><svg width="16" height="16"><use href="#i-lock"/></svg></span>
+                        Powered by <span class="stripe-word">Stripe</span>
+                    </a>
+                    <p class="pay-note">QSpot Marketplace uses Stripe to process payments, pre-authorizations, and payouts. Stripe is a trademark of Stripe, Inc.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5 · Premium — one slim banner instead of a full section (hero already pitches it) -->
+        <section class="hv-premium-wrap" id="premium" aria-labelledby="hv-premium-h">
+            <div class="container">
+                <div class="hv-premium reveal">
+                    <h2 id="hv-premium-h" class="hv-premium-logo"><img src="assets/images/qspot-premium-stacked.svg" alt="QSpot Premium" width="108" height="72"></h2>
+                    <div class="hv-premium-copy">
+                        <p>Lower QSpot Secure listing fees, one free offline-payment listing credit every month, and a 30-day free trial for first-time members.</p>
+                    </div>
+                    <a href="web/premium.html" class="btn hv-btn-gold">See Premium plans</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ /HOME v2 middle ============ -->
+
+        <!-- CTA Banner -->
+        <section class="cta-banner" id="download">
+            <div class="container">
+                <h2>Never wait in line again</h2>
+                <p>QSpot Marketplace is coming to iOS and Android. Trade your place in line fairly, safely, and one-for-one.</p>
+                <div class="badge-soon-wrap">
+                    <img src="assets/images/app-icon-1024.png" alt="QSpot app icon" class="app-tile" width="88" height="88">
+                    <span class="soon-note">&#128241; Coming soon to iOS &amp; Android</span>
+                    <div class="hero-buttons" style="justify-content:center;flex-wrap:wrap;">
+                        <a href="#" class="btn-appbadge is-soon" id="app-store-link" aria-label="QSpot on the App Store (coming soon)">
+                            <span class="soon-tag">Soon</span>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                            <span class="badge-text">
+                                <span class="badge-label">Download on the</span>
+                                <span class="badge-store">App Store</span>
+                            </span>
+                        </a>
+                        <a href="#" class="btn-appbadge is-soon" id="play-store-link" aria-label="QSpot on Google Play (coming soon)">
+                            <span class="soon-tag">Soon</span>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm.91-.91L19.59 12 17.72 10.79l-2.14 2.14 2.14 2.28zM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+                            <span class="badge-text">
+                                <span class="badge-label">Get it on</span>
+                                <span class="badge-store">Google Play</span>
+                            </span>
+                        </a>
+                    </div>
+                    <a href="map.html" style="color:rgba(255,255,255,0.92);text-decoration:underline;text-underline-offset:3px;font-weight:600;">Explore the live map in the meantime &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <img src="assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup logo-lockup--footer" width="228" height="40">
+                    </div>
+                    <p>Buy and sell your place in line with a fair, one-for-one swap. Coming soon to iOS &amp; Android.</p>
+                </div>
+                <div>
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="map.html">Live Map</a></li>
+                        <li><a href="#how">How it works</a></li>
+                                                <li><a href="#payments">Payments &amp; security</a></li>
+                        <li><a href="web/premium.html">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="about.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="web/privacy.html">Privacy Policy</a></li>
+                        <li><a href="web/terms.html">Terms of Service</a></li>
+                        <li><a href="web/account.html#delete-account">Delete Your Account</a></li>
+                        <li><a href="web/patents.html">Patents</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 QSpot Technologies Inc. All rights reserved. &middot;
+                <a class="footer-patent" href="web/patents.html">U.S. Patent Pending</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile sticky bar (shown only on small screens via CSS) -->
+    <div class="mobile-download-bar" id="mobile-download-bar" role="complementary" aria-label="QSpot quick links">
+        <div class="mobile-download-bar-text">
+            <img class="mb-logo" src="assets/images/qspot_logo.png" alt="" width="22" height="22"> QSpot
+            <span>Buy &amp; sell your spot in line</span>
+        </div>
+        <div class="mobile-download-bar-btns">
+            <a href="map.html">Live Map</a>
+            <a href="web/premium.html" class="mb-premium-logo"><img src="assets/images/qspot-premium-wordmark-transparent.svg" alt="Premium" width="69" height="20"></a>
+        </div>
+        <button class="mobile-download-bar-close" id="mobile-bar-close" aria-label="Dismiss banner">&times;</button>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Mobile bar: dismiss + persist in sessionStorage
+        (function () {
+            var bar = document.getElementById('mobile-download-bar');
+            var closeBtn = document.getElementById('mobile-bar-close');
+            if (!bar || !closeBtn) return;
+
+            if (sessionStorage.getItem('qspot-bar-dismissed')) {
+                bar.classList.add('hidden');
+            } else {
+                document.body.classList.add('has-download-bar');
+            }
+
+            closeBtn.addEventListener('click', function () {
+                bar.classList.add('hidden');
+                document.body.classList.remove('has-download-bar');
+                sessionStorage.setItem('qspot-bar-dismissed', '1');
+            });
+        })();
+    </script>
+</body>
+</html>

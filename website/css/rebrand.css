@@ -457,8 +457,10 @@ html[data-theme="dark"] .stripe-word { color: #FFFFFF; }
 
 /* ---------- FR | EN switcher in the top menu ---------- */
 .nav-links .nav-lang { font-size: .82rem; font-weight: 600; white-space: nowrap; color: var(--text-secondary); }
-.nav-links .nav-lang a { font-size: .82rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-.nav-links .nav-lang .cur { color: var(--primary); }
+.nav-links .nav-lang a { font-size: .82rem; font-weight: 600; text-decoration: none; }
+.nav-links .nav-lang a:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* The language currently shown is the one underlined. */
+.nav-links .nav-lang .cur { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
 html[data-theme="dark"] .nav-links .nav-lang .cur { color: #F4A6D8; }
 @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .nav-links .nav-lang .cur { color: #F4A6D8; } }
 @media (max-width: 768px) { .nav-links .nav-lang, .nav-links .nav-lang a { font-size: 1rem; } }
