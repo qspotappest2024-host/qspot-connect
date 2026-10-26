@@ -1,0 +1,342 @@
+/* QSpot web — shared styles for the Premium, account and legal pages.
+   Unified with the marketing site: same QSpot logo, navbar, footer, fonts,
+   and the logo-derived palette (aubergine #3F1842 + steel-blue #4D72A0),
+   with automatic light/dark. Gold (#F0B429) is reserved as the QSpot
+   Premium accent only. */
+
+:root {
+  --primary: #3F1842;
+  --primary-dark: #2A0F2D;
+  --primary-light: #7A3A7C;
+  --secondary: #4D72A0;
+  --secondary-light: #7BA0CC;
+  --gold: #D4A017;
+  --gold-bright: #F0B429;
+  --gold-text: #8A6A0B; /* AA-contrast gold for text on light backgrounds */
+  --green: #2E7D46;
+  --red: #C0392B;
+  --text: #1a1a2e;
+  --text-dim: #555;
+  --bg: #ffffff;
+  --bg-soft: #f6f4fa;
+  --card: #ffffff;
+  --card-border: #e6e3ee;
+  --footer-bg: #1a1a2e;
+  --radius: 14px;
+  --shadow-sm: 0 2px 8px rgba(63, 24, 66, 0.08);
+  --shadow-md: 0 10px 30px rgba(63, 24, 66, 0.12);
+  --warn: #c1440e; /* orange notes, e.g. "membership ends on…" */
+}
+
+/* Dark palette. Applies when the visitor chose dark with the sun/moon toggle
+   (html[data-theme="dark"], shared with the marketing site via theme.js), or
+   when the device is dark and they have not chosen light. */
+html[data-theme="dark"] {
+  --primary-light: #c79ac8;
+  --gold-text: #F0B429; /* bright gold reads fine on dark cards */
+  --text: #e7e3ee;
+  --text-dim: #a8a2b6;
+  --bg: #121018;
+  --bg-soft: #1a1622;
+  --card: #1e1a28;
+  --card-border: #322a3e;
+  --footer-bg: #0c0a12;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
+  --warn: #ff9a62;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --primary-light: #c79ac8;
+    --gold-text: #F0B429; /* bright gold reads fine on dark cards */
+    --text: #e7e3ee;
+    --text-dim: #a8a2b6;
+    --bg: #121018;
+    --bg-soft: #1a1622;
+    --card: #1e1a28;
+    --card-border: #322a3e;
+    --footer-bg: #0c0a12;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
+    --warn: #ff9a62;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; color-scheme: light dark; }
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 64px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ---- Shared navbar (full-bleed, matches the marketing site) ---- */
+.qnav {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--card-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+html[data-theme="dark"] .qnav { background: rgba(18, 16, 24, 0.95); }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .qnav { background: rgba(18, 16, 24, 0.95); }
+}
+.qnav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.qnav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--text); }
+.qnav-logo img { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; display: block; }
+/* QSpot Marketplace horizontal lockup (purple ground + clear space baked into the
+   SVG, same file and treatment as the marketing site's .logo-lockup). The square
+   icon rules above would crop it, so the lockup overrides width and object-fit. */
+.qnav-logo img.logo-lockup, .qfooter-brand img.logo-lockup {
+  width: auto; height: 34px; border-radius: 8px; object-fit: contain; flex-shrink: 0;
+}
+.qnav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+.qnav-links a { font-size: 0.92rem; font-weight: 500; color: var(--text-dim); transition: color 0.2s; }
+.qnav-links a:hover, .qnav-links a.active { color: var(--primary-light); }
+.qnav-cta { background: var(--gold-bright); color: #1a1a1a !important; padding: 7px 16px; border-radius: 9px; font-weight: 700; }
+.qnav-cta:hover { filter: brightness(0.96); }
+/* "Premium" link as the QSpot Premium wordmark (brand/premium-logo/wordmark). */
+.qnav-links a.qnav-premium { display: inline-block; line-height: 0; border-radius: 6px; transition: box-shadow 0.2s; }
+.qnav-links a.qnav-premium img { display: block; height: 23px; width: auto; border-radius: 6px; }
+.qnav-links a.qnav-premium:hover, .qnav-links a.qnav-premium.active { box-shadow: 0 0 0 2px var(--gold-bright); }
+/* Dark mode: current page and hovered link in the same pink as the marketing site's nav. */
+html[data-theme="dark"] .qnav-links a:not(.qnav-cta):hover,
+html[data-theme="dark"] .qnav-links a.active { color: #F4A6D8; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .qnav-links a:not(.qnav-cta):hover,
+  html:not([data-theme="light"]) .qnav-links a.active { color: #F4A6D8; }
+}
+
+/* Sun/moon toggle (added by theme.js), same icons and behaviour as the marketing site. */
+.qnav-links { margin-left: auto; }
+.qtheme-toggle {
+  margin-left: 14px; flex-shrink: 0; line-height: 0;
+  min-width: 40px; min-height: 40px; padding: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; border-radius: 9px; cursor: pointer;
+  color: var(--text-dim); transition: color 0.2s, background 0.2s;
+}
+.qtheme-toggle:hover { color: var(--text); background: var(--bg-soft); }
+.qtheme-toggle:focus-visible { outline: 3px solid var(--primary-light); outline-offset: 2px; }
+.qtheme-toggle .icon-sun { display: none; }
+html[data-theme="dark"] .qtheme-toggle .icon-sun { display: block; }
+html[data-theme="dark"] .qtheme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .qtheme-toggle .icon-sun { display: block; }
+  html:not([data-theme="light"]) .qtheme-toggle .icon-moon { display: none; }
+}
+@media (max-width: 600px) { .qnav-links .hide-sm { display: none; } .qnav-links { gap: 16px; } }
+@media (max-width: 480px) {
+  .qnav-links .hide-xs { display: none; }
+  .qnav-logo img.logo-lockup { height: 28px; }
+}
+@media (max-width: 360px) {
+  .qnav-inner { padding: 0 12px; }
+  .qtheme-toggle { margin-left: 6px; min-width: 36px; padding: 6px; }
+  .qnav-logo img.logo-lockup { height: 24px; }
+  .qnav-cta { padding: 6px 10px; font-size: 0.85rem; }
+}
+
+/* ---- Page header ---- */
+header { text-align: center; margin: 40px 0 28px; padding: 0 8px; }
+header h1 { font-size: 1.7rem; letter-spacing: 0.3px; }
+header h1 .gold { color: var(--gold-text); }
+/* Product logo in place of the text title (Premium page: brand/premium-logo, horizontal). */
+header h1.logo-h1 { line-height: 0; }
+header h1.logo-h1 img { display: inline-block; height: 60px; width: auto; max-width: 100%; border-radius: 14px; box-shadow: 0 6px 20px rgba(58, 25, 64, 0.22); }
+@media (max-width: 360px) { header h1.logo-h1 img { height: 50px; } }
+header p { color: var(--text-dim); margin-top: 8px; font-size: 0.98rem; }
+
+/* ---- Cards & content ---- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.card h2 { font-size: 1.1rem; margin-bottom: 12px; }
+.card p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; }
+.card h3 { font-size: 0.98rem; margin: 16px 0 6px; }
+.card ol.steps { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; padding-left: 1.3em; margin: 10px 0 4px; }
+.card ol.steps li { margin-bottom: 6px; }
+.card ol.steps a, header p a { text-decoration: underline; }
+
+.plans { display: flex; gap: 10px; width: 100%; max-width: 420px; }
+.plan {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 18px 8px;
+  min-width: 0;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.plan:hover { border-color: var(--gold); }
+.plan.selected { border-color: var(--gold-bright); box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.15); }
+.plan .badge {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--gold-bright); color: #1a1a1a;
+  font-size: 0.7rem; font-weight: 700; padding: 2px 10px; border-radius: 10px;
+  white-space: nowrap;
+}
+.plan .name { font-weight: 600; margin-bottom: 6px; }
+.plan .price { font-size: 1.4rem; font-weight: 700; color: var(--gold-text); }
+.plan .per { color: var(--text-dim); font-size: 0.8rem; }
+.plan .note { color: var(--text-dim); font-size: 0.75rem; margin-top: 6px; }
+.plan .save { color: var(--gold-text); font-size: 0.75rem; font-weight: 700; margin-top: 4px; }
+@media (max-width: 380px) {
+  .plan .price { font-size: 1.2rem; }
+  .plan .name { font-size: 0.92rem; }
+}
+#switch-options button.secondary + button.secondary { margin-top: 8px; }
+
+button.primary, a.primary {
+  display: block; width: 100%; max-width: 420px;
+  background: var(--gold-bright); color: #1a1a1a;
+  border: none; border-radius: var(--radius);
+  font-size: 1rem; font-weight: 700;
+  padding: 14px; margin-top: 16px; cursor: pointer;
+  text-align: center; text-decoration: none; transition: filter 0.15s;
+}
+button.primary:hover, a.primary:hover { filter: brightness(0.97); }
+button.primary:disabled { opacity: 0.5; cursor: default; }
+button.secondary {
+  display: block; width: 100%;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--card-border); border-radius: var(--radius);
+  font-size: 0.95rem; padding: 12px; margin-top: 10px; cursor: pointer;
+  transition: border-color 0.15s;
+}
+button.secondary:hover { border-color: var(--primary-light); }
+button.danger { border-color: var(--red); color: var(--red); }
+button.oauth {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; background: #fff; color: #1a1a1a;
+  border: 1px solid #dadce0; border-radius: var(--radius);
+  font-size: 0.95rem; font-weight: 600;
+  padding: 12px; margin-top: 10px; cursor: pointer;
+}
+button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
+/* Google's own button (rendered by Google Identity Services in an iframe). */
+.gis-slot { display: flex; justify-content: center; margin-top: 10px; min-height: 44px; }
+#login-notice { margin: 10px 0 0; }
+
+.row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.95rem; }
+.row .label { color: var(--text-dim); }
+.status-active   { color: var(--green); font-weight: 600; }
+.status-trialing { color: var(--gold-text); font-weight: 600; }
+.status-other    { color: var(--text-dim); font-weight: 600; }
+
+.notice {
+  width: 100%; max-width: 420px;
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px;
+  font-size: 0.9rem; line-height: 1.45;
+}
+.notice.info    { background: rgba(77, 114, 160, 0.12); border: 1px solid rgba(77, 114, 160, 0.40); color: var(--text); }
+.notice.success { background: rgba(46, 125, 70, 0.12);  border: 1px solid rgba(46, 125, 70, 0.45);  color: var(--text); }
+.notice.error   { background: rgba(192, 57, 43, 0.10);  border: 1px solid rgba(192, 57, 43, 0.40);  color: var(--text); }
+
+.benefits { list-style: none; margin-top: 10px; }
+.benefits li { padding: 6px 0; font-size: 0.92rem; color: var(--text); }
+.benefits li::before { content: "✓ "; color: var(--gold-text); font-weight: 700; }
+
+.hidden { display: none !important; }
+.spinner { text-align: center; color: var(--text-dim); padding: 24px; }
+#card-element { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 12px; margin: 12px 0; }
+/* Sign-out buttons at the foot of a page: full width, pushed down to sit just
+   above the footer (margin-top:auto in the column flex body). The footer's own
+   auto margin is cancelled so the free space goes above this block only. */
+.session-actions {
+  width: 100%; max-width: 420px;
+  margin-top: auto; padding-top: 32px; margin-bottom: 32px;
+}
+.session-actions button.secondary { font-size: 1rem; font-weight: 600; padding: 14px; }
+.session-actions + .qfooter { margin-top: 0; }
+.signout { background: none; border: none; color: var(--text-dim); font-size: 0.85rem; cursor: pointer; text-decoration: underline; margin-top: 8px; }
+
+/* ---- Legal pages ---- */
+.legal { max-width: 760px; width: 100%; }
+.legal .card { text-align: left; max-width: 760px; }
+.legal h2 { font-size: 1.04rem; margin: 22px 0 8px; }
+.legal p { font-size: 0.92rem; line-height: 1.65; margin: 0 0 10px; }
+.legal .muted { opacity: 0.7; font-size: 0.85rem; }
+
+/* ---- Shared footer (full-bleed, branded) ---- */
+.qfooter {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: auto;
+  background: var(--footer-bg);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 40px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+}
+.qfooter-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.qfooter-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: #fff; font-size: 1.1rem; }
+.qfooter-brand img { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; display: block; }
+.qfooter-brand img.logo-lockup { height: 40px; }
+.qfooter-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; list-style: none; }
+.qfooter-links a { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; transition: color 0.2s; }
+.qfooter-links a:hover { color: var(--secondary-light); }
+.qfooter-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+.qfooter-copy a.qfooter-patent { color: rgba(255, 255, 255, 0.6); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.qfooter-copy a.qfooter-patent:hover { color: var(--secondary-light); }
+
+/* Legacy bare <footer> fallback (any page not yet upgraded to .qfooter) */
+footer:not(.qfooter) { margin-top: auto; padding-top: 32px; color: var(--text-dim); font-size: 0.8rem; text-align: center; }
+footer:not(.qfooter) a { color: var(--text-dim); }
+
+/* ---- FR / EN language bar (same look as the legal pages' .langbar) ---- */
+.langbar { max-width: 720px; width: 100%; margin: 0 auto 10px; text-align: right;
+           font-size: 0.85rem; opacity: 0.85; }
+.langbar a { text-decoration: none; }
+.langbar a:hover { text-decoration: underline; }
+/* The language currently shown is the one underlined. */
+.langbar .cur { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; opacity: 1; }
+
+/* ---- Footer social links (Instagram, X, YouTube) ---- */
+.qfooter-social { display: flex; gap: 10px; justify-content: center; }
+.qfooter-social a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 12px;
+  color: rgba(255, 255, 255, 0.78); background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition: transform 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+.qfooter-social a:hover { color: #fff; background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.32); transform: translateY(-2px); }
+.qfooter-social a:focus-visible { outline: 3px solid var(--gold-bright, #F0B429); outline-offset: 3px; }
+.qfooter-social svg { width: 20px; height: 20px; display: block; }
