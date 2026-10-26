@@ -100,6 +100,25 @@
         }
     }
 
+    // Small "FR | EN" pill in the top bar, between the dark-mode button and the menu
+    // button (shown on phones only — CSS hides it on desktop, where the full switcher
+    // sits in the menu). Injected here so no page needs extra markup. Both codes show,
+    // the current language highlighted; tapping it switches to the other one.
+    function langButton() {
+        var toggle = document.querySelector('.navbar .nav-inner .nav-toggle');
+        if (!toggle || document.querySelector('.nav-lang-btn')) return;
+        var u = new URL(location.href);
+        u.searchParams.set('lang', lang === 'fr' ? 'en' : 'fr');
+        var a = document.createElement('a');
+        a.className = 'nav-lang-btn';
+        a.href = u.pathname + u.search + u.hash;
+        a.setAttribute('hreflang', lang === 'fr' ? 'en' : 'fr');
+        a.setAttribute('aria-label', lang === 'fr' ? 'Switch to English' : 'Passer au français');
+        a.innerHTML = '<span' + (lang === 'fr' ? ' class="on"' : '') + '>FR</span>' +
+                      '<span' + (lang === 'fr' ? '' : ' class="on"') + '>EN</span>';
+        toggle.parentNode.insertBefore(a, toggle);
+    }
+
     /** Applies a page's French dictionary. No-op in English apart from the switcher. */
     function apply(page) {
         document.documentElement.lang = lang === 'fr' ? 'fr-CA' : 'en';
@@ -126,6 +145,7 @@
         }
         swapLogos();
         langbar();
+        langButton();
     }
 
     window.QSLang = {

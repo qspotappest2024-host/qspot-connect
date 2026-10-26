@@ -464,6 +464,30 @@ html[data-theme="dark"] .stripe-word { color: #FFFFFF; }
 html[data-theme="dark"] .nav-links .nav-lang .cur { color: #F4A6D8; }
 @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .nav-links .nav-lang .cur { color: #F4A6D8; } }
 @media (max-width: 768px) { .nav-links .nav-lang, .nav-links .nav-lang a { font-size: 1rem; } }
+/* Menu switcher: keep "Français | English" on ONE line (the menu's block links were stacking it). */
+.nav-links .nav-lang [data-langbar] { display: inline-flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; }
+.nav-links .nav-lang [data-langbar] a, .nav-links .nav-lang [data-langbar] .cur { display: inline; padding: 0; }
+
+/* Phone top-bar pill: FR | EN between the dark-mode button and the menu button. */
+.nav-lang-btn { display: none; }
+@media (max-width: 768px) {
+    .nav-lang-btn {
+        display: inline-flex; align-items: center; flex-shrink: 0; margin-left: 4px;
+        border: 1.5px solid var(--primary); border-radius: 999px; overflow: hidden;
+        font-size: .7rem; font-weight: 700; line-height: 1; text-decoration: none; letter-spacing: .02em;
+        color: var(--primary); background: transparent;
+    }
+    .nav-lang-btn span { padding: 6px 7px; }
+    .nav-lang-btn span.on { background: var(--primary); color: #fff; }
+    .nav-lang-btn:focus-visible { outline: 2px solid var(--accent, #4D72A0); outline-offset: 2px; }
+}
+html[data-theme="dark"] .nav-lang-btn { border-color: #F4A6D8; color: #F4A6D8; }
+html[data-theme="dark"] .nav-lang-btn span.on { background: #F4A6D8; color: #3F1842; }
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .nav-lang-btn { border-color: #F4A6D8; color: #F4A6D8; }
+    html:not([data-theme="light"]) .nav-lang-btn span.on { background: #F4A6D8; color: #3F1842; }
+}
+
 /* French labels run longer: tighten the desktop gap so the menu stays on one line. */
 .lang-fr .nav-links { gap: 22px; }
 @media (max-width: 1080px) { .lang-fr .nav-links { gap: 16px; } .lang-fr .nav-links a { font-size: .88rem; } }
