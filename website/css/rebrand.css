@@ -549,3 +549,18 @@ html[data-theme="dark"] .dark-mode-toggle:focus { color: #F4A6D8; background: tr
 }
 /* Light mode: no sticky tinted square after a tap on touch screens either. */
 @media (hover: none) { html[data-theme="light"] .dark-mode-toggle:hover { background: transparent; color: var(--text-secondary); } }
+
+/* QSpot Premium logo: a stronger gold glow in LIGHT mode, where the old soft shadow was
+   hard to see on the pale hero. Dark mode keeps its original (already good) glow. */
+.btn-premium-logo {
+    box-shadow: 0 0 0 1px rgba(240, 180, 41, .55), 0 6px 22px rgba(240, 180, 41, .60), 0 0 42px rgba(240, 180, 41, .42);
+}
+.btn-premium-logo:hover {
+    box-shadow: 0 0 0 2px var(--gold), 0 8px 28px rgba(240, 180, 41, .70), 0 0 52px rgba(240, 180, 41, .50);
+}
+html[data-theme="dark"] .btn-premium-logo { box-shadow: 0 4px 16px rgba(240, 180, 41, 0.28); }
+html[data-theme="dark"] .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--gold), 0 8px 22px rgba(240, 180, 41, 0.30); }
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .btn-premium-logo { box-shadow: 0 4px 16px rgba(240, 180, 41, 0.28); }
+    html:not([data-theme="light"]) .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--gold), 0 8px 22px rgba(240, 180, 41, 0.30); }
+}
