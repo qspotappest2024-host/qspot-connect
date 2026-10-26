@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n="on">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://accounts.google.com/gsi/client https://appleid.cdn-apple.com; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; connect-src 'self' https://accounts.google.com/gsi/ https://lrvrmcmuhkdqhtxoumij.supabase.co wss://lrvrmcmuhkdqhtxoumij.supabase.co; frame-src https://accounts.google.com/gsi/ https://appleid.apple.com; img-src 'self' data: https:; font-src 'self' data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
+  <title>QSpot Premium</title>
+  <meta name="description" data-i18n-attr="content:meta_desc" content="Savings and perks for your QSpot Marketplace with QSpot Premium: reduced fees, a free monthly offline-payment listing credit, and a free trial.">
+  <link rel="canonical" href="https://www.qspotmarketplace.com/web/premium.html">
+  <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121018" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="qspot.css">
+</head>
+<body>
+  <nav class="qnav">
+    <div class="qnav-inner">
+      <a class="qnav-logo" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="193" height="34"></a>
+      <ul class="qnav-links">
+        <li class="hide-sm"><a href="/" data-i18n="nav_home">Home</a></li>
+        <li class="hide-sm"><a href="/map.html" data-i18n="nav_map">Live Map</a></li>
+        <li class="hide-xs"><a href="/web/premium.html" class="qnav-premium active" aria-current="page"><img src="/assets/images/qspot-premium-wordmark.svg" alt="Premium" width="80" height="23"></a></li>
+        <li><a href="/index.html#download" class="qnav-cta" data-i18n="nav_app">Get the App</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header>
+    <h1 class="logo-h1"><img src="/assets/images/qspot-premium-horizontal.svg" alt="QSpot Premium" width="288" height="60"></h1>
+    <p data-i18n="hdr_sub">Savings and perks for your QSpot Marketplace.</p>
+  </header>
+
+  <!-- FR / EN (Charter of the French Language s. 52). French text: I18N.fr below. -->
+  <div class="langbar" data-langbar></div>
+
+  <div id="notice" class="notice hidden"></div>
+  <div id="loading" class="spinner" data-i18n="loading">Loading…</div>
+
+  <!-- Shown to everyone who is not already Premium: signed-out visitors see the
+       benefits, plans and terms, then the sign-in step; signed-in members see
+       the same block with the checkout button instead. -->
+  <div id="purchase" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2 data-i18n="benefits_h">Membership benefits</h2>
+      <ul class="benefits">
+        <li data-i18n="benefit_fee">Reduced QSpot Secure Listing Fee on every sale</li>
+        <li data-i18n="benefit_credit">1 free offline-payment listing credit each month</li>
+        <li data-i18n="benefit_trial"><span id="px-trial-benefit">Free</span> trial for first-time members</li>
+      </ul>
+    </div>
+
+    <div class="plans">
+      <!-- 🔴 NO PRICE IS WRITTEN IN THIS MARKUP. Every figure below is a slot
+           filled from get-pricing at load; see fillPricing() at the foot of the
+           page. Typing an amount here is what made this page disagree with
+           Stripe in 114 places on 2026-09-07. The dashes are what a reader sees if the
+           fetch fails — deliberately, because a stale number sits beside the
+           words "charged only when the trial ends". -->
+      <div class="plan" id="plan-monthly" data-plan="monthly">
+        <div class="name" data-i18n="plan_month">Monthly</div>
+        <div class="price" id="px-monthly">…</div>
+        <div class="per"   id="px-monthly-per">&nbsp;</div>
+      </div>
+      <!-- Quarterly: one 3-month term (Stripe price month × 3), then month to month
+           (Terms §11). Hidden until get-pricing returns a quarterly plan, so an
+           unset secret simply hides it. -->
+      <div class="plan hidden" id="plan-quarterly" data-plan="quarterly">
+        <div class="name" data-i18n="plan_quarter">Quarterly</div>
+        <div class="price" id="px-quarterly">…</div>
+        <div class="per"   id="px-quarterly-per">&nbsp;</div>
+        <div class="note"  id="px-quarterly-permonth"></div>
+        <div class="save"  id="px-quarterly-save"></div>
+      </div>
+      <div class="plan selected" id="plan-yearly" data-plan="yearly">
+        <div class="badge" id="px-badge" data-i18n="badge">BEST VALUE</div>
+        <div class="name" data-i18n="plan_year">Yearly</div>
+        <div class="price" id="px-yearly">…</div>
+        <div class="per"   id="px-yearly-per">&nbsp;</div>
+        <div class="note"  id="px-yearly-permonth"></div>
+        <div class="save"  id="px-yearly-save"></div>
+      </div>
+    </div>
+
+    <!-- Signed out: how to join, then the sign-in card. The OAuth return lands
+         back on this page, which restores the plan picked above. -->
+    <div id="signin-step" class="hidden">
+      <div class="card" style="margin-top:16px;">
+        <h2 data-i18n="join_h">How to join</h2>
+        <ol class="steps">
+          <li data-i18n="join_1">Choose a plan above.</li>
+          <li data-i18n="join_2">Sign in below with the Google or Apple account you use in the QSpot app.</li>
+          <li data-i18n="join_3">Review your plan and pay securely with Stripe.</li>
+        </ol>
+      </div>
+      <div id="login-container"></div>
+    </div>
+
+    <!-- Signed in -->
+    <button class="primary hidden" id="subscribe-btn" data-i18n="cta">Start membership</button>
+    <p style="max-width:420px;margin-top:12px;font-size:0.8rem;color:var(--text-dim);text-align:center;" data-i18n="smallprint">
+      Secure payment by Stripe. Cancel anytime. Benefits continue to the end of
+      the paid period. The quarterly and yearly plans run for their first 3 months
+      or year, then continue month to month at the monthly rate unless you choose,
+      in a term's last 90 days, to renew it for one more term
+      (<a href="terms.html" style="text-decoration:underline;">Terms</a>, section 11).
+      First-time members get a <span id="px-trial"></span>
+      free trial (card required, charged only when the trial ends).
+    </p>
+  </div>
+
+  <!-- Shown when signed in and already premium -->
+  <div id="already" class="hidden" style="width:100%;max-width:420px;">
+    <div class="card">
+      <h2 data-i18n="already_h">You're a Premium member 🎉</h2>
+      <p data-i18n="already_p">Your membership is active. Manage your plan, payment method, or cancellation on the account page.</p>
+    </div>
+    <a class="primary" href="account.html" data-i18n="manage">Manage membership</a>
+  </div>
+
+  <!-- Shown to anyone signed in (member or not), at the foot of the page just
+       above the footer. -->
+  <div id="account-actions" class="session-actions hidden">
+    <button class="secondary" onclick="signOut()" data-i18n="signout">Sign out</button>
+    <button class="secondary" onclick="signOutEverywhere()" data-i18n="signout_all">Sign out of all devices</button>
+  </div>
+
+  <footer class="qfooter">
+    <div class="qfooter-inner">
+      <a class="qfooter-brand" href="/"><img src="/assets/images/qspot-marketplace-horizontal.svg" alt="QSpot Marketplace" class="logo-lockup" width="228" height="40"></a>
+      <ul class="qfooter-links">
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/map.html" data-i18n="nav_map">Live Map</a></li>
+        <li><a href="/about.html" data-i18n="ft_about">About</a></li>
+        <li><a href="/web/premium.html">Premium</a></li>
+        <li><a href="/web/account.html" data-i18n="manage">Manage membership</a></li>
+        <li><a href="/web/terms.html" data-i18n="ft_terms" data-i18n-attr="href:href_terms">Terms</a></li>
+        <li><a href="/web/privacy.html" data-i18n="ft_privacy" data-i18n-attr="href:href_privacy">Privacy</a></li>
+        <li><a href="mailto:admin@qspotmarketplace.com" data-i18n="ft_support">Support</a></li>
+      </ul>
+            <div class="qfooter-social" role="group" aria-label="Follow us" data-i18n-attr="aria-label:ft_follow">
+        <a href="https://www.instagram.com/QSpotMarketplace" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Marketplace on Instagram" data-i18n-attr="aria-label:ft_ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="0.6" fill="currentColor"/></svg></a>
+        <a href="https://x.com/QSpotAppInc" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Marketplace on X" data-i18n-attr="aria-label:ft_x"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/@QSpotTechnologies" target="_blank" rel="noopener noreferrer me" aria-label="QSpot Technologies on YouTube" data-i18n-attr="aria-label:ft_yt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="qfooter-copy" data-i18n="ft_copy">© 2026 QSpot Technologies Inc. All rights reserved. · <a class="qfooter-patent" href="/web/patents.html">U.S. Patent Pending</a></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.min.js"
+          integrity="sha384-q36VSR1ktH2hgqgm+0LDeyqPW8CyZHSxfDSttSPm5ReOJzB+sYThmh7D4fE+jWTs"
+          crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <script src="qspot.js"></script>
+  <script>
+    // ── French / English ─────────────────────────────────────────────────────
+    // English is the markup itself; fr carries the same text for data-i18n
+    // elements, plus every string this script writes. Keep the two in step.
+    const I18N = {
+      en: {
+        price_error: "We couldn't load current pricing. Please refresh. We won't show a price we can't confirm.",
+        per_month: "{cur} / month", per_quarter: "{cur} for 3 months", per_year: "{cur} for 1 year",
+        per_month_note: "{sign} {amount}/month", save: "Save {pct}%",
+        trial_len: "{n}-day ", trial_benefit: "{n}-day free",
+        redirecting: "Redirecting to secure checkout…", cta: "Start membership",
+        checkout_error: "Could not start checkout. Please try again.",
+        cancelled: "Checkout was cancelled. No charge was made.",
+        signout_all_confirm: "Sign out of QSpot on every device, including this browser?\n\nYou'll need to sign in again on each device, and a new security code will be required. Devices with the app already open may take up to an hour to be signed out.",
+        too_many: "Too many attempts. Please wait a few minutes and try again.",
+        signout_all_failed: "Could not sign out of all devices. Please try again from the account page.",
+      },
+      fr: {
+        doc_title: "QSpot Premium",
+        meta_desc: "Des économies et des avantages pour votre QSpot Marché avec QSpot Premium : frais réduits, un crédit d'annonce à paiement hors ligne gratuit chaque mois et un essai gratuit.",
+        nav_home: "Accueil", nav_map: "Carte en direct", nav_app: "Obtenir l'application",
+        hdr_sub: "Des économies et des avantages pour votre QSpot Marché.",
+        loading: "Chargement…",
+        benefits_h: "Avantages de l'abonnement",
+        benefit_fee: "Frais d'annonce sécurisée QSpot réduits sur chaque vente",
+        benefit_credit: "1 crédit d'annonce à paiement hors ligne gratuit chaque mois",
+        benefit_trial: 'Essai <span id="px-trial-benefit">gratuit</span> pour les nouveaux membres',
+        plan_month: "Mensuel", plan_quarter: "Trimestriel", plan_year: "Annuel",
+        badge: "MEILLEUR CHOIX",
+        join_h: "Comment devenir membre",
+        join_1: "Choisissez un forfait ci-dessus.",
+        join_2: "Connectez-vous ci-dessous avec le compte Google ou Apple que vous utilisez dans l'application QSpot.",
+        join_3: "Vérifiez votre forfait et payez en toute sécurité avec Stripe.",
+        cta: "Devenir membre",
+        smallprint: 'Paiement sécurisé par Stripe. Résiliable en tout temps. Les avantages se poursuivent jusqu\'à la fin de la période payée. Les forfaits trimestriel et annuel durent leurs 3 premiers mois ou leur première année, puis se poursuivent de mois en mois au tarif mensuel, à moins que vous ne choisissiez, pendant les 90 derniers jours d\'une durée, de la renouveler une fois de plus (<a href="conditions.html" style="text-decoration:underline;">Conditions</a>, article 11). Les nouveaux membres profitent d\'un essai gratuit<span id="px-trial"></span> (carte requise, débitée seulement à la fin de l\'essai).',
+        signout: "Se déconnecter", signout_all: "Se déconnecter de tous les appareils",
+        already_h: "Vous êtes membre Premium 🎉",
+        already_p: "Votre abonnement est actif. Gérez votre forfait, votre mode de paiement ou votre résiliation à la page de votre compte.",
+        manage: "Gérer mon abonnement",
+        ft_about: "À propos", ft_terms: "Conditions d'utilisation", ft_privacy: "Confidentialité", ft_support: "Assistance",
+        href_terms: "/web/conditions.html", href_privacy: "/web/confidentialite.html",
+        ft_copy: '© 2026 QSpot Technologies Inc. Tous droits réservés. · <a class="qfooter-patent" href="/web/patents.html">Brevet américain en instance</a>',
+        ft_follow: "Suivez-nous", ft_ig: "QSpot Marché sur Instagram", ft_x: "QSpot Marché sur X", ft_yt: "QSpot Technologies sur YouTube",
+        price_error: "Nous n'avons pas pu charger les prix actuels. Veuillez actualiser. Nous n'affichons jamais un prix que nous ne pouvons pas confirmer.",
+        per_month: "{cur} / mois", per_quarter: "{cur} pour 3 mois", per_year: "{cur} pour 1 an",
+        per_month_note: "{sign} {amount}/mois", save: "Économisez {pct} %",
+        trial_len: " de {n} jours", trial_benefit: "gratuit de {n} jours",
+        redirecting: "Redirection vers le paiement sécurisé…",
+        checkout_error: "Impossible de démarrer le paiement. Veuillez réessayer.",
+        cancelled: "Le paiement a été annulé. Aucun montant n'a été débité.",
+        signout_all_confirm: "Se déconnecter de QSpot sur tous les appareils, y compris ce navigateur?\n\nVous devrez vous reconnecter sur chaque appareil, et un nouveau code de sécurité sera requis. Les appareils où l'application est déjà ouverte peuvent prendre jusqu'à une heure pour être déconnectés.",
+        too_many: "Trop de tentatives. Veuillez patienter quelques minutes et réessayer.",
+        signout_all_failed: "Impossible de se déconnecter de tous les appareils. Veuillez réessayer à partir de la page de votre compte.",
+      },
+    };
+    const t = (k, v) => qsT(I18N, k, v);
+    qsApplyI18n(I18N);
+
+    const noticeEl  = document.getElementById("notice");
+    const loadingEl = document.getElementById("loading");
+    let selectedPlan = "yearly";
+
+    // ── Pricing ──────────────────────────────────────────────────────────────
+    // 🔴 THE BUTTON STAYS DISABLED UNTIL A PRICE IS ON SCREEN. Checkout would
+    //    succeed without it — the amount is decided server-side from the price
+    //    id — but starting a purchase while the page cannot say what it costs
+    //    is not consent. A network failure here means nobody can subscribe for
+    //    a moment; that is the accepted cost of never showing a wrong figure.
+    const subscribeBtn = document.getElementById("subscribe-btn");
+    subscribeBtn.disabled = true;
+
+    async function fillPricing() {
+      const p = await loadPricing();
+      if (!p) {
+        setNotice(noticeEl, "error", t("price_error"));
+        return;                       // slots keep their dashes; button stays disabled
+      }
+      const cur = (p.currency || "cad").toUpperCase();
+
+      document.getElementById("px-monthly").textContent     = formatMoney(p.monthly.amountCents, cur);
+      document.getElementById("px-monthly-per").textContent = t("per_month", { cur });
+
+      if (p.quarterly) {
+        document.getElementById("px-quarterly").textContent     = formatMoney(p.quarterly.amountCents, cur);
+        document.getElementById("px-quarterly-per").textContent = t("per_quarter", { cur });
+        // Same "≈ / =" rule as yearly: CA$25 ÷ 3 is not a whole number of cents.
+        const qper = p.quarterlyPerMonthCents;
+        document.getElementById("px-quarterly-permonth").textContent =
+          qper == null ? "" : t("per_month_note", { sign: p.quarterlyPerMonthExact ? "=" : "≈", amount: formatMoneyExact(qper, cur) });
+        // quarterlySavePercent is FLOORED server-side, so it can never overstate.
+        document.getElementById("px-quarterly-save").textContent =
+          p.quarterlySavePercent && p.quarterlySavePercent > 0 ? t("save", { pct: p.quarterlySavePercent }) : "";
+        document.getElementById("plan-quarterly").classList.remove("hidden");
+      }
+
+      if (p.yearly) {
+        document.getElementById("px-yearly").textContent     = formatMoney(p.yearly.amountCents, cur);
+        document.getElementById("px-yearly-per").textContent = t("per_year", { cur });
+        // "≈" when the year does not divide evenly by twelve — the server says
+        // which, so the copy can never quietly round a member's arithmetic.
+        const per = p.yearlyPerMonthCents;
+        document.getElementById("px-yearly-permonth").textContent =
+          per == null ? "" : t("per_month_note", { sign: p.yearlyPerMonthExact ? "=" : "≈", amount: formatMoneyExact(per, cur) });
+        // savePercent is FLOORED server-side, so this can never overstate.
+        // With three cards the badge stays short (it is centred over a narrow
+        // card); the saving sits on its own line inside the card instead.
+        document.getElementById("px-yearly-save").textContent =
+          p.savePercent && p.savePercent > 0 ? t("save", { pct: p.savePercent }) : "";
+      } else {
+        document.getElementById("plan-yearly").classList.add("hidden");
+        selectedPlan = "monthly";
+      }
+
+      // ⚠️ Both trial mentions, or the page contradicts itself. The default
+      //    text is EMPTY rather than a length: unfilled it reads "get a free
+      //    trial", true at any trial length, where a leftover number would be a
+      //    stale promise about when a card is charged.
+      if (typeof p.trialDays === "number" && p.trialDays > 0) {
+        document.getElementById("px-trial").textContent = t("trial_len", { n: p.trialDays });
+        document.getElementById("px-trial-benefit").textContent = t("trial_benefit", { n: p.trialDays });
+      }
+      if (!p.yearly) selectPlan("monthly");
+      try { const saved = sessionStorage.getItem(PLAN_KEY); if (saved) selectPlan(saved); } catch (e) {}
+      subscribeBtn.disabled = false;
+    }
+    fillPricing();
+
+    // The plan picked before signing in survives the OAuth round trip
+    // (sessionStorage; best-effort — a blocked store just falls back to yearly).
+    const PLAN_KEY = "qs_premium_plan";
+    function selectPlan(name) {
+      const el = document.getElementById("plan-" + name);
+      if (!el || el.classList.contains("hidden")) return false;
+      document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
+      el.classList.add("selected");
+      selectedPlan = name;
+      return true;
+    }
+    document.querySelectorAll(".plan").forEach((el) => {
+      el.onclick = () => {
+        selectPlan(el.dataset.plan);
+        try { sessionStorage.setItem(PLAN_KEY, selectedPlan); } catch (e) {}
+      };
+    });
+
+    // Remote sign-out (Issue #161). The full explanation lives on account.html;
+    // here it's a one-tap security action, so a native confirm() carries the
+    // consequences rather than an inline two-step panel on a purchase page.
+    async function signOutEverywhere() {
+      if (!confirm(t("signout_all_confirm"))) return;
+      const { ok, status } = await signOutAllDevices();
+      if (ok) {
+        // Session is gone — reload lands on the sign-in card.
+        window.location.reload();
+      } else {
+        setNotice(noticeEl, "error", status === 429 ? t("too_many") : t("signout_all_failed"));
+      }
+    }
+
+    document.getElementById("subscribe-btn").onclick = async () => {
+      const btn = document.getElementById("subscribe-btn");
+      btn.disabled = true;
+      btn.textContent = t("redirecting");
+      try {
+        const { ok, data } = await callFn("create-checkout-session", { planType: selectedPlan, lang: qsLang() });
+        if (ok && data.url) {
+          window.location.href = data.url; // → Stripe-hosted checkout
+          return;
+        }
+        if (data.alreadySubscribed) {
+          window.location.href = "account.html";
+          return;
+        }
+        setNotice(noticeEl, "error", data.error || t("checkout_error"));
+      } catch (e) {
+        setNotice(noticeEl, "error", t("checkout_error"));
+      }
+      btn.disabled = false;
+      btn.textContent = t("cta");
+    };
+
+    (async function init() {
+      if (new URLSearchParams(location.search).get("cancelled") === "1") {
+        setNotice(noticeEl, "info", t("cancelled"));
+      }
+      const session = await getSession();
+      hide(loadingEl);
+      if (!session) {
+        renderLoginCard(document.getElementById("login-container"));
+        show(document.getElementById("signin-step"));
+        show(document.getElementById("purchase"));
+        return;
+      }
+      const row = await loadSubscriptionRow();
+      show(document.getElementById("account-actions"));
+      if (row && isPremiumStatus(row.subscription_status)) {
+        show(document.getElementById("already"));
+      } else {
+        show(subscribeBtn);
+        show(document.getElementById("purchase"));
+      }
+    })();
+  </script>
+</body>
+</html>

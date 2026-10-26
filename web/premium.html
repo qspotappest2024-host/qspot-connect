@@ -44,12 +44,16 @@
        the same block with the checkout button instead. -->
   <div id="purchase" class="hidden" style="width:100%;max-width:420px;">
     <div class="card">
-      <h2 data-i18n="benefits_h">Membership benefits</h2>
+      <h2 data-i18n="benefits_h">Premium Benefits</h2>
+      <p class="benefits-intro" data-i18n="benefits_intro">Everything included with your QSpot Premium membership:</p>
       <ul class="benefits">
-        <li data-i18n="benefit_fee">Reduced QSpot Secure Listing Fee on every sale</li>
-        <li data-i18n="benefit_credit">1 free offline-payment listing credit each month</li>
-        <li data-i18n="benefit_trial"><span id="px-trial-benefit">Free</span> trial for first-time members</li>
+        <li><strong data-i18n="b1_h">Gold Badge</strong><span data-i18n="b1_p">A shimmering gold border on your profile picture, visible to all users.</span></li>
+        <li><strong data-i18n="b2_h">Reduced QSpot Secure Listing Fee</strong><span data-i18n="b2_p">Save on the QSpot Secure Listing Fee for every spot you sell.</span></li>
+        <li><strong data-i18n="b3_h">1 Free Offline-Payment Listing / Month</strong><span data-i18n="b3_p">Skip the offline-payment listing fee once a month, on monthly and yearly plans. It resets on the same day each month.</span></li>
+        <li><strong data-i18n="b4_h">Priority Queue</strong><span data-i18n="b4_p">Your purchase requests are visually highlighted in sellers' queues.</span></li>
+        <li data-i18n="benefit_trial" class="benefit-trial"><span id="px-trial-benefit">Free</span> trial for first-time members</li>
       </ul>
+      <p class="benefits-foot" data-i18n="benefits_foot">Benefits renew automatically with your subscription.</p>
     </div>
 
     <div class="plans">
@@ -177,10 +181,18 @@
         nav_home: "Accueil", nav_map: "Carte en direct", nav_app: "Obtenir l'application",
         hdr_sub: "Des économies et des avantages pour votre QSpot Marché.",
         loading: "Chargement…",
-        benefits_h: "Avantages de l'abonnement",
-        benefit_fee: "Frais d'annonce sécurisée QSpot réduits sur chaque vente",
-        benefit_credit: "1 crédit d'annonce à paiement hors ligne gratuit chaque mois",
+        benefits_h: "Avantages Premium",
+        benefits_intro: "Tout ce qui est inclus avec votre abonnement QSpot Premium :",
+        b1_h: "Badge or",
+        b1_p: "Un cadre doré scintillant sur votre photo de profil, visible par tous.",
+        b2_h: "Frais d'annonce sécurisée QSpot réduits",
+        b2_p: "Économisez sur les frais d'annonce sécurisée QSpot pour chaque spot vendu.",
+        b3_h: "1 annonce gratuite à paiement hors ligne / mois",
+        b3_p: "Profitez d'une annonce à paiement hors ligne gratuite une fois par mois, avec le forfait mensuel ou annuel. Elle se renouvelle le même jour chaque mois.",
+        b4_h: "File d'attente prioritaire",
+        b4_p: "Vos demandes d'achat sont mises en avant dans les files des vendeurs.",
         benefit_trial: 'Essai <span id="px-trial-benefit">gratuit</span> pour les nouveaux membres',
+        benefits_foot: "Les avantages se renouvellent automatiquement avec votre abonnement.",
         plan_month: "Mensuel", plan_quarter: "Trimestriel", plan_year: "Annuel",
         badge: "MEILLEUR CHOIX",
         join_h: "Comment devenir membre",
