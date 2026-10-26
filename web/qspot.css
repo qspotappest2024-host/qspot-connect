@@ -290,8 +290,7 @@ button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
 .benefits li { position: relative; padding: 9px 0 9px 24px; }
 .benefits li::before { position: absolute; left: 0; top: 9px; content: "✓"; }
 .benefits li strong { display: block; font-size: 0.98rem; }
-.benefits li.benefit-trial { font-weight: 600; font-size: 0.98rem; }
-.benefits li.benefit-trial span { display: inline; margin: 0; font-size: inherit; color: inherit; }
+.benefits li.benefit-trial strong span { display: inline; margin: 0; font-size: inherit; color: inherit; }
 .benefits li span { display: block; margin-top: 2px; font-size: 0.86rem; color: var(--text-dim); line-height: 1.5; }
 .benefits-foot { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border); font-size: 0.84rem; color: var(--text-dim); }
 
