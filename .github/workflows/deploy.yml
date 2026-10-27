@@ -227,3 +227,15 @@ jobs:
             fail=1
           fi
           [ "$fail" -eq 0 ] || exit 1
+
+      # -----------------------------------------------------------------------
+      # IndexNow: tell Bing (which also feeds DuckDuckGo, Yahoo and Ecosia),
+      # Yandex, Seznam and Naver which pages this push changed, so they re-crawl
+      # within minutes. Runs only after the live check passes, so the key file
+      # (website/<32-hex>.txt) is already reachable. Never fails the deploy.
+      # -----------------------------------------------------------------------
+      - name: Notify search engines (IndexNow)
+        continue-on-error: true
+        env:
+          COMMITS_JSON: ${{ toJson(github.event.commits) }}
+        run: node tools/indexnow.cjs _site
