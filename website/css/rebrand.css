@@ -564,3 +564,43 @@ html[data-theme="dark"] .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--go
     html:not([data-theme="light"]) .btn-premium-logo { box-shadow: 0 4px 16px rgba(240, 180, 41, 0.28); }
     html:not([data-theme="light"]) .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--gold), 0 8px 22px rgba(240, 180, 41, 0.30); }
 }
+
+/* ============================================================
+   2026-10-26 — Home hero: Marketplace logo above the eyebrow,
+   "Your place in line" demo on the LEFT on desktop and between
+   the intro text and the buttons on phones. Mobile bar: Get App.
+   ============================================================ */
+.hero-brand { display: flex; justify-content: center; margin-bottom: 22px; }
+.hero-logo {
+    display: block; width: 132px; height: 132px;
+    border-radius: 24px; box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 769px) {
+    .hero-home .hero-visual { order: -1; }           /* demo left, copy + buttons right */
+}
+
+@media (max-width: 768px) {
+    /* Flatten hero-content so copy / demo / actions are siblings in the 1-col grid */
+    .hero-home .hero-grid { gap: 28px; }
+    .hero-home .hero-content { display: contents; }
+    .hero-home .hero-copy    { order: 1; }
+    .hero-home .hero-visual  { order: 2; }
+    .hero-home .hero-actions { order: 3; }
+    .hero-home .hero-copy p  { margin-bottom: 0; }
+    .hero-home .hero-copy,
+    .hero-home .hero-actions { animation: heroIn .8s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-brand { margin-top: 18px; margin-bottom: 18px; }
+    .hero-logo { width: 112px; height: 112px; border-radius: 20px; }
+}
+@media (max-width: 480px) {
+    .hero-logo { width: 100px; height: 100px; border-radius: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-home .hero-copy, .hero-home .hero-actions { animation: none !important; }
+}
+
+/* Mobile quick-links bar: "Get App" — gold label on the aubergine button */
+.mobile-download-bar-btns a.mb-getapp { color: var(--gold); }
+.mobile-download-bar-btns a.mb-getapp:hover,
+.mobile-download-bar-btns a.mb-getapp:active { background: var(--primary-dark); color: var(--gold); }

@@ -28,6 +28,8 @@
     var KEY = 'qspot_lang';
     var LOGO_EN = 'qspot-marketplace-horizontal.svg';
     var LOGO_FR = 'qspot-marche-fr-horizontal.svg';
+    var SQUARE_EN = 'qspot-marketplace-square.svg';
+    var SQUARE_FR = 'qspot-marche-fr-square.svg';
     // Intrinsic widths of the two lockups at the same height (1710 vs 1320).
     var LOGO_RATIO = 1320 / 1710;
 
@@ -62,7 +64,7 @@
         ft_copy: '&copy; 2026 QSpot Technologies Inc. Tous droits réservés. &middot; <a class="footer-patent" href="web/patents.html#fr" hreflang="fr">Brevet américain en instance</a>',
         ft_ig: "QSpot Marché sur Instagram", ft_x: "QSpot Marché sur X", ft_yt: "QSpot Technologies sur YouTube",
         ft_follow: "Suivez-nous",
-        mb_label: "Liens rapides QSpot", mb_text: "Achetez et vendez votre place dans la file", mb_close: "Fermer la bannière",
+        mb_label: "Liens rapides QSpot", mb_app: "Obtenir l'appli", mb_text: "Achetez et vendez votre place dans la file", mb_close: "Fermer la bannière",
         soon_tag: "Bientôt", soon_note: "Bientôt sur iOS et Android",
         badge_appstore_l: "Télécharger dans l'", badge_play_l: "Disponible sur",
         app_store_aria: "QSpot dans l'App Store (bientôt)", play_store_aria: "QSpot sur Google Play (bientôt)",
@@ -78,6 +80,12 @@
         for (var i = 0; i < imgs.length; i++) {
             var img = imgs[i];
             var src = img.getAttribute('src') || '';
+            // Square lockup (home hero): same box size in both languages.
+            if (src.indexOf(SQUARE_EN) !== -1) {
+                img.setAttribute('src', src.replace(SQUARE_EN, SQUARE_FR));
+                img.setAttribute('alt', 'QSpot Marché');
+                continue;
+            }
             if (src.indexOf(LOGO_EN) === -1) continue;
             img.setAttribute('src', src.replace(LOGO_EN, LOGO_FR));
             img.setAttribute('alt', 'QSpot Marché');
