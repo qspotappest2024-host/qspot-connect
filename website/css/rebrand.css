@@ -577,20 +577,25 @@ html[data-theme="dark"] .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--go
 }
 
 @media (min-width: 769px) {
-    .hero-home .hero-visual { order: -1; }           /* demo left, copy + buttons right */
+    /* Logo spans both columns, centred over the whole hero; demo left, copy + buttons right */
+    .hero-home .hero-grid   { row-gap: 28px; }
+    .hero-home .hero-brand  { grid-column: 1 / -1; order: -2; margin: 32px 0 0; }
+    .hero-home .hero-visual { order: -1; }
+    .hero.hero-home         { padding-bottom: 48px; }
 }
 
 @media (max-width: 768px) {
     /* Flatten hero-content so copy / demo / actions are siblings in the 1-col grid */
     .hero-home .hero-grid { gap: 28px; }
     .hero-home .hero-content { display: contents; }
+    .hero-home .hero-brand   { order: 0; }
     .hero-home .hero-copy    { order: 1; }
     .hero-home .hero-visual  { order: 2; }
     .hero-home .hero-actions { order: 3; }
     .hero-home .hero-copy p  { margin-bottom: 0; }
     .hero-home .hero-copy,
     .hero-home .hero-actions { animation: heroIn .8s cubic-bezier(.2,.7,.2,1) both; }
-    .hero-brand { margin-top: 18px; margin-bottom: 18px; }
+    .hero-home .hero-brand { margin: 18px 0 -10px; }
     .hero-logo { width: 112px; height: 112px; border-radius: 20px; }
 }
 @media (max-width: 480px) {
