@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QSpot | Buy &amp; Sell Your Spot in Line</title>
+    <title>QSpot Marketplace | Buy &amp; Sell Your Spot in Line</title>
     <meta name="description" content="QSpot Marketplace is a peer-to-peer marketplace to buy and sell your place in line. It's a fair, one-for-one swap where the seller steps out as you step in. Works for any line, anywhere in Canada." data-i18n-attr="content:meta_desc">
     <!-- Theme color: tells Google & browsers this site supports light + dark -->
     <meta name="theme-color" content="#3F1842" media="(prefers-color-scheme: light)">
@@ -13,10 +13,10 @@
     <link rel="canonical" href="https://www.qspotmarketplace.com/">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="QSpot | Buy &amp; Sell Your Spot in Line">
+    <meta property="og:title" content="QSpot Marketplace | Buy &amp; Sell Your Spot in Line">
     <meta property="og:description" content="Buy and sell your place in line in a fair, one-for-one swap. The seller steps out the moment you step in. Works for any line, anywhere in Canada.">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="QSpot">
+    <meta property="og:site_name" content="QSpot Marketplace">
     <meta property="og:url" content="https://www.qspotmarketplace.com/">
     <meta property="og:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="QSpot | Buy &amp; Sell Your Spot in Line">
+    <meta name="twitter:title" content="QSpot Marketplace | Buy &amp; Sell Your Spot in Line">
     <meta name="twitter:description" content="A fair, one-for-one swap for your place in line. The seller steps out the moment you step in. Anywhere in Canada.">
     <meta name="twitter:image" content="https://www.qspotmarketplace.com/assets/images/og-image.png">
 
@@ -40,7 +40,9 @@
         "@graph": [
             {
                 "@type": "SoftwareApplication",
-                "name": "QSpot",
+                "name": "QSpot Marketplace",
+                "alternateName": ["QSpot", "QSpot Marché"],
+                "publisher": { "@id": "https://www.qspotmarketplace.com/#organization" },
                 "description": "QSpot Marketplace is a peer-to-peer marketplace to buy and sell your place in line. It's a fair, one-for-one swap where the seller steps out the moment the buyer steps in.",
                 "applicationCategory": "LifestyleApplication",
                 "operatingSystem": "iOS, Android",
@@ -52,9 +54,23 @@
                 }
             },
             {
+                "@type": "WebSite",
+                "@id": "https://www.qspotmarketplace.com/#website",
+                "name": "QSpot Marketplace",
+                "alternateName": ["QSpot", "QSpot Marché"],
+                "url": "https://www.qspotmarketplace.com/",
+                "inLanguage": ["en-CA", "fr-CA"],
+                "publisher": { "@id": "https://www.qspotmarketplace.com/#organization" }
+            },
+            {
                 "@type": "Organization",
+                "@id": "https://www.qspotmarketplace.com/#organization",
                 "name": "QSpot Technologies Inc.",
+                "legalName": "QSpot Technologies Inc.",
+                "alternateName": ["QSpot Marketplace", "QSpot Marché", "QSpot"],
                 "url": "https://www.qspotmarketplace.com",
+                "logo": "https://www.qspotmarketplace.com/assets/images/qspot-marketplace-square-512.png",
+                "areaServed": "CA",
                 "sameAs": [
                     "https://www.instagram.com/QSpotMarketplace",
                     "https://x.com/QSpotAppInc",
@@ -266,13 +282,13 @@
                 </div>
                 <ul class="hv-chips reveal" aria-label="Places QSpot Marketplace works" data-i18n-attr="aria-label:chips_aria">
                     <li><svg aria-hidden="true"><use href="#i-mountain"/></svg><span data-i18n="c1">Ski lifts</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-box"/></svg><span data-i18n="c2">Product drops</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-fork"/></svg><span data-i18n="c3">Restaurants</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-ticket"/></svg><span data-i18n="c4">Concerts</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-ferris"/></svg><span data-i18n="c5">Amusement parks</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-trophy"/></svg><span data-i18n="c6">Sporting events</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-tent"/></svg><span data-i18n="c7">Festivals</span></li>
-                    <li><svg aria-hidden="true"><use href="#i-game"/></svg><span data-i18n="c8">Launch days</span></li>
+                    <li><a href="product-drops.html"><svg aria-hidden="true"><use href="#i-box"/></svg><span data-i18n="c2">Product drops</span></a></li>
+                    <li><a href="restaurants.html"><svg aria-hidden="true"><use href="#i-fork"/></svg><span data-i18n="c3">Restaurants</span></a></li>
+                    <li><a href="concerts-and-events.html"><svg aria-hidden="true"><use href="#i-ticket"/></svg><span data-i18n="c4">Concerts</span></a></li>
+                    <li><a href="amusement-parks.html"><svg aria-hidden="true"><use href="#i-ferris"/></svg><span data-i18n="c5">Amusement parks</span></a></li>
+                    <li><a href="concerts-and-events.html"><svg aria-hidden="true"><use href="#i-trophy"/></svg><span data-i18n="c6">Sporting events</span></a></li>
+                    <li><a href="concerts-and-events.html"><svg aria-hidden="true"><use href="#i-tent"/></svg><span data-i18n="c7">Festivals</span></a></li>
+                    <li><a href="product-drops.html"><svg aria-hidden="true"><use href="#i-game"/></svg><span data-i18n="c8">Launch days</span></a></li>
                 </ul>
             </div>
         </section>
@@ -336,6 +352,69 @@
                     </div>
                     <a href="web/premium.html" class="btn hv-btn-gold" data-i18n="pm_btn">See Premium plans</a>
                 </div>
+            </div>
+        </section>
+
+        <!-- 6 · FAQ. Source: the app's Settings > Help & FAQ (QSpotKMM strings). FAQPage
+             structured data is generated from these items at deploy (tools/build-i18n.mjs). -->
+        <section class="section hv-faq" id="faq" aria-labelledby="faq-h">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow" data-i18n="faq_eyebrow">FAQ</span>
+                    <h2 id="faq-h" data-i18n="faq_h2">Questions, <span class="grad">answered</span></h2>
+                    <p data-i18n="faq_p">How buying, selling and getting paid work on QSpot Marketplace.</p>
+                </div>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary data-i18n="fq1">Where is QSpot Marketplace available?</summary>
+                        <div class="faq-a"><p data-i18n="fa1">QSpot Marketplace is currently available in Canada only, and both the spot and the people involved need to be in Canada. If you're travelling outside the country, listing and buying are unavailable until you're back.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq2">How do I sell my spot in line?</summary>
+                        <div class="faq-a"><p data-i18n="fa2">Tap Sell in the app's bottom bar. Add photos, set your location and price, and choose a payment model. Your listing goes live once the form is complete and, for offline payment listings, once the listing fee is paid.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq3">Which payment model should I choose?</summary>
+                        <div class="faq-a"><p data-i18n="fa3"><strong>Offline payment:</strong> you pay a one-time QSpot Listing Fee upfront (shown before you pay) and arrange payment with the buyer yourself. <strong>Secure payment:</strong> listing is free, the buyer pays through the app and can pre-authorize their card so the funds are held until you both complete, and a QSpot Secure Listing Fee is deducted from your payout on each sale. Choose secure payment if you'd rather not handle money in person.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq4">Do I have to stay in line while my spot is listed?</summary>
+                        <div class="faq-a"><p data-i18n="fa4">Yes. You check in at least once an hour while your spot is listed, to confirm you're still holding the place in line. QSpot warns you before the hour is up, and if there's no check-in the listing comes down automatically. Every listing also has a maximum life of 36 hours. You need to be at the spot to check in.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq5">How do I buy someone's place in line?</summary>
+                        <div class="faq-a"><p data-i18n="fa5">Find a spot on the live map or in search, open it, and tap Request to Purchase. Your request goes to the seller and nothing is charged yet. Once they accept, the transaction opens with a map and chat so you can find each other. You pay during that transaction, not when you send the request.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq6">When and how do I pay?</summary>
+                        <div class="faq-a"><p data-i18n="fa6">It depends on the seller's payment model. Offline payment listings are arranged directly between the two of you, and QSpot doesn't process the money. On secure payment listings you pay in the app: you either pre-authorize your card or pay straight away. A pre-authorization places a temporary hold on your card. The money is only taken once you both complete the transaction, and the hold is released if it's cancelled. Your total includes the QSpot Processing Fee and is shown in full before you confirm. Card payments are handled by Stripe, and QSpot never sees your card details.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq7">What happens when I meet the seller?</summary>
+                        <div class="faq-a"><p data-i18n="fa7">You both need to be at the meeting point before the transaction can be completed. The app checks your positions and unlocks Complete Transaction once you're together. You both confirm, any card hold is captured at that moment, and then you rate each other.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq8">Can I cancel?</summary>
+                        <div class="faq-a"><p data-i18n="fa8">Yes. A purchase request that hasn't been accepted can be withdrawn at any time, and the seller can decline it. Nothing is charged at that stage. Once a transaction is live, either side can cancel it. If you'd already pre-authorized your card, the hold is released automatically and no money is taken.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq9">How do sellers get paid?</summary>
+                        <div class="faq-a"><p data-i18n="fa9">Sellers set up payouts with Stripe from their Profile. On a secure payment sale, the buyer is charged when you both confirm the handoff, and your share (your price minus the QSpot Secure Listing Fee) goes to your Stripe account. Stripe then sends it to your bank on its own payout schedule, which usually includes a holding period of several days plus your bank's processing time.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq10">What if something goes wrong?</summary>
+                        <div class="faq-a"><p data-i18n="fa10">If a secure payment transaction didn't go as agreed, open it from History and tap Dispute while the window is still open. The receipt shows a countdown. Add a reason and photos if you have them. The sale is put on hold while our team reviews it.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq11">How do ratings work?</summary>
+                        <div class="faq-a"><p data-i18n="fa11">You rate the person, not the spot. After a transaction completes or is cancelled, both sides can leave an optional star rating. Your average rating and review count appear on your profile.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary data-i18n="fq12">What is QSpot Premium?</summary>
+                        <div class="faq-a"><p data-i18n="fa12">QSpot Premium reduces the QSpot Secure Listing Fee on every sale, includes one free offline payment listing each month, and shows member status on your profile. <a href="web/premium.html">See the plans</a>.</p></div>
+                    </details>
+                </div>
+                <p class="faq-more" data-i18n="faq_more">More questions? <a href="about.html#contact">Write to us</a>.</p>
             </div>
         </section>
 
@@ -404,6 +483,7 @@
                         <li><a href="#how" data-i18n="nav_how">How it works</a></li>
                                                 <li><a href="#payments" data-i18n="ft_pay">Payments &amp; security</a></li>
                         <li><a href="web/premium.html">Premium</a></li>
+                        <li><a href="#faq" data-i18n="ft_faq">FAQ</a></li>
                     </ul>
                 </div>
                 <div>
@@ -449,7 +529,7 @@
     <script>
         QSLang.apply({
             meta_desc: "QSpot Marché est un marché entre particuliers pour acheter et vendre sa place dans la file. C'est un échange équitable, un pour un : le vendeur sort au moment où vous entrez. Fonctionne pour toutes les files, partout au Canada.",
-            doc_title: "QSpot | Achetez et vendez votre place dans la file",
+            doc_title: "QSpot Marché | Achetez et vendez votre place dans la file",
             eyebrow: "Un échange équitable, un pour un · partout au Canada",
             h1: "Achetez et vendez votre <span>place dans la file</span>",
             hero_p: "Attendre a de la valeur. QSpot Marché vous permet d'échanger votre place dans la file par un échange équitable, un pour un&nbsp;: le vendeur sort au moment même où l'acheteur entre.",
@@ -521,7 +601,35 @@
             pm_btn: "Voir les forfaits Premium",
             cta_h2: "Plus jamais d'attente en file",
             cta_p: "QSpot Marché arrive sur iOS et Android. Échangez votre place dans la file de façon équitable, sécuritaire et un pour un.",
-            cta_map: "Explorer la carte en direct en attendant &rarr;"
+            cta_map: "Explorer la carte en direct en attendant &rarr;",
+            faq_eyebrow: "Questions fréquentes",
+            faq_h2: "Vos questions, <span class=\"grad\">nos réponses</span>",
+            faq_p: "Comment fonctionnent l'achat, la vente et les versements sur QSpot Marché.",
+            faq_more: "D'autres questions? <a href=\"about.html#contact\">Écrivez-nous</a>.",
+            fq1: "Où QSpot Marché est-il offert?",
+            fa1: "QSpot Marché est actuellement offert au Canada uniquement, et le spot comme les personnes concernées doivent se trouver au Canada. Si vous voyagez hors du pays, publier et acheter sont indisponibles jusqu'à votre retour.",
+            fq2: "Comment vendre ma place dans la file?",
+            fa2: "Appuyez sur Vendre dans la barre du bas de l'application. Ajoutez des photos, définissez votre position et votre prix, puis choisissez un modèle de paiement. Votre annonce est mise en ligne une fois le formulaire complété et, pour les annonces à paiement hors ligne, une fois les frais d'annonce réglés.",
+            fq3: "Quel modèle de paiement choisir?",
+            fa3: "<strong>Paiement hors ligne&nbsp;:</strong> vous réglez d'avance des frais d'annonce QSpot uniques (affichés avant le paiement) et convenez vous-même du paiement avec l'acheteur. <strong>Paiement sécurisé&nbsp;:</strong> la publication est gratuite, l'acheteur paie dans l'application et peut préautoriser sa carte afin que les fonds soient retenus jusqu'à ce que vous finalisiez tous les deux, et des frais d'annonce sécurisée QSpot sont déduits de votre versement à chaque vente. Choisissez le paiement sécurisé si vous préférez ne pas manipuler d'argent en personne.",
+            fq4: "Dois-je rester dans la file pendant que mon spot est publié?",
+            fa4: "Oui. Vous devez pointer au moins une fois par heure pour confirmer que vous gardez toujours la place dans la file. QSpot vous avertit avant la fin de l'heure et, sans pointage, l'annonce est retirée automatiquement. Chaque annonce a aussi une durée de vie maximale de 36 heures. Vous devez être sur place pour pointer.",
+            fq5: "Comment acheter la place de quelqu'un dans la file?",
+            fa5: "Trouvez un spot sur la carte en direct ou dans la recherche, ouvrez-le et appuyez sur Demander à acheter. Votre demande part chez le vendeur et rien n'est encore débité. Dès qu'il accepte, la transaction s'ouvre avec une carte et un chat pour vous permettre de vous retrouver. Le paiement a lieu pendant cette transaction, pas au moment de l'envoi de la demande.",
+            fq6: "Quand et comment payer?",
+            fa6: "Cela dépend du modèle de paiement du vendeur. Pour les annonces à paiement hors ligne, vous vous arrangez directement entre vous et QSpot ne traite pas l'argent. Pour les annonces à paiement sécurisé, vous payez dans l'application&nbsp;: vous préautorisez votre carte ou payez immédiatement. Une préautorisation place une retenue temporaire sur votre carte. La somme n'est prélevée que lorsque vous finalisez la transaction tous les deux, et la retenue est levée si la transaction est annulée. Votre total inclut les frais de traitement QSpot et s'affiche intégralement avant confirmation. Les paiements par carte passent par Stripe, et QSpot ne voit jamais vos données bancaires.",
+            fq7: "Que se passe-t-il quand je rencontre le vendeur?",
+            fa7: "Vous devez tous les deux être au point de rendez-vous pour que la transaction puisse être finalisée. L'application vérifie vos positions et débloque le bouton Finaliser la transaction une fois que vous êtes ensemble. Vous confirmez tous les deux, toute préautorisation est alors encaissée, puis vous vous évaluez mutuellement.",
+            fq8: "Puis-je annuler?",
+            fa8: "Oui. Une demande d'achat non encore acceptée peut être retirée à tout moment, et le vendeur peut la refuser. Rien n'est débité à ce stade. Une fois la transaction en cours, chaque partie peut l'annuler. Si vous aviez déjà préautorisé votre carte, la retenue est levée automatiquement et aucune somme n'est prélevée.",
+            fq9: "Comment les vendeurs sont-ils payés?",
+            fa9: "Les vendeurs configurent leurs versements avec Stripe depuis leur Profil. Lors d'une vente à paiement sécurisé, l'acheteur est débité lorsque vous confirmez tous deux la remise, et votre part (votre prix moins les frais d'annonce sécurisée QSpot) est envoyée à votre compte Stripe. Stripe la verse ensuite dans votre compte bancaire selon son propre calendrier, qui comprend généralement une période de retenue de plusieurs jours, plus le délai de traitement de votre banque.",
+            fq10: "Et si quelque chose tourne mal?",
+            fa10: "Si une transaction à paiement sécurisé ne s'est pas déroulée comme convenu, ouvrez-la depuis l'Historique et appuyez sur Litige tant que la fenêtre est ouverte. Le reçu affiche un compte à rebours. Indiquez un motif et ajoutez des photos si vous en avez. La vente est mise en attente pendant que notre équipe examine le dossier.",
+            fq11: "Comment fonctionnent les évaluations?",
+            fa11: "Vous évaluez la personne, pas le spot. Après la finalisation ou l'annulation d'une transaction, chaque partie peut laisser une note en étoiles facultative. Votre note moyenne et votre nombre d'avis apparaissent sur votre profil.",
+            fq12: "Qu'est-ce que QSpot Premium?",
+            fa12: "QSpot Premium réduit les frais d'annonce sécurisée QSpot sur chaque vente, inclut une annonce à paiement hors ligne gratuite chaque mois et affiche votre statut de membre sur votre profil. <a href=\"web/premium.html\">Voir les forfaits</a>."
         });
     </script>
     <script>

@@ -143,6 +143,18 @@ jobs:
           ls -la _site/web/ || true
 
       # -----------------------------------------------------------------------
+      # Real French pages (/fr/…) + hreflang + FAQPage structured data.
+      # The English HTML stays the only source: tools/build-i18n.cjs applies each
+      # page's own French dictionary at build time and writes static copies under
+      # _site/fr/, so Google can index French instead of the browser-side ?lang=fr.
+      # linkedom is installed into the runner's temp dir only (no package.json here).
+      # -----------------------------------------------------------------------
+      - name: Build French pages + structured data
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund --prefix "$RUNNER_TEMP/i18n" linkedom@0.18.14
+          NODE_PATH="$RUNNER_TEMP/i18n/node_modules" node tools/build-i18n.cjs _site
+
+      # -----------------------------------------------------------------------
       # Assembly assertion. Cheap, and it localises a broken copy step to HERE
       # rather than to a 404 discovered weeks later. It does NOT catch the
       # v4 tar-exclude bug — that happens after assembly — which is what the
@@ -151,7 +163,7 @@ jobs:
       - name: Verify assembled site
         run: |
           fail=0
-          for f in .nojekyll .well-known/assetlinks.json; do
+          for f in .nojekyll .well-known/assetlinks.json fr/index.html fr/about.html fr/map.html; do
             if [ -e "_site/$f" ]; then
               echo "✓ _site/$f"
             else
@@ -189,7 +201,7 @@ jobs:
       - name: Verify live deployment
         run: |
           BASE="https://www.qspotmarketplace.com"
-          PATHS="/.well-known/assetlinks.json /.well-known/apple-app-site-association /.well-known/security.txt /web/premium.html /"
+          PATHS="/.well-known/assetlinks.json /.well-known/apple-app-site-association /.well-known/security.txt /web/premium.html / /fr/"
           sleep 20
           fail=0
           for p in $PATHS; do

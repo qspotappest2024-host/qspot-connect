@@ -37,6 +37,13 @@
 
     function detect() {
         var l = null;
+        // Static French pages (/fr/…, built by tools/build-i18n.cjs) carry
+        // data-qs-lang="fr": the URL decides the language, and the choice is remembered.
+        var forced = document.documentElement.getAttribute('data-qs-lang');
+        if (ok(forced)) {
+            try { localStorage.setItem(KEY, forced); } catch (e) { /* private mode */ }
+            return forced;
+        }
         try { l = new URLSearchParams(location.search).get('lang'); } catch (e) { l = null; }
         if (ok(l)) {
             try { localStorage.setItem(KEY, l); } catch (e) { /* private mode */ }
@@ -94,17 +101,29 @@
         }
     }
 
+    // Where the language switch goes. Pages with a static French twin list both URLs as
+    // <link rel="alternate" hreflang> (added at deploy): French goes to /fr/…, English goes
+    // to the English URL with ?lang=en so the choice is remembered. Other pages fall back
+    // to ?lang= on the current URL.
+    function switchHref(code) {
+        var alt = document.querySelector('link[rel="alternate"][hreflang="' + (code === 'fr' ? 'fr-CA' : 'en-CA') + '"]');
+        if (alt) {
+            try {
+                var t = new URL(alt.getAttribute('href'), location.href);
+                return t.pathname + (code === 'en' ? '?lang=en' : '') + location.hash;
+            } catch (e) { /* fall through */ }
+        }
+        var u = new URL(location.href);
+        u.searchParams.set('lang', code);
+        return u.pathname + u.search + u.hash;
+    }
+
     function langbar() {
         var bars = document.querySelectorAll('[data-langbar]');
         for (var i = 0; i < bars.length; i++) {
-            var u = new URL(location.href);
-            var here = function (code) {
-                u.searchParams.set('lang', code);
-                return u.pathname + u.search + u.hash;
-            };
             bars[i].innerHTML = lang === 'fr'
-                ? '<span class="cur" lang="fr">Français</span> &nbsp;|&nbsp; <a href="' + here('en') + '" lang="en">English</a>'
-                : '<a href="' + here('fr') + '" lang="fr">Français</a> &nbsp;|&nbsp; <span class="cur" lang="en">English</span>';
+                ? '<span class="cur" lang="fr">Français</span> &nbsp;|&nbsp; <a href="' + switchHref('en') + '" lang="en" hreflang="en">English</a>'
+                : '<a href="' + switchHref('fr') + '" lang="fr" hreflang="fr">Français</a> &nbsp;|&nbsp; <span class="cur" lang="en">English</span>';
         }
     }
 
@@ -115,11 +134,9 @@
     function langButton() {
         var toggle = document.querySelector('.navbar .nav-inner .nav-toggle');
         if (!toggle || document.querySelector('.nav-lang-btn')) return;
-        var u = new URL(location.href);
-        u.searchParams.set('lang', lang === 'fr' ? 'en' : 'fr');
         var a = document.createElement('a');
         a.className = 'nav-lang-btn';
-        a.href = u.pathname + u.search + u.hash;
+        a.href = switchHref(lang === 'fr' ? 'en' : 'fr');
         a.setAttribute('hreflang', lang === 'fr' ? 'en' : 'fr');
         a.setAttribute('aria-label', lang === 'fr' ? 'Switch to English' : 'Passer au français');
         a.innerHTML = '<span' + (lang === 'fr' ? ' class="on"' : '') + '>FR</span>' +
