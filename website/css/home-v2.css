@@ -349,3 +349,25 @@ html[data-theme="dark"] .hv-how { background: linear-gradient(135deg, #1a1426 0%
 .hv-chips li a { display: inline-flex; align-items: center; gap: 8px; color: inherit; }
 .hv-chips li:has(a) { transition: border-color .2s, transform .2s; }
 .hv-chips li:has(a):hover { border-color: var(--hv-accent-2); transform: translateY(-1px); }
+
+/* FAQ: the whole question list starts collapsed behind one button */
+.faq-all { max-width: 820px; margin: 0 auto; }
+.faq-toggle {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: fit-content; margin: 0 auto; padding: 12px 22px; border-radius: 999px;
+    background: var(--primary); color: #fff; font-weight: 700; font-size: .98rem;
+    box-shadow: var(--shadow-sm); transition: background .2s, transform .2s;
+}
+.faq-toggle::-webkit-details-marker { display: none; }
+.faq-toggle::after {
+    content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg); transition: transform .2s;
+}
+.faq-all[open] > .faq-toggle::after { transform: translateY(2px) rotate(-135deg); }
+.faq-toggle:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.faq-toggle:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.faq-toggle-hide, .faq-all[open] > .faq-toggle .faq-toggle-show { display: none; }
+.faq-all[open] > .faq-toggle .faq-toggle-hide { display: inline; }
+.faq-all[open] > .faq-list { margin-top: 20px; }
+html[data-theme="dark"] .faq-toggle { background: #5a2a5e; }
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .faq-toggle { background: #5a2a5e; } }
