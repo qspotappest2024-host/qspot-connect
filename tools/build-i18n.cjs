@@ -155,6 +155,12 @@ function buildFrench(html, page) {
   setMeta(document, 'meta[property="og:description"]', 'content', desc && strip(desc));
   setMeta(document, 'meta[name="twitter:description"]', 'content', desc && strip(desc));
   setMeta(document, 'meta[property="og:site_name"]', 'content', 'QSpot Marché');
+  // French share image (QSpot Marché logo) and alt text.
+  for (const sel of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) {
+    const el = document.head.querySelector(sel);
+    if (el) el.setAttribute('content', el.getAttribute('content').replace('og-image-marketplace.png', 'og-image-marketplace-fr.png'));
+  }
+  setMeta(document, 'meta[property="og:image:alt"]', 'content', 'QSpot Marché : achetez et vendez votre place dans la file, un échange équitable, un pour un');
   const ogType = document.head.querySelector('meta[property="og:type"]');
   if (ogType && !document.head.querySelector('meta[property="og:locale"]')) {
     const a = document.createElement('meta'); a.setAttribute('property', 'og:locale'); a.setAttribute('content', 'fr_CA');
