@@ -311,6 +311,9 @@ button.oauth.apple { background: #000; color: #fff; border: 1px solid #333; }
 }
 .session-actions button.secondary { font-size: 1rem; font-weight: 600; padding: 14px; }
 .session-actions + .qfooter { margin-top: 0; }
+/* Account page: "Sign out" as a full-width button, same style as the card buttons and
+   the Premium page's sign-out buttons (.session-actions). */
+button.secondary.signout-btn { font-size: 1rem; font-weight: 600; padding: 14px; margin: 0 0 16px; }
 .signout { background: none; border: none; color: var(--text-dim); font-size: 0.85rem; cursor: pointer; text-decoration: underline; margin-top: 8px; }
 
 /* ---- Legal pages ---- */
