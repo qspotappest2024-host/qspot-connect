@@ -69,6 +69,10 @@ function qsApplyI18n(dict) {
   }
   // French readers get the "QSpot Marché" lockup wherever the Marketplace logo shows.
   if (l === "fr") {
+    document.querySelectorAll('img[src*="qspot-marketplace-square.svg"]').forEach((img) => {
+      img.src = img.getAttribute("src").replace("qspot-marketplace-square.svg", "qspot-marche-fr-square.svg");
+      img.alt = "QSpot Marché";
+    });
     document.querySelectorAll('img[src*="qspot-marketplace-horizontal.svg"]').forEach((img) => {
       img.src = img.getAttribute("src").replace("qspot-marketplace-horizontal.svg", "qspot-marche-fr-horizontal.svg");
       img.alt = "QSpot Marché";
