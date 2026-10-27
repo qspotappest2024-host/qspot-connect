@@ -597,6 +597,10 @@ html[data-theme="dark"] .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--go
     .hero-home .hero-actions { animation: heroIn .8s cubic-bezier(.2,.7,.2,1) both; }
     .hero-home .hero-brand { margin: 18px 0 -10px; }
     .hero-logo { width: 112px; height: 112px; border-radius: 20px; }
+    /* Halve the gap between "Your place in line" and the dots (~88px -> ~44px);
+       60px still clears the seller's 26px step-out lift. */
+    .ofo-demo-title { margin-bottom: 14px; }
+    .ofo-line { height: 60px; }
 }
 @media (max-width: 480px) {
     .hero-logo { width: 100px; height: 100px; border-radius: 18px; }
