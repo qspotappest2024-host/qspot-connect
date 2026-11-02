@@ -132,11 +132,11 @@ function initDarkModeToggle() {
         if (isDark) {
             html.setAttribute('data-theme', 'light');
             localStorage.setItem('qspot-theme', 'light');
-            btn.setAttribute('aria-label', qsPick('Switch to dark mode', 'Passer en mode sombre'));
+            btn.setAttribute('aria-label', qsPick('Switch to dark mode', 'Passer au mode sombre'));
         } else {
             html.setAttribute('data-theme', 'dark');
             localStorage.setItem('qspot-theme', 'dark');
-            btn.setAttribute('aria-label', qsPick('Switch to light mode', 'Passer en mode clair'));
+            btn.setAttribute('aria-label', qsPick('Switch to light mode', 'Passer au mode clair'));
         }
     });
 
@@ -145,8 +145,8 @@ function initDarkModeToggle() {
     const stored = localStorage.getItem('qspot-theme');
     const isDark = stored === 'dark' || (stored !== 'light' && osDark);
     btn.setAttribute('aria-label', isDark
-        ? qsPick('Switch to light mode', 'Passer en mode clair')
-        : qsPick('Switch to dark mode', 'Passer en mode sombre'));
+        ? qsPick('Switch to light mode', 'Passer au mode clair')
+        : qsPick('Switch to dark mode', 'Passer au mode sombre'));
 }
 
 /* --- Scroll reveal on view (progressive enhancement) --- */

@@ -149,11 +149,14 @@ function buildFrench(html, page) {
   setMeta(document, 'link[rel="canonical"]', 'href', url);
   setMeta(document, 'meta[property="og:url"]', 'content', url);
   const title = dict.doc_title ? strip(dict.doc_title) : null;
+  // Social descriptions: og_desc / tw_desc when the page has its own French for them
+  // (the English og/twitter text differs from the meta description), else meta_desc.
   const desc = dict.og_desc || dict.meta_desc;
+  const twDesc = dict.tw_desc || desc;
   setMeta(document, 'meta[property="og:title"]', 'content', title);
   setMeta(document, 'meta[name="twitter:title"]', 'content', title);
   setMeta(document, 'meta[property="og:description"]', 'content', desc && strip(desc));
-  setMeta(document, 'meta[name="twitter:description"]', 'content', desc && strip(desc));
+  setMeta(document, 'meta[name="twitter:description"]', 'content', twDesc && strip(twDesc));
   setMeta(document, 'meta[property="og:site_name"]', 'content', 'QSpot Marché');
   // French share image (QSpot Marché logo) and alt text.
   for (const sel of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) {
