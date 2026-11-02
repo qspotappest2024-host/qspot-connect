@@ -785,10 +785,10 @@ body.page-map {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Map popup + photo gallery + spiderfy
+   Map popup + photo gallery + co-located list
    ──────────────────────────────────────────────────────────────────────────
    Every class below is emitted by js/map.js (buildSpotPopup, buildGallery,
-   openSpiderfy). Renaming one here without renaming it there leaves the
+   openCoLocatedList). Renaming one here without renaming it there leaves the
    element unstyled, silently — there is no build step to catch it.
    ══════════════════════════════════════════════════════════════════════════ */
 
@@ -1086,78 +1086,103 @@ body.page-map {
     background: #fff;
 }
 
-/* --- Spiderfy ----------------------------------------------------------- */
-/* One marker anchored at the shared coordinate; the pins are absolutely
-   positioned children, so the root itself has no size. */
-.spider-root {
-    position: absolute;
-    width: 0;
-    height: 0;
+/* --- Co-located list ("N spots at this location") ----------------------- */
+/* Emitted by openCoLocatedList() in js/map.js. The website's version of the
+   app's results-sheet filter for spots no zoom level can separate. */
+.spot-list {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    width: 268px;
+    padding: 12px 8px 8px;
 }
 
-/* pointer-events: none is load-bearing — the SVG covers the whole fan, and
-   without it the legs would swallow every pin click. */
-.spider-legs {
-    position: absolute;
-    overflow: visible;
-    pointer-events: none;
+.spot-list-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    margin: 0 36px 8px 6px;        /* right margin clears the round close button */
+    color: var(--text-primary);
 }
 
-.spider-leg {
-    stroke: var(--primary-light);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    opacity: 0.7;
-}
-
-.spider-hub {
-    fill: var(--primary-light);
-    opacity: 0.85;
-}
-
-/* Centred on its offset point with negative margins rather than a translate,
-   leaving transform free for the pop-in. */
-.spider-pin {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    margin: -15px 0 0 -15px;
+.spot-list-items {
+    list-style: none;
+    margin: 0;
     padding: 0;
-    border: 2.5px solid #fff;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    max-height: 260px;             /* a 30-listing stadium scrolls instead of leaving the screen */
+    overflow-y: auto;
+}
+
+.spot-list-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    animation: spiderPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 6px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
 }
 
-.spider-pin:hover {
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
-}
+.spot-list-item:hover { background: var(--bg-light); }
 
-.spider-pin.is-active {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.35), 0 2px 6px rgba(0, 0, 0, 0.35);
-}
-
-.spider-pin:focus-visible {
+.spot-list-item:focus-visible {
     outline: 2px solid var(--gold);
-    outline-offset: 2px;
+    outline-offset: -2px;
 }
 
-@keyframes spiderPop {
-    from { transform: scale(0.4); opacity: 0; }
-    to   { transform: scale(1);   opacity: 1; }
+.spot-list-swatch {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.spot-list-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.spot-list-text strong {
+    font-size: 0.88rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.spot-list-meta {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+}
+
+/* "‹ All spots here" — first child of a spot popup opened from the list. */
+.spot-popup-back {
+    display: block;
+    width: 100%;
+    padding: 9px 44px 9px 14px;    /* right padding clears the close button */
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-white);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.spot-popup-back:hover { background: var(--bg-light); }
+
+.spot-popup-back:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .spider-pin { animation: none; }
     .spot-gallery-dot::after { transition: none; }
 }
 
