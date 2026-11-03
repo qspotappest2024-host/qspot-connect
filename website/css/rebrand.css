@@ -614,3 +614,49 @@ html[data-theme="dark"] .btn-premium-logo:hover { box-shadow: 0 0 0 2px var(--go
 .mobile-download-bar-btns a.mb-getapp { color: var(--gold); }
 .mobile-download-bar-btns a.mb-getapp:hover,
 .mobile-download-bar-btns a.mb-getapp:active { background: var(--primary-dark); color: var(--gold); }
+
+/* ============================================================
+   2026-11-03 — Home hero: faded "line of people" art behind the hero.
+   Same art as the app's Sell a Spot card (sell_spot.webp, text-free).
+   Desktop: tall figure group on the LEFT, behind the "Your place in line"
+   card. Phones: behind the logo / headline / intro, fading out before the
+   demo. Decorative only (aria-hidden); a radial mask dissolves every edge,
+   so the box never shows. Sits under the snow drift (z-index -1, earlier
+   in the DOM), above the aurora gradient.
+   ============================================================ */
+.hero-home .hero-art {
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    background: url("../assets/images/hero-line-bg.webp") no-repeat;
+    background-size: cover;
+    left: 0; top: 0; bottom: 0;
+    width: clamp(380px, 46vw, 760px);
+    background-position: 58% 62%;
+    opacity: .34;
+    -webkit-mask-image: radial-gradient(ellipse 62% 58% at 46% 58%, #000 38%, transparent 100%);
+            mask-image: radial-gradient(ellipse 62% 58% at 46% 58%, #000 38%, transparent 100%);
+}
+/* Dark theme: the art's lilac backdrop would read as a pale patch, so darken it */
+html[data-theme="dark"] .hero-home .hero-art {
+    opacity: .30;
+    filter: brightness(.55) saturate(1.15);
+}
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .hero-home .hero-art {
+        opacity: .30;
+        filter: brightness(.55) saturate(1.15);
+    }
+}
+@media (max-width: 768px) {
+    .hero-home .hero-art {
+        left: 0; right: 0; bottom: auto;
+        width: auto;
+        height: min(760px, 110vw + 260px);
+        background-position: 56% 55%;
+        opacity: .18;
+        -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 45%, #000 40%, transparent 100%);
+                mask-image: radial-gradient(ellipse 75% 55% at 50% 45%, #000 40%, transparent 100%);
+    }
+}
+@media print { .hero-home .hero-art { display: none; } }
