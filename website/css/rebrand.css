@@ -660,3 +660,10 @@ html[data-theme="dark"] .hero-home .hero-art {
     }
 }
 @media print { .hero-home .hero-art { display: none; } }
+
+/* Hero intro line ("Waiting has value…"): heavier and darker so it holds up
+   over the faded line-of-people art on both themes. */
+.hero-home .hero-copy p {
+    font-weight: 600;
+    color: var(--text-primary);
+}
