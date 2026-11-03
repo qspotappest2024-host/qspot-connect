@@ -205,6 +205,7 @@
                 <symbol id="i-tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
                 <symbol id="i-game" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></symbol>
                 <symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.3l4.27-3.67a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.67a1 1 0 0 0 1.52-.3z"/><path d="M5 21h14"/></symbol>
+                <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
                 <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
             </defs>
         </svg>
@@ -269,6 +270,9 @@
 
                 <p class="hv-how-cta reveal">
                     <a href="map.html" class="hv-link" data-i18n="how_cta">See live spots near you <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </p>
+                <p class="hv-faq-cta reveal">
+                    <a href="#faq" class="hv-faq-btn" data-open-faq><svg aria-hidden="true"><use href="#i-help"/></svg><span data-i18n="how_faq">FAQ</span></a>
                 </p>
             </div>
         </section>
@@ -573,6 +577,7 @@
             b3_h: "Entrez dans la file",
             b3_p: "Retrouvez le vendeur à la file, échangez vos places, et vous êtes en route.",
             how_cta: "Voir les spots en direct près de chez vous <svg aria-hidden=\"true\"><use href=\"#i-arrow\"/></svg>",
+            how_faq: "Questions fréquentes",
             ln_eyebrow: "Toutes les files, partout au Canada",
             ln_h2: "Une file est une file.",
             ln_p: "Partout où l'on attend, il y a un spot à échanger.",
@@ -642,6 +647,18 @@
             fq12: "Qu'est-ce que QSpot Premium?",
             fa12: "QSpot Premium réduit les frais d'annonce sécurisée QSpot sur chaque vente, inclut une annonce à paiement hors ligne gratuite chaque mois et affiche votre statut de membre sur votre profil. <a href=\"web/premium.html\">Voir les forfaits</a>."
         });
+    </script>
+    <script>
+        // "FAQ" button under How it works: jump to #faq with the question list open
+        (function () {
+            var all = document.querySelector('#faq .faq-all');
+            if (!all) return;
+            var links = document.querySelectorAll('[data-open-faq]');
+            for (var i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', function () { all.open = true; });
+            }
+            if (location.hash === '#faq') all.open = true;
+        })();
     </script>
     <script>
         // Mobile bar: dismiss + persist in sessionStorage

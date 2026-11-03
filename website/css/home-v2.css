@@ -371,3 +371,17 @@ html[data-theme="dark"] .hv-how { background: linear-gradient(135deg, #1a1426 0%
 .faq-all[open] > .faq-list { margin-top: 20px; }
 html[data-theme="dark"] .faq-toggle { background: #5a2a5e; }
 @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .faq-toggle { background: #5a2a5e; } }
+
+/* "FAQ" button under the How it works link → #faq (the question list opens on arrival) */
+.hv-faq-cta { text-align: center; margin: 16px 0 0; }
+.hv-faq-btn {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px;
+    border-radius: 999px; background: var(--hv-card); border: 1px solid var(--hv-line);
+    box-shadow: var(--shadow-sm); font-weight: 700; color: var(--hv-accent);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.hv-faq-btn svg { width: 18px; height: 18px; }
+.hv-faq-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md, var(--shadow-sm)); }
+.hv-faq-btn:focus-visible { outline: 2px solid var(--hv-accent); outline-offset: 3px; }
+#faq { scroll-margin-top: 64px; }   /* clear the fixed 64px navbar */
+@media (prefers-reduced-motion: reduce) { .hv-faq-btn { transition: none; } .hv-faq-btn:hover { transform: none; } }
