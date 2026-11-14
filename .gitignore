@@ -16,3 +16,6 @@ node_modules/
 
 # Supabase CLI local state
 supabase/.temp/
+
+# Local backup folders: never publish
+_*_backup_*/
