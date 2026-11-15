@@ -1122,7 +1122,9 @@ function buildSpotPopup(spot) {
         seller.appendChild(star);
 
         const value = document.createElement('strong');
-        value.textContent = (Number(spot.owner_rating) || 0).toFixed(1);
+        // Two decimals, as in the app (4.67). French uses a decimal comma.
+        const ratingText = (Number(spot.owner_rating) || 0).toFixed(2);
+        value.textContent = qsPick(ratingText, ratingText.replace('.', ','));
         seller.appendChild(value);
 
         const meta = document.createElement('span');
