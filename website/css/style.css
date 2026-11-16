@@ -1502,6 +1502,17 @@ html[data-theme="dark"] .spot-popup {
     color: var(--secondary);
 }
 
+/* Owners' credit lines for third-party names (Apple, Google, Stripe). Same muted tone as the
+   copyright line; a legal notice, not a call to action. */
+.footer-credits {
+    max-width: 860px;
+    margin: 14px auto 0;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.35);
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
     /* Layout */

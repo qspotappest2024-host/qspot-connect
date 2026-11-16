@@ -69,6 +69,7 @@
         ft_terms: "Conditions d'utilisation", ft_delete: "Supprimer votre compte", ft_patents: "Brevets",
         href_privacy: "/web/confidentialite.html?lang=fr", href_terms: "/web/conditions.html?lang=fr",
         ft_copy: '&copy; 2026 QSpot Technologies Inc. Tous droits réservés. &middot; QSpot&trade; est une marque de commerce de QSpot Technologies Inc. &middot; <a class="footer-patent" href="/web/patents.html?lang=fr#fr" hreflang="fr">Brevet américain en instance</a>',
+        ft_credits: "Apple, le logo Apple et iPhone sont des marques de commerce d’Apple Inc., déposées aux États-Unis et dans d’autres pays et régions. App Store est une marque de service d’Apple Inc., déposée aux États-Unis et dans d’autres pays et régions. IOS est une marque de commerce ou une marque déposée de Cisco aux États-Unis et dans d’autres pays et est utilisée sous licence. Google Play, le logo Google Play et Android sont des marques de commerce de Google LLC. Stripe est une marque de commerce de Stripe, Inc. Les autres noms de produits et d’entreprises sont des marques de commerce de leurs propriétaires respectifs.",
         ft_ig: "QSpot Marché sur Instagram", ft_x: "QSpot Marché sur X", ft_yt: "QSpot Technologies sur YouTube", ft_tt: "QSpot Marché sur TikTok",
         ft_follow: "Suivez-nous",
         mb_label: "Liens rapides QSpot", mb_app: "Obtenir l'appli", mb_text: "Achetez et vendez votre place dans la file", mb_close: "Fermer la bannière",

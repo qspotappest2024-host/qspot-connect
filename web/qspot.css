@@ -342,6 +342,7 @@ button.secondary.signout-btn { font-size: 1rem; font-weight: 600; padding: 14px;
 .qfooter-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
 .qfooter-copy a.qfooter-patent { color: rgba(255, 255, 255, 0.6); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .qfooter-copy a.qfooter-patent:hover { color: var(--secondary-light); }
+.qfooter-credits { max-width: 860px; font-size: 0.72rem; line-height: 1.55; color: rgba(255, 255, 255, 0.4); }
 
 /* Legacy bare <footer> fallback (any page not yet upgraded to .qfooter) */
 footer:not(.qfooter) { margin-top: auto; padding-top: 32px; color: var(--text-dim); font-size: 0.8rem; text-align: center; }
