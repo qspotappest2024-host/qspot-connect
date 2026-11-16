@@ -87,7 +87,7 @@ const CATEGORY_COLORS = {
     shopping:       '#E65100',  // deep orange
     concert:        '#6A1B9A',  // deep purple
     museum_gallery: '#00695C',  // teal
-    amusement_park: '#AD1457',  // deep pink
+    service_office: '#AD1457',  // deep pink
     sporting_event: '#C62828',  // red 800
     restaurant:     '#2E7D32',  // green 800
 };
@@ -100,7 +100,7 @@ const CATEGORY_LABELS = {
     shopping:       'Shopping',
     concert:        'Concert Venue',
     museum_gallery: 'Museum/Gallery',
-    amusement_park: 'Amusement Park',
+    service_office: 'Service Office',
     sporting_event: 'Sporting Event',
     restaurant:     'Restaurant/Dining',
     general:        'Other Venue',
@@ -112,7 +112,7 @@ const CATEGORY_LABELS_FR = {
     shopping:       'Magasinage',
     concert:        'Salle de concert',
     museum_gallery: 'Musée/Galerie',
-    amusement_park: "Parc d'attractions",
+    service_office: 'Bureau de services',
     sporting_event: 'Événement sportif',
     restaurant:     'Restaurant',
     general:        'Autre lieu',
@@ -138,7 +138,7 @@ const VISIBLE_INSETS = { top: 12, right: 52, bottom: 34, left: 12 };
 
 // ─── Pins ────────────────────────────────────────────────────────────────────
 /** Categories with their own pin sprite; anything else gets pin-default (the app's plain red pin). */
-const PIN_CATEGORIES = ['ski_resort', 'shopping', 'concert', 'museum_gallery', 'amusement_park', 'sporting_event', 'restaurant'];
+const PIN_CATEGORIES = ['ski_resort', 'shopping', 'concert', 'museum_gallery', 'service_office', 'sporting_event', 'restaurant'];
 const PIN_IMAGE_PIXEL_RATIO = 3;    // PNGs are 60×84 px → 20×28 CSS px at icon-size 1
 const PIN_BASE_W_PX = 20;
 const PIN_BASE_H_PX = 28;
@@ -149,7 +149,7 @@ const CLUSTER_CATEGORY_PROPS = {
     shopping:       'n_shopping',
     concert:        'n_concert',
     museum_gallery: 'n_museum',
-    amusement_park: 'n_amusement',
+    service_office: 'n_service_office',
     sporting_event: 'n_sporting',
     restaurant:     'n_restaurant',
 };
@@ -262,7 +262,9 @@ function initMap() {
 
 /** Normalise a raw category string to the palette key form. */
 function categoryKey(category) {
-    return (category || '').toLowerCase().trim().replace(/\s+/g, '_');
+    const key = (category || '').toLowerCase().trim().replace(/\s+/g, '_');
+    // 'amusement_park' was this type's value before 2026-11-16 (the app renamed it to Service Office).
+    return key === 'amusement_park' ? 'service_office' : key;
 }
 
 function categoryColor(category) {
