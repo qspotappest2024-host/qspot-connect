@@ -68,7 +68,7 @@
         ft_contact: "Nous joindre", ft_privacy: "Politique de confidentialité",
         ft_terms: "Conditions d'utilisation", ft_delete: "Supprimer votre compte", ft_patents: "Brevets",
         href_privacy: "web/confidentialite.html", href_terms: "web/conditions.html",
-        ft_copy: '&copy; 2026 QSpot Technologies Inc. Tous droits réservés. &middot; <a class="footer-patent" href="web/patents.html#fr" hreflang="fr">Brevet américain en instance</a>',
+        ft_copy: '&copy; 2026 QSpot Technologies Inc. Tous droits réservés. &middot; QSpot&trade; est une marque de commerce de QSpot Technologies Inc. &middot; <a class="footer-patent" href="web/patents.html#fr" hreflang="fr">Brevet américain en instance</a>',
         ft_ig: "QSpot Marché sur Instagram", ft_x: "QSpot Marché sur X", ft_yt: "QSpot Technologies sur YouTube", ft_tt: "QSpot Marché sur TikTok",
         ft_follow: "Suivez-nous",
         mb_label: "Liens rapides QSpot", mb_app: "Obtenir l'appli", mb_text: "Achetez et vendez votre place dans la file", mb_close: "Fermer la bannière",
