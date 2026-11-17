@@ -708,6 +708,7 @@ body.page-map {
     flex-shrink: 0;
 }
 
+.map-toolbar h1,
 .map-toolbar h2 {
     font-size: 1.2rem;
     white-space: nowrap;
@@ -1639,6 +1640,7 @@ html[data-theme="dark"] .spot-popup {
         gap: 8px;
     }
 
+    .map-toolbar h1,
     .map-toolbar h2 {
         font-size: 1rem;
     }
