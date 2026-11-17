@@ -30,7 +30,7 @@ const BASE = 'https://www.qspotmarketplace.com';
 const PAGES = [
   'index.html', 'about.html', 'map.html',
   'concerts-and-events.html', 'restaurants.html', 'service-offices.html', 'product-drops.html',
-  'ski-lift-lines.html',
+  'ski-lift-lines.html', 'is-it-legal-to-sell-your-place-in-line.html',
 ];
 // Pages whose FAQ gets FAQPage structured data (marked up once, on the homepage only).
 const FAQ_SCHEMA_PAGES = new Set(['index.html']);
