@@ -213,8 +213,8 @@
         <!-- 1 · Trust strip — same four promises, consistent icons, 2×2 on phones -->
         <section class="trust-strip hv-trust" aria-label="How QSpot Marketplace keeps trades safe" data-i18n-attr="aria-label:trust_aria">
             <div class="container">
-                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-badge"/></svg> <span data-i18n="t1">Verified seller badges</span></div>
-                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-lock"/></svg> <span data-i18n="t2">Payment held until handoff</span></div>
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-badge"/></svg> <span data-i18n="t1">Seller badges</span></div>
+                <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-lock"/></svg> <span data-i18n="t2">Card charged only at completion</span></div>
                 <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-star"/></svg> <span data-i18n="t3">Ratings &amp; reviews</span></div>
                 <div class="trust-item"><svg class="hv-ic" aria-hidden="true"><use href="#i-pin"/></svg> <span data-i18n="t4">GPS-confirmed swap</span></div>
             </div>
@@ -244,7 +244,7 @@
                         </li>
                         <li class="hv-step">
                             <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-usercheck"/></svg></span>
-                            <div><h3 data-i18n="s2_h">A buyer books it</h3><p data-i18n="s2_p">Someone nearby claims your exact place. On Secure spots their payment is held.</p></div>
+                            <div><h3 data-i18n="s2_h">A buyer books it</h3><p data-i18n="s2_p">Someone nearby claims your exact place. On Secure spots a hold is placed on their card.</p></div>
                         </li>
                         <li class="hv-step">
                             <span class="hv-step-ic"><svg aria-hidden="true"><use href="#i-swap"/></svg></span>
@@ -310,7 +310,7 @@
 
                 <div class="hv-bento">
                     <article class="hv-tile hv-tile-hero reveal">
-                        <h3 data-i18n="sf1_h">Your money waits for the handoff</h3>
+                        <h3 data-i18n="sf1_h">You are charged only when the swap is done</h3>
                         <p data-i18n="sf1_p">Book a QSpot Secure spot and Stripe places a temporary hold (a pre-authorization) on your card. You're only charged once the handoff is confirmed on location. If the trade is cancelled, the hold is released.</p>
                         <ol class="hv-flow" aria-label="How a Secure payment moves" data-i18n-attr="aria-label:flow_aria">
                             <li><span class="hv-flow-ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span><b data-i18n="fl1">Hold placed</b><small data-i18n="fl1s">when you book</small></li>
@@ -321,7 +321,7 @@
 
                     <article class="hv-tile reveal">
                         <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-badge"/></svg></span>
-                        <div><h3 data-i18n="sf2_h">Know who you're meeting</h3><p data-i18n="sf2_p">Ratings and reviews are up front, and sellers earn a verified badge by completing a paid listing or payout.</p></div>
+                        <div><h3 data-i18n="sf2_h">See ratings before you meet</h3><p data-i18n="sf2_p">Ratings and reviews are up front, and sellers earn a seller badge by completing a paid listing or payout. The badge is not an identity check, and QSpot does not verify who you meet.</p></div>
                     </article>
                     <article class="hv-tile reveal">
                         <span class="hv-tile-ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>
@@ -561,8 +561,8 @@
             demo_badge: "1 pour 1",
             demo_note: "Chaque échange est équilibré, donc la file ne s'allonge jamais.",
             trust_aria: "Comment QSpot Marché protège les échanges",
-            t1: "Badges de vendeur vérifié",
-            t2: "Paiement retenu jusqu'à la remise",
+            t1: "Badges de vendeur",
+            t2: "Carte débitée seulement à la conclusion",
             t3: "Évaluations et avis",
             t4: "Échange confirmé par GPS",
             how_eyebrow: "Comment ça marche",
@@ -574,7 +574,7 @@
             s1_h: "Publiez votre spot",
             s1_p: "Placez une épingle sur la file où vous êtes et fixez votre prix. Ajoutez des photos et une description pour susciter l'intérêt.",
             s2_h: "Un acheteur réserve",
-            s2_p: "Quelqu'un à proximité réclame votre place exacte. Pour les spots sécurisés, son paiement est retenu.",
+            s2_p: "Quelqu'un à proximité réclame votre place exacte. Pour les spots sécurisés, une retenue est placée sur sa carte.",
             s3_h: "Échangez et soyez payé",
             s3_p: "L'acheteur entre quand vous sortez. La remise est confirmée et votre versement est libéré.",
             b1_h: "Trouvez un spot à proximité",
@@ -600,7 +600,7 @@
             sf_eyebrow: "Paiements et sécurité",
             sf_h2: "Chaque échange, <span class=\"grad\">protégé</span>",
             sf_p: "L'argent ne bouge que lorsque l'échange est réel.",
-            sf1_h: "Votre argent attend la remise",
+            sf1_h: "Vous n'êtes débité qu'une fois l'échange terminé",
             sf1_p: "Réservez un spot sécurisé QSpot et Stripe place une retenue temporaire (une préautorisation) sur votre carte. Vous n'êtes débité qu'une fois la remise confirmée sur place. Si l'échange est annulé, la retenue est levée.",
             flow_aria: "Parcours d'un paiement sécurisé",
             fl1: "Retenue placée",
@@ -609,8 +609,8 @@
             fl2s: "confirmée par GPS",
             fl3: "Versement",
             fl3s: "au vendeur",
-            sf2_h: "Sachez qui vous rencontrez",
-            sf2_p: "Les évaluations et les avis sont bien en vue, et les vendeurs obtiennent un badge vérifié en complétant une annonce payante ou un versement.",
+            sf2_h: "Consultez les évaluations avant de vous rencontrer",
+            sf2_p: "Les évaluations et les avis sont bien en vue, et les vendeurs obtiennent un badge de vendeur en complétant une annonce payante ou un versement. Le badge n'est pas une vérification d'identité, et QSpot ne vérifie pas qui vous rencontrez.",
             sf3_h: "Votre carte reste privée",
             sf3_p: "Les paiements passent par Stripe, un fournisseur certifié PCI. QSpot Marché ne voit ni ne conserve jamais votre numéro de carte.",
             sf4_h: "Versements protégés",
