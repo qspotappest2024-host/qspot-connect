@@ -651,10 +651,11 @@
 
     function renderEmailPrefs() {
       // CASL email-preferences card — shown for every signed-in user whose row
-      // loaded (member or not). The toggle is the inverse of the opt-out flag.
+      // loaded (member or not). CASL express consent: the toggle is ON only when the
+      // user has opted in and has not unsubscribed; it starts OFF for everyone else.
       const prefsEl = document.getElementById("email-prefs");
       const toggle  = document.getElementById("marketing-toggle");
-      toggle.checked = row.marketing_emails_opt_out !== true;
+      toggle.checked = row.marketing_emails_opt_in === true && row.marketing_emails_opt_out !== true;
       show(prefsEl);
     }
 
@@ -679,21 +680,23 @@
     }
 
     document.getElementById("marketing-toggle").onchange = async (e) => {
-      const optOut = !e.target.checked;
+      const optIn = e.target.checked;
+      const optOut = !optIn;
       e.target.disabled = true;
       // Direct own-row update — users_update_own RLS guards the row; the
-      // marketing_emails_opt_out column is intentionally owner-writable.
+      // marketing_emails_opt_in column is intentionally owner-writable. The database
+      // stamps the consent time and clears an earlier unsubscribe.
       const session = await getSession();
       const { error } = await sb
         .from("users")
-        .update({ marketing_emails_opt_out: optOut })
+        .update({ marketing_emails_opt_in: optIn })
         .eq("id", session.user.id);
       e.target.disabled = false;
       if (error) {
         e.target.checked = !e.target.checked; // revert
         setNotice(noticeEl, "error", t("ep_save_failed"));
       } else {
-        if (row) row.marketing_emails_opt_out = optOut;
+        if (row) { row.marketing_emails_opt_in = optIn; if (optIn) row.marketing_emails_opt_out = false; }
         setNotice(noticeEl, "success",
           optOut ? t("ep_off") : t("ep_on"));
       }
