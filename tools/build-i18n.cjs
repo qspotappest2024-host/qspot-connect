@@ -29,7 +29,7 @@ const SITE = process.argv[2] || '_site';
 const BASE = 'https://www.qspotmarketplace.com';
 const PAGES = [
   'index.html', 'about.html', 'map.html',
-  'concerts-and-events.html', 'restaurants.html', 'service-offices.html', 'product-drops.html',
+  'concerts-and-events.html', 'restaurants.html', 'offices.html', 'product-drops.html',
   'ski-lift-lines.html',
 ];
 // Pages whose FAQ gets FAQPage structured data (marked up once, on the homepage only).
