@@ -13,16 +13,17 @@ const QSPOT_CONFIG = {
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxydnJtY211aGtkcWh0eG91bWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzODkxMDAsImV4cCI6MjEwMzk2NTEwMH0.yJNgqqo_reBzb_2CSHr6G03HL4-9wqqrmQSlqL4rQF4',
 
     // MapTiler — Sign up free at https://cloud.maptiler.com/ (100k map loads/month free)
-    // TODO: Replace with your MapTiler API key
+    // Used only when USE_FREE_TILES is false; the deploy workflow injects the real key
     MAPTILER_API_KEY: 'YOUR_MAPTILER_API_KEY_HERE',
 
-    // ── LOCAL TESTING WITHOUT A MAPTILER KEY ──────────────────────────────
-    // Set USE_FREE_TILES to true to use OpenFreeMap vector tiles instead.
-    // OpenFreeMap is free with no API key required and uses the same
-    // MapLibre GL JS engine, so your markers/popups work identically.
-    // Switch back to false (and add your real MapTiler key above) for
-    // production — OpenFreeMap has no SLA and shouldn't be used for live traffic.
-    USE_FREE_TILES: true,   // ← set false once you have a MapTiler key
+    // ── SITE MAP PROVIDER ─────────────────────────────────────────────────
+    // USE_FREE_TILES true: the site map uses OpenFreeMap vector tiles. This is
+    // the provider the site runs on. OpenFreeMap is a free public service with
+    // no API key and no SLA, and uses the same MapLibre GL JS engine as the
+    // MapTiler path, so markers and popups work identically.
+    // USE_FREE_TILES false: the site map uses MapTiler and needs the real
+    // MapTiler key above (injected at deploy time).
+    USE_FREE_TILES: true,   // true = OpenFreeMap (current); false = MapTiler
 
     // Map defaults
     MAP_DEFAULT_CENTER: [-96.34, 56.13], // Centre of Canada
