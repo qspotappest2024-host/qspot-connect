@@ -111,7 +111,12 @@
         if (alt) {
             try {
                 var t = new URL(alt.getAttribute('href'), location.href);
-                return t.pathname + (code === 'en' ? '?lang=en' : '') + location.hash;
+                // Keep the rest of the query (e.g. ?spot= on the map page); ?lang= is ours.
+                var carry = new URLSearchParams(location.search);
+                carry.delete('lang');
+                if (code === 'en') carry.set('lang', 'en');
+                var qs = carry.toString();
+                return t.pathname + (qs ? '?' + qs : '') + location.hash;
             } catch (e) { /* fall through */ }
         }
         var u = new URL(location.href);

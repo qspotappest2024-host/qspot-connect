@@ -32,6 +32,22 @@ let map;
 let spotsData = [];
 let activePopup = null;
 
+// ─── Shared-spot link: /map.html?spot=<uuid> (the app's Share button, Issue #380) ───
+// Above CLUSTER_MAX_ZOOM (16): from zoom 17 every spot is its own un-clustered feature.
+const SHARED_SPOT_ZOOM = 17;
+// Any 8-4-4-4-12 hex id. The real check is that the id is in the list the server returned.
+const SPOT_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** The spot id from ?spot=, or null. The value is never put in markup. */
+function sharedSpotIdFromUrl() {
+    try {
+        const raw = (new URLSearchParams(location.search).get('spot') || '').trim();
+        return SPOT_ID_RE.test(raw) ? raw.toLowerCase() : null;
+    } catch (e) { return null; }
+}
+/** Consumed by the first successful load only, so a later Refresh does not move the camera. */
+let sharedSpotId = sharedSpotIdFromUrl();
+
 
 /**
  * False once a request has proved the view has no owner_rating column, i.e.
@@ -243,7 +259,7 @@ function initMap() {
 
     // Escape closes the popup or list.
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closePopup();
+        if (e.key === 'Escape') { closePopup(); closeSharedSpotDialog(); }
     });
 
     const loadTimeout = setTimeout(() => {
@@ -356,8 +372,105 @@ function pinImageId(cat) {
     return `qspot-pin-${PIN_CATEGORIES.includes(cat) ? cat : 'default'}`;
 }
 
+/** Remove the "spot not available" dialog, if open, and give focus back. */
+function closeSharedSpotDialog() {
+    const el = document.querySelector('.shared-spot-dialog-backdrop');
+    if (!el) return;
+    const back = el._returnFocus;
+    el.remove();
+    if (back && typeof back.focus === 'function') { try { back.focus(); } catch (e) { /* ignore */ } }
+}
+
+/**
+ * A shared link whose spot is not on the live map: say so in a dialog (Issue #380). The public
+ * view lists only ACTIVE spots with a free place, so the reasons are: booked, expired or
+ * removed by the seller, or a mistyped link. The page behind it is the
+ * normal all-spots map. Text only, built with DOM APIs; no content from the URL is shown.
+ */
+function showSharedSpotUnavailableDialog() {
+    const container = document.querySelector('.map-container');
+    if (!container) return;
+    closeSharedSpotDialog();
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'shared-spot-dialog-backdrop';
+    backdrop._returnFocus = document.activeElement;
+
+    const dialog = document.createElement('div');
+    dialog.className = 'shared-spot-dialog';
+    dialog.setAttribute('role', 'alertdialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-labelledby', 'shared-spot-dialog-title');
+    dialog.setAttribute('aria-describedby', 'shared-spot-dialog-text');
+
+    const icon = document.createElement('div');
+    icon.className = 'shared-spot-dialog-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '\ud83d\udccd';
+
+    const title = document.createElement('h3');
+    title.id = 'shared-spot-dialog-title';
+    title.textContent = qsPick('This spot is no longer available', 'Ce spot n\u2019est plus disponible');
+
+    const text = document.createElement('p');
+    text.id = 'shared-spot-dialog-text';
+    text.textContent = qsPick(
+        'It may have been booked, expired or been removed by the seller. You can still browse the other live spots on the map.',
+        'Il a peut-\u00eatre \u00e9t\u00e9 r\u00e9serv\u00e9, a expir\u00e9 ou a \u00e9t\u00e9 retir\u00e9 par le vendeur. Vous pouvez parcourir les autres spots en direct sur la carte.');
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'shared-spot-dialog-btn';
+    button.textContent = qsPick('View the map', 'Voir la carte');
+    button.addEventListener('click', closeSharedSpotDialog);
+
+    dialog.appendChild(icon);
+    dialog.appendChild(title);
+    dialog.appendChild(text);
+    dialog.appendChild(button);
+    backdrop.appendChild(dialog);
+    // A click on the dim area closes it; a click inside the dialog does not.
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeSharedSpotDialog(); });
+    // One focusable control: Tab stays on it, so focus cannot wander to the map behind.
+    backdrop.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') { e.preventDefault(); button.focus(); }
+    });
+    container.appendChild(backdrop);
+    button.focus();
+}
+
+/**
+ * Zoom to the spot named in the link and open its popup. Returns true when it did, so
+ * fetchSpots skips fitMapToSpots (which would zoom back out to all spots). When the spot is
+ * not on the live map (booked, expired, removed, queue full, or a mistyped id) a dialog says so and the caller frames everything. Called only after a SUCCESSFUL fetch,
+ * so a network error never shows it. Issue #380.
+ */
+function focusSharedSpot() {
+    if (!sharedSpotId) return false;
+    const id = sharedSpotId;
+    sharedSpotId = null;
+    const spot = spotById(id);
+    if (!spot || !hasValidCoords(spot)) {
+        showSharedSpotUnavailableDialog();
+        return false;
+    }
+    const coords = [spot.longitude, spot.latitude];
+    // Open the popup once the camera has settled AND the pin layers exist: popupOffsetFor()
+    // reads `pinsAvailable`, which is set only after the sprites load (renderSpotsOnMap).
+    const open = () => (markerLayersPromise || Promise.resolve())
+        .catch(() => {})
+        .then(() => openSpotPopup(coords, spot, { kind: 'pin' }));
+    map.stop();                          // finish any earlier animation so its 'moveend' is not taken for ours
+    map.once('moveend', open);
+    // MapLibre jumps instead of flying when the visitor prefers reduced motion (no `essential`).
+    map.flyTo({ center: coords, zoom: SHARED_SPOT_ZOOM });
+    return true;
+}
+
 function pinImageUrl(cat) {
-    return `assets/images/map/pin-${cat.replace(/_/g, '-')}.png`;
+    // Root-absolute: the French twin lives at /fr/map.html, where a relative path
+    // would resolve to /fr/assets/… (which is never built) and fall back to circles.
+    return `/assets/images/map/pin-${cat.replace(/_/g, '-')}.png`;
 }
 
 /**
@@ -1379,10 +1492,11 @@ async function fetchSpots({ refresh = false } = {}) {
             // A refresh can empty a map that had pins — clear them, or the
             // "no spots" message would sit on top of stale markers.
             if (map.getSource(MARKERS_SOURCE_ID)) renderSpotsOnMap([]);
+            focusSharedSpot();           // shows the "not on the live map" hint for a shared link
             showEmptyState();
         } else {
             renderSpotsOnMap(spotsData);
-            if (!refresh || !hadSpots) fitMapToSpots(spotsData);
+            if (!focusSharedSpot() && (!refresh || !hadSpots)) fitMapToSpots(spotsData);
         }
         markRefreshed();
     } catch (error) {

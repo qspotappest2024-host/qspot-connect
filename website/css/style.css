@@ -1212,6 +1212,49 @@ body.page-map {
     display: none;
 }
 
+/* --- Shared link: "this spot is no longer available" dialog (Issue #380) ---- */
+.shared-spot-dialog-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 10;                   /* above the map, the popup and the empty/error overlays */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(26, 26, 46, 0.55);
+}
+.shared-spot-dialog {
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 24px 24px;
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+.shared-spot-dialog-icon { font-size: 2.4rem; margin-bottom: 8px; }
+.shared-spot-dialog h3 { margin: 0 0 8px; font-size: 1.2rem; }
+.shared-spot-dialog p { margin: 0; font-size: 0.95rem; color: var(--text-secondary); }
+.shared-spot-dialog-btn {
+    margin-top: 20px;
+    min-height: 44px;              /* touch target */
+    padding: 10px 22px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.shared-spot-dialog-btn:hover { background: var(--primary-dark); }
+.shared-spot-dialog-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .shared-spot-dialog-btn { background: #C58FC7; color: #1a0f1c; }
+}
+html[data-theme="dark"] .shared-spot-dialog-btn { background: #C58FC7; color: #1a0f1c; }
+
 /* --- Popup accents in dark mode ----------------------------------------- */
 /* --primary (#3F1842) is deliberately not redefined in the dark variable
    set, and at 2.4:1 on the dark card it is unreadable. These pairs are the
