@@ -930,6 +930,15 @@ body.page-map {
     color: var(--text-light);
 }
 
+/* Approximate-location notice, directly above the CTA. --text-secondary (not
+   --text-light) so it clears AA contrast on the card in both themes. */
+.spot-popup-note {
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    margin: 0 0 10px;
+}
+
 .spot-popup-cta {
     display: block;
     text-align: center;

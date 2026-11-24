@@ -1251,6 +1251,16 @@ function buildSpotPopup(spot) {
         body.appendChild(seller);
     }
 
+    // Public map locations are rounded, so say so and point to the app for the
+    // exact location, more details and full-size photos.
+    const note = document.createElement('p');
+    note.className = 'spot-popup-note';
+    note.textContent = qsPick(
+        'Spot locations are approximate. To see the exact location and more details about this spot, including large photos, view it in the app.',
+        'L\u2019emplacement des spots est approximatif. Pour voir l\u2019emplacement exact et plus de d\u00e9tails sur ce spot, y compris de grandes photos, consultez-le dans l\u2019application.'
+    );
+    body.appendChild(note);
+
     const cta = document.createElement('a');
     cta.className = 'spot-popup-cta';
     cta.href = 'index.html#download';
