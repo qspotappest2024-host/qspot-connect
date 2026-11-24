@@ -1843,26 +1843,33 @@ html[data-theme="dark"] .spot-popup {
         padding: 24px 16px;
     }
 
-    /* Map toolbar: title on the left, count + Refresh on the right */
+    /* Map toolbar on phones, one item per row so nothing is pushed off-screen:
+       title, then count (left) + Refresh (right), then the approximate-location
+       notice. minmax(0, 1fr) stops the notice's text width from widening the
+       column, and the title may wrap (it is nowrap on wider screens). */
     .map-toolbar {
         display: grid;
-        grid-template-columns: auto auto;
-        justify-content: space-between;
+        grid-template-columns: minmax(0, 1fr);
         align-items: center;
         gap: 8px;
     }
 
-    .map-toolbar h1 { grid-row: 1; grid-column: 1; }
-    .map-toolbar-actions { grid-row: 1; grid-column: 2; }
-
-    .map-toolbar-note {
-        grid-row: 2;
-        grid-column: 1 / -1;
-        font-size: 0.74rem;
+    .map-toolbar h1 {
+        grid-row: 1;
+        white-space: normal;
     }
 
     .map-toolbar-actions {
+        grid-row: 2;
+        margin-left: 0;
         gap: 6px;
+        justify-content: space-between;
+    }
+
+    .map-toolbar-note {
+        grid-row: 3;
+        font-size: 0.78rem;
+        text-align: left;
     }
 
     .spot-count {
