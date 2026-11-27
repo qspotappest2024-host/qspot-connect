@@ -198,6 +198,17 @@
         <button class="secondary danger" id="delete-confirm-btn" disabled
                 style="margin-top:10px;" data-i18n="dz_confirm">Schedule account deletion</button>
       </div>
+      <!-- Issue #391h: shown when the server asks for an e-mailed code (403 EMAIL_CONFIRMATION_REQUIRED). -->
+      <div id="delete-code" class="hidden" style="margin-top:12px;">
+        <p style="font-size:0.9rem;" id="delete-code-msg" data-i18n="dc_p">We emailed a 6-digit code to your account email. Enter it to confirm.</p>
+        <input id="delete-code-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code"
+               aria-label="6-digit code" placeholder="123456"
+               style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #888;background:transparent;color:inherit;letter-spacing:0.3em;text-align:center;">
+        <button class="secondary danger" id="delete-code-btn" disabled
+                style="margin-top:10px;" data-i18n="dc_confirm">Confirm account deletion</button>
+        <button class="secondary" id="delete-code-resend-btn"
+                style="margin-top:10px;" data-i18n="dc_resend">Send a new code</button>
+      </div>
       <button class="secondary danger" id="delete-start-btn" data-i18n="dz_start">Delete my account…</button>
       <p style="margin-top:10px;font-size:0.8rem;" data-i18n="dz_cant">
         Can't sign in? Email
@@ -309,6 +320,13 @@
         del_deleted: "Your account has been permanently deleted. We're sorry to see you go.",
         del_scheduled: "Your account is scheduled for deletion in 7 days. Sign into the QSpot app within 7 days to cancel.",
         del_failed: "Account deletion failed. Please try again or contact admin@qspotmarketplace.com.",
+        dc_p: "We emailed a 6-digit code to {email}. Enter it to confirm. It expires in 10 minutes.",
+        dc_confirm: "Confirm account deletion", dc_resend: "Send a new code",
+        dc_invalid: "That code is not right. Please check it and try again.",
+        dc_expired: "That code has expired. We sent you a new one.",
+        dc_locked: "Too many wrong codes. We sent you a new one.",
+        dc_wait: "Please wait a minute before asking for another code.",
+        dc_send_failed: "We could not send the email. Please try again, delete your account in the app (Profile › Settings › Delete Account), or contact admin@qspotmarketplace.com.",
       },
       fr: {
         doc_title: "QSpot Marketplace | Compte, abonnement et suppression du compte",
@@ -412,6 +430,13 @@
         del_deleted: "Votre compte a été définitivement supprimé. Nous sommes désolés de vous voir partir.",
         del_scheduled: "La suppression de votre compte est programmée dans 7 jours. Connectez-vous à l'application QSpot dans les 7 jours pour l'annuler.",
         del_failed: "La suppression du compte a échoué. Veuillez réessayer ou écrire à admin@qspotmarketplace.com.",
+        dc_p: "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le pour confirmer. Il expire dans 10 minutes.",
+        dc_confirm: "Confirmer la suppression du compte", dc_resend: "Envoyer un nouveau code",
+        dc_invalid: "Ce code n'est pas le bon. Vérifiez-le et réessayez.",
+        dc_expired: "Ce code a expiré. Nous vous en avons envoyé un nouveau.",
+        dc_locked: "Trop de codes erronés. Nous vous en avons envoyé un nouveau.",
+        dc_wait: "Veuillez patienter une minute avant de demander un autre code.",
+        dc_send_failed: "Nous n'avons pas pu envoyer le courriel. Veuillez réessayer, supprimer votre compte dans l'application (Profil › Paramètres › Supprimer le compte) ou écrire à admin@qspotmarketplace.com.",
       },
     };
     const t = (k, v) => qsT(I18N, k, v);
@@ -884,17 +909,90 @@
         e.target.value.trim() !== "DELETE";
     };
 
+    // ── Deletion, shared tail (scheduled / deleted) ────────────────────────
+    async function finishDeletion(data) {
+      // Deletion scheduled (7-day grace) — clear the local session (no reload
+      // so the confirmation stays visible).
+      try { await sb.auth.signOut(); } catch (_e) { /* session already invalid */ }
+      ["manage", "no-sub", "email-prefs", "danger-zone"].forEach(
+        (id) => hide(document.getElementById(id)));
+      setNotice(noticeEl, "success", data.deleted ? t("del_deleted") : t("del_scheduled"));
+    }
+
+    // ── E-mailed confirmation code (Issue #391h) ───────────────────────────
+    // The server asks for it only after the switch is enforced, as a 403 EMAIL_CONFIRMATION_REQUIRED
+    // on the first real call; until then the page behaves exactly as before.
+    // Returns true when a code was sent (the box is then shown).
+    async function sendDeleteCode(notice) {
+      const { ok, status, data } = await callFn("delete-account", { requestEmailCode: true, lang: qsLang() });
+      if (ok && data.codeSent) {
+        document.getElementById("delete-code-msg").textContent = t("dc_p", { email: data.maskedEmail || "" });
+        hide(document.getElementById("delete-confirm"));
+        show(document.getElementById("delete-code"));
+        const input = document.getElementById("delete-code-input");
+        input.value = "";
+        document.getElementById("delete-code-btn").disabled = true;
+        input.focus();
+        if (notice) setNotice(noticeEl, "error", notice);
+        return true;
+      }
+      if (status === 429) {
+        setNotice(noticeEl, "error", data.code === "email_code_cooldown" ? t("dc_wait") : t("too_many"));
+      } else {
+        setNotice(noticeEl, "error", t("dc_send_failed"));
+      }
+      return false;
+    }
+
+    document.getElementById("delete-code-input").oninput = (e) => {
+      e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6);
+      document.getElementById("delete-code-btn").disabled = e.target.value.length !== 6;
+    };
+
+    document.getElementById("delete-code-resend-btn").onclick = async (e) => {
+      e.target.disabled = true;
+      await sendDeleteCode(null);
+      e.target.disabled = false;
+    };
+
+    document.getElementById("delete-code-btn").onclick = async (e) => {
+      e.target.disabled = true;
+      const code = document.getElementById("delete-code-input").value.trim();
+      const { ok, status, data } = await callFn("delete-account", { emailCode: code });
+      if (ok && (data.scheduled || data.deleted)) {
+        await finishDeletion(data);
+      } else if (status === 409) {
+        // Race: something became blocking between pre-flight and confirm.
+        hide(document.getElementById("delete-code"));
+        show(document.getElementById("delete-start-btn"));
+        renderDeleteBlockers(data.blockers);
+      } else if (status === 400 && data.code === "email_code_invalid") {
+        setNotice(noticeEl, "error", t("dc_invalid"));
+        e.target.disabled = document.getElementById("delete-code-input").value.length !== 6;
+      } else if (status === 400 && data.code === "email_code_locked") {
+        await sendDeleteCode(t("dc_locked"));
+      } else if ((status === 400 && data.code === "email_code_expired") ||
+                 (status === 403 && data.code === "EMAIL_CONFIRMATION_REQUIRED")) {
+        await sendDeleteCode(t("dc_expired"));
+      } else if (status === 429) {
+        setNotice(noticeEl, "error", t("too_many"));
+        e.target.disabled = false;
+      } else {
+        setNotice(noticeEl, "error", t("del_failed"));
+        e.target.disabled = false;
+      }
+    };
+
     document.getElementById("delete-confirm-btn").onclick = async (e) => {
       if (!confirm(t("del_confirm"))) return;
       e.target.disabled = true;
       const { ok, status, data } = await callFn("delete-account", {});
       if (ok && (data.scheduled || data.deleted)) {
-        // Deletion scheduled (7-day grace) — clear the local session (no reload
-        // so the confirmation stays visible).
-        try { await sb.auth.signOut(); } catch (_e) { /* session already invalid */ }
-        ["manage", "no-sub", "email-prefs", "danger-zone"].forEach(
-          (id) => hide(document.getElementById(id)));
-        setNotice(noticeEl, "success", data.deleted ? t("del_deleted") : t("del_scheduled"));
+        await finishDeletion(data);
+      } else if (status === 403 && data.code === "EMAIL_CONFIRMATION_REQUIRED") {
+        // The server wants proof of mailbox access: send the code and ask for it.
+        const sent = await sendDeleteCode(null);
+        e.target.disabled = sent ? true : false;
       } else if (status === 409) {
         // Race: something became blocking between pre-flight and confirm.
         hide(document.getElementById("delete-confirm"));
