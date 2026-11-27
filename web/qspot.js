@@ -193,6 +193,71 @@ async function getSession() {
   return session;
 }
 
+// ─── Web session registration (security scope) ───────────────────────────────
+// A session created on this site is marked on the server as a WEB session. From then on the server lets
+// that token reach only membership, account deletion and sign-out, and this page's own tables; the app's
+// money, spot and sign-in functions refuse it. So a token taken from this browser cannot be used as an
+// app session. Registration is idempotent and runs once per session id and tab.
+const _qsRegistered = new Set();
+const _qsRegInFlight = new Map();
+
+function qsJwtSessionId(token) {
+  try {
+    const part = String(token).split(".")[1];
+    const json = atob(part.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(part.length / 4) * 4, "="));
+    const sid = JSON.parse(json).session_id;
+    return typeof sid === "string" && /^[0-9a-f-]{36}$/i.test(sid) ? sid : null;
+  } catch (_e) {
+    return null;
+  }
+}
+
+/** Registers `session` as a web session. Resolves true once the server has it; never throws. */
+function registerWebSession(session) {
+  if (!session || !session.access_token) return Promise.resolve(false);
+  const sid = qsJwtSessionId(session.access_token);
+  if (!sid) return Promise.resolve(false);
+  if (_qsRegistered.has(sid)) return Promise.resolve(true);
+  try {
+    if (sessionStorage.getItem("qs_web_reg") === sid) { _qsRegistered.add(sid); return Promise.resolve(true); }
+  } catch (_e) { /* storage unavailable: register again, it is idempotent */ }
+  if (_qsRegInFlight.has(sid)) return _qsRegInFlight.get(sid);
+
+  const run = (async () => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/register-web-session`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${session.access_token}`,
+            "apikey": SUPABASE_ANON_KEY,
+            "Content-Type": "application/json",
+          },
+          body: "{}",
+        });
+        if (res.ok) {
+          _qsRegistered.add(sid);
+          try { sessionStorage.setItem("qs_web_reg", sid); } catch (_e) { /* ignore */ }
+          return true;
+        }
+        if (res.status < 500) return false;   // 4xx will not change on a retry
+      } catch (_e) { /* network error: retry once */ }
+      await new Promise((r) => setTimeout(r, 800));
+    }
+    return false;
+  })().finally(() => { _qsRegInFlight.delete(sid); });
+  _qsRegInFlight.set(sid, run);
+  return run;
+}
+
+// Covers the OAuth redirect, the ID-token sign-in and a session restored from storage. The callback only
+// schedules the work: supabase-js must not be awaited from inside its own auth callback.
+sb.auth.onAuthStateChange((event, session) => {
+  if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED")) {
+    setTimeout(() => { registerWebSession(session); }, 0);
+  }
+});
+
 /**
  * Starts an OAuth login, returning the user to the current page afterwards.
  * IMPORTANT for Sign in with Apple users who chose "Hide My Email":
@@ -389,6 +454,8 @@ async function signOutAllDevices() {
 async function callFn(name, body) {
   const session = await getSession();
   if (!session) throw new Error("Not signed in");
+  // The session must be marked as a web session before any other call (see "Web session registration").
+  await registerWebSession(session);
   const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
     method: "POST",
     headers: {
